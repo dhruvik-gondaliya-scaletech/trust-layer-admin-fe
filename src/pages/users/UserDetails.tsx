@@ -1,26 +1,23 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, Prohibit, SealCheck, Trash, LockKey, MapPin, Clock, Star, Handshake, Money, ArrowUpRight, CheckCircle, MagnifyingGlass, DotsThree } from "@phosphor-icons/react"
+import { CaretLeft, LockKey, Money, ArrowUpRight, CheckCircle, MagnifyingGlass, DotsThree, Star, CreditCard, Bank } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { DataTable } from "@/components/ui/data-table"
-import { Timeline } from "@/components/ui/timeline"
 import { StatCard } from "@/components/ui/stat-card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { mockUsers, mockDeals, mockTransactions, mockReviews, mockActivity } from "@/lib/mock-data"
+import { mockUsers, mockDeals, mockTransactions, mockReviews } from "@/lib/mock-data"
 import type { UserData } from "@/lib/mock-data"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
-import { User } from "@phosphor-icons/react"
+
 
 export function UserDetails() {
   const { id } = useParams()
@@ -49,37 +46,6 @@ export function UserDetails() {
           </div>
           <h1 className="text-[24px] font-bold tracking-tight text-foreground">User Profile</h1>
         </div>
-        <div className="ml-auto flex items-center gap-3">
-          <Button variant="outline" className="gap-2 h-10 font-semibold bg-background shadow-sm border-border/50 rounded-xl hover:bg-muted">
-            <Export weight="bold" className="h-4 w-4" />
-            Export Data
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="gap-2 h-10 font-semibold shadow-sm rounded-xl">
-                Quick Actions
-                <CaretDown weight="bold" className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-lg border-border/50">
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                View Public Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Reset Password
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="my-1.5" />
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2 text-warning focus:text-warning focus:bg-warning/10">
-                <Prohibit className="mr-2 h-4 w-4" />
-                Suspend User
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2 text-destructive focus:text-destructive focus:bg-destructive/10">
-                <Trash className="mr-2 h-4 w-4" />
-                Deactivate User
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </div>
 
       {/* Profile Card Header - Compact */}
@@ -92,7 +58,6 @@ export function UserDetails() {
         <div className="flex flex-col gap-1.5 flex-1">
           <div className="flex items-center gap-3">
             <h2 className="text-[22px] font-bold text-foreground">{user.name}</h2>
-            {user.verified && <SealCheck weight="fill" className="h-5 w-5 text-success" />}
             <StatusBadge status={user.status} />
           </div>
           <div className="flex items-center gap-4 text-[13px] font-medium text-muted-foreground">
@@ -101,11 +66,6 @@ export function UserDetails() {
             <span>{user.email}</span>
             <span>•</span>
             <span>{user.phone}</span>
-          </div>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-2 py-1 text-[12px] font-bold text-primary uppercase tracking-wider">
-              Trust Score: {user.trustScore}
-            </span>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 text-right">
@@ -129,7 +89,6 @@ export function UserDetails() {
           { id: "deals", label: "Deals", count: user.openDeals + user.completedDeals },
           { id: "transactions", label: "Transactions" },
           { id: "reviews", label: "Reviews", count: mockReviews.length },
-          { id: "activity", label: "Activity" },
         ]} 
       />
 
@@ -139,7 +98,6 @@ export function UserDetails() {
         {activeTab === "deals" && <DealsTab />}
         {activeTab === "transactions" && <TransactionsTab />}
         {activeTab === "reviews" && <ReviewsTab user={user} />}
-        {activeTab === "activity" && <ActivityTab />}
       </div>
     </div>
   )
@@ -147,146 +105,96 @@ export function UserDetails() {
 
 function OverviewTab({ user }: { user: UserData }) {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-      {/* Left Main Content */}
-      <div className="xl:col-span-3 space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-sm flex flex-col space-y-6 h-full">
-            <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-              <User className="h-5 w-5 text-muted-foreground" /> Personal Information
+    <div className="w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Left Column: Personal Information (70%) */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 h-full">
+            <h3 className="text-[18px] font-semibold text-foreground m-0">
+              Personal Information
             </h3>
-            <div className="grid gap-4">
-              <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Full Name</div>
-                <div className="text-[14px] font-semibold text-[#0F172A]">{user.name}</div>
-              </div>
-              <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Email Address</div>
-                <div className="text-[14px] font-semibold text-[#0F172A]">{user.email}</div>
-              </div>
-              <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Phone Number</div>
-                <div className="text-[14px] font-semibold text-[#0F172A]">{user.phone}</div>
-              </div>
-              <div className="flex gap-8">
-                <div>
-                  <div className="text-[12px] font-medium text-muted-foreground mb-1">Location</div>
-                  <div className="text-[14px] font-semibold text-[#0F172A] flex items-center gap-1">
-                    <MapPin className="text-muted-foreground" /> {user.country}
+            
+            {/* Contact Info Boxes */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-white border border-[#EEF2F7] rounded-[12px] p-5 flex flex-col gap-1.5">
+                <div className="text-[12px] font-medium text-[#6B7280]">Email Address</div>
+                <div className="text-[16px] font-medium text-[#111827] truncate">{user.email}</div>
+                {user.verified && (
+                  <div className="flex items-center gap-1.5 text-[#16A34A] text-[13px] font-medium mt-1">
+                    <CheckCircle weight="fill" className="h-4 w-4" /> Verified
                   </div>
-                </div>
-                <div>
-                  <div className="text-[12px] font-medium text-muted-foreground mb-1">Timezone</div>
-                  <div className="text-[14px] font-semibold text-[#0F172A] flex items-center gap-1">
-                    <Clock className="text-muted-foreground" /> {user.timezone}
+                )}
+              </div>
+              
+              <div className="bg-white border border-[#EEF2F7] rounded-[12px] p-5 flex flex-col gap-1.5">
+                <div className="text-[12px] font-medium text-[#6B7280]">Phone Number</div>
+                <div className="text-[16px] font-medium text-[#111827] truncate">{user.phone}</div>
+                {user.verified && (
+                  <div className="flex items-center gap-1.5 text-[#16A34A] text-[13px] font-medium mt-1">
+                    <CheckCircle weight="fill" className="h-4 w-4" /> Verified
                   </div>
-                </div>
+                )}
               </div>
             </div>
-          </div>
-          
-          <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-sm flex flex-col space-y-6 h-full">
-            <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-              <LockKey className="h-5 w-5 text-muted-foreground" /> Security & Verification
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 rounded-xl border border-[#EEF2F7] bg-[#F8FAFC]">
-                <div className="flex items-center gap-3">
-                  <div className="bg-success/10 text-success p-2 rounded-lg"><SealCheck weight="fill" /></div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[13px] text-[#0F172A]">Identity Verification</span>
-                    <span className="text-[12px] text-muted-foreground">Completed via Persona</span>
-                  </div>
-                </div>
-                <StatusBadge status="Verified" />
-              </div>
-              <div className="flex items-center justify-between p-3 rounded-xl border border-[#EEF2F7] bg-[#F8FAFC]">
-                <div className="flex items-center gap-3">
-                  <div className="bg-success/10 text-success p-2 rounded-lg"><SealCheck weight="fill" /></div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[13px] text-[#0F172A]">Email Verification</span>
-                    <span className="text-[12px] text-muted-foreground">Verified at signup</span>
-                  </div>
-                </div>
-                <StatusBadge status="Verified" />
-              </div>
-              <div className="flex items-center justify-between p-3 rounded-xl border border-[#EEF2F7] bg-[#F8FAFC]">
-                <div className="flex items-center gap-3">
-                  <div className="bg-success/10 text-success p-2 rounded-lg"><SealCheck weight="fill" /></div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[13px] text-[#0F172A]">Phone Verification</span>
-                    <span className="text-[12px] text-muted-foreground">SMS 2FA Enabled</span>
-                  </div>
-                </div>
-                <StatusBadge status="Verified" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Right Sticky Sidebar (Summary) */}
-      <div className="xl:col-span-1">
-        <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-sm flex flex-col space-y-6">
-          <h3 className="text-[14px] font-bold text-foreground mb-4">Summary</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] font-medium text-muted-foreground">Trust Score</span>
-              <span className={cn("text-[14px] font-bold", user.trustScore >= 80 ? "text-success" : user.trustScore >= 50 ? "text-warning" : "text-destructive")}>
-                {user.trustScore}/100
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] font-medium text-muted-foreground">Completed Deals</span>
-              <span className="text-[14px] font-bold text-foreground">{user.completedDeals}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] font-medium text-muted-foreground">Open Deals</span>
-              <span className="text-[14px] font-bold text-foreground">{user.openDeals}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] font-medium text-muted-foreground">Disputes</span>
-              <span className="text-[14px] font-bold text-destructive">{user.disputedDeals}</span>
-            </div>
-            <div className="w-full h-px bg-border/50 my-2" />
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] font-medium text-muted-foreground">Buyer Rating</span>
-              <div className="flex items-center gap-1 font-bold text-foreground">
-                <Star weight="fill" className="text-warning h-4 w-4" /> {user.buyerRating || "N/A"}
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] font-medium text-muted-foreground">Seller Rating</span>
-              <div className="flex items-center gap-1 font-bold text-foreground">
-                <Star weight="fill" className="text-warning h-4 w-4" /> {user.sellerRating || "N/A"}
-              </div>
-            </div>
-          </div>
-          
-          <div className="pt-4 border-t border-border/50">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-success/10 text-success">
-                <CheckCircle weight="fill" className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[12px] font-bold text-foreground uppercase tracking-wider">KYC Status</span>
-                <span className="text-[12px] font-medium text-muted-foreground">{user.verified ? "Fully Verified" : "Action Required"}</span>
-              </div>
+            <div className="mt-2">
+              <div className="text-[12px] font-medium text-[#6B7280] mb-1">Location</div>
+              <div className="text-[16px] font-medium text-[#111827]">{user.country}</div>
             </div>
           </div>
         </div>
+
+        {/* Right Column: Reviews (30%) */}
+        <div className="lg:col-span-1 flex flex-col gap-6">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 h-full">
+            <h3 className="text-[18px] font-semibold text-foreground m-0">
+              Reviews
+            </h3>
+            
+            <div className="flex flex-col gap-5 mt-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[14px] font-medium text-muted-foreground">
+                  <Star weight="fill" className="text-warning h-4 w-4" /> Buyer Rating
+                </div>
+                <div className="text-[16px] font-semibold text-foreground">
+                  {user.buyerRating || "N/A"}
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[14px] font-medium text-muted-foreground">
+                  <Star weight="fill" className="text-warning h-4 w-4" /> Seller Rating
+                </div>
+                <div className="text-[16px] font-semibold text-foreground">
+                  {user.sellerRating || "N/A"}
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
       </div>
     </div>
   )
 }
 
 function WalletTab({ user }: { user: UserData }) {
+  const navigate = useNavigate()
+
+  const getFinancialMovement = (row: any) => {
+    if (row.status === "Refunded") return { label: "Refund", color: "bg-orange-100 text-orange-700", sign: "+" }
+    if (row.type === "Sell") return { label: "Credit", color: "bg-green-100 text-green-700", sign: "+" }
+    if (row.type === "Buy") return { label: "Debit", color: "bg-red-100 text-red-700", sign: "-" }
+    return { label: "Hold", color: "bg-blue-100 text-blue-700", sign: "-" }
+  }
+
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard title="Available Balance" value={`$${user.walletBalance.toLocaleString()}`} icon={<Money weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
         <StatCard title="Protected Funds" value={`$${user.heldFunds.toLocaleString()}`} icon={<LockKey weight="fill" />} iconContainerClassName="bg-[#EFF6FF] text-[#2563EB]" className="bg-white" />
-        <StatCard title="Total Released" value={`$${user.releasedFunds.toLocaleString()}`} icon={<Handshake weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
         <StatCard title="Total Withdrawn" value={`$${user.withdrawn.toLocaleString()}`} icon={<ArrowUpRight weight="fill" />} iconContainerClassName="bg-[#F3F4F6] text-[#6B7280]" className="bg-white" />
       </div>
 
@@ -297,10 +205,37 @@ function WalletTab({ user }: { user: UserData }) {
         <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFC] border-b border-[#EEF2F7] transition-all duration-150" 
           columns={[
             { header: "Date", accessor: "date", cell: (row: any) => <span className="text-[13px] font-medium text-[#475569]">{row.date}</span> },
-            { header: "Type", accessor: "paymentType", cell: (row: any) => <span className="text-[13px] font-medium text-[#111827]">{row.paymentType}</span> },
-            { header: "Amount", cell: (row) => <span className="text-[14px] font-bold text-[#111827]">${typeof row.amount === 'number' ? row.amount.toLocaleString(undefined, {minimumFractionDigits: 2}) : row.amount}</span> },
-            { header: "Reference", cell: (row) => <span className="text-[12px] font-mono text-[#64748B]">{row.reference}</span> },
-            { header: "Status", cell: (row) => <StatusBadge status={row.status} /> }
+            { header: "Type", cell: (row: any) => {
+                const move = getFinancialMovement(row)
+                return <span className={`inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium ${move.color}`}>{move.label}</span>
+            }},
+            { header: "Deal", cell: (row: any) => (
+                <div 
+                  className="flex flex-col cursor-pointer group py-1" 
+                  onClick={() => navigate(`/deals/${row.dealId}`)}
+                >
+                  <span className="text-[13px] font-medium text-[#111827] group-hover:text-primary transition-colors">{row.product}</span>
+                  <span className="text-[12px] text-[#64748B]">{row.dealId}</span>
+                </div>
+            )},
+            { header: "Txn ID", cell: (row: any) => (
+                <span 
+                  className="text-[13px] font-medium font-mono text-[#475569] cursor-pointer hover:text-primary transition-colors"
+                  onClick={() => navigate(`/transactions/${row.id}`)}
+                >
+                  {row.id}
+                </span>
+            )},
+            { header: "Amount", cell: (row: any) => {
+                const move = getFinancialMovement(row)
+                const isPositive = move.sign === "+"
+                return (
+                  <span className={`text-[14px] font-bold ${isPositive ? 'text-[#16A34A]' : 'text-[#DC2626]'}`}>
+                    {move.sign}${typeof row.amount === 'number' ? row.amount.toLocaleString(undefined, {minimumFractionDigits: 2}) : row.amount}
+                  </span>
+                )
+            }},
+            { header: "Status", cell: (row: any) => <StatusBadge status={row.status} /> }
           ]}
           data={mockTransactions}
         />
@@ -313,40 +248,57 @@ function DealsTab() {
   const navigate = useNavigate()
   const [search, setSearch] = React.useState("")
   const [statusFilter, setStatusFilter] = React.useState("all")
-  const [amountFilter, setAmountFilter] = React.useState("all")
-  const [dateFilter, setDateFilter] = React.useState("all")
+  const [typeFilter, setTypeFilter] = React.useState("all")
+  const [categoryFilter, setCategoryFilter] = React.useState("all")
 
   const handleResetFilters = () => {
     setSearch("")
     setStatusFilter("all")
-    setAmountFilter("all")
-    setDateFilter("all")
+    setTypeFilter("all")
+    setCategoryFilter("all")
   }
 
   const columns = [
     {
-      header: "Deal ID",
-      accessor: "id",
-      cell: (row: any) => <span className="text-[13px] font-bold text-[#111827]">{row.id}</span>
-    },
-    {
-      header: "Item",
-      accessor: "item",
+      header: "Deal",
+      accessor: "product",
       cell: (row: any) => (
-        <span className="text-[13px] font-semibold text-[#111827] truncate max-w-[180px] block">
-          {row.item}
-        </span>
+        <div 
+          className="flex items-center gap-3 cursor-pointer group py-1"
+          onClick={() => navigate(`/deals/${row.id}`)}
+        >
+          {row.productThumbnail ? (
+            <div className="h-12 w-12 rounded-[12px] bg-[#F8FAFC] border border-[#EEF2F7] flex items-center justify-center shrink-0 overflow-hidden">
+              <img src={row.productThumbnail} alt={row.product} className="h-full w-full object-cover" />
+            </div>
+          ) : (
+            <div className="h-12 w-12 rounded-[12px] bg-[#F8FAFC] border border-[#EEF2F7] flex items-center justify-center shrink-0">
+              <span className="text-[#94A3B8] font-medium text-[13px]">{row.product ? row.product.substring(0, 2).toUpperCase() : 'DL'}</span>
+            </div>
+          )}
+          <div className="flex flex-col">
+            <span className="text-[14px] font-semibold text-[#111827] group-hover:text-primary transition-colors">{row.product}</span>
+            <span className="text-[13px] text-[#64748B]">{row.id}</span>
+          </div>
+        </div>
       )
     },
     {
-      header: "Buyer",
-      accessor: "buyer",
-      cell: (row: any) => <span className="text-[13px] font-medium text-[#111827]">{row.buyer}</span>
+      header: "Type",
+      accessor: "type",
+      cell: (row: any) => {
+        const isBuy = row.type === "Buy"
+        return (
+          <span className={`inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium ${isBuy ? 'bg-[#ECFDF3] text-[#16A34A]' : 'bg-[#EFF6FF] text-[#2563EB]'}`}>
+            {row.type}
+          </span>
+        )
+      }
     },
     {
-      header: "Seller",
-      accessor: "seller",
-      cell: (row: any) => <span className="text-[13px] font-medium text-[#111827]">{row.seller}</span>
+      header: "Category",
+      accessor: "category",
+      cell: (row: any) => <span className="text-[13px] font-medium text-[#475569]">{row.category}</span>
     },
     {
       header: "Amount",
@@ -380,7 +332,7 @@ function DealsTab() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[180px] rounded-[12px] p-1.5 shadow-xl border-[#EEF2F7]">
             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/deals/${row.id}`) }} className="rounded-[8px] text-[13px] font-medium cursor-pointer py-2">
-              View Deal Details
+              View Deal
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -419,18 +371,31 @@ function DealsTab() {
             </SelectContent>
           </Select>
 
-          <Select value={amountFilter} onValueChange={setAmountFilter}>
-            <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 shadow-sm">
-              <SelectValue placeholder="Amount" />
+          <Select value={typeFilter} onValueChange={setTypeFilter}>
+            <SelectTrigger className="h-[38px] w-[120px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 shadow-sm">
+              <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-              <SelectItem value="all" className="rounded-md text-[13px] font-semibold">Any Amount</SelectItem>
-              <SelectItem value=">1000" className="rounded-md text-[13px] font-semibold">&gt; $1,000</SelectItem>
-              <SelectItem value=">10000" className="rounded-md text-[13px] font-semibold">&gt; $10,000</SelectItem>
+              <SelectItem value="all" className="rounded-md text-[13px] font-semibold">All Types</SelectItem>
+              <SelectItem value="buy" className="rounded-md text-[13px] font-semibold">Buy</SelectItem>
+              <SelectItem value="sell" className="rounded-md text-[13px] font-semibold">Sell</SelectItem>
             </SelectContent>
           </Select>
 
-          {(statusFilter !== "all" || amountFilter !== "all" || dateFilter !== "all" || search !== "") && (
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 shadow-sm">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
+              <SelectItem value="all" className="rounded-md text-[13px] font-semibold">All Categories</SelectItem>
+              <SelectItem value="watches" className="rounded-md text-[13px] font-semibold">Watches</SelectItem>
+              <SelectItem value="vehicles" className="rounded-md text-[13px] font-semibold">Vehicles</SelectItem>
+              <SelectItem value="luxury" className="rounded-md text-[13px] font-semibold">Luxury</SelectItem>
+              <SelectItem value="digital" className="rounded-md text-[13px] font-semibold">Digital Assets</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {(statusFilter !== "all" || typeFilter !== "all" || categoryFilter !== "all" || search !== "") && (
             <Button 
               variant="ghost" 
               onClick={handleResetFilters}
@@ -454,18 +419,98 @@ function DealsTab() {
 }
 
 function TransactionsTab() {
+  const navigate = useNavigate()
+
+  const getFinancialMovement = (row: any) => {
+    if (row.type === "Sell" || (row.type === "Buy" && row.status === "Refunded")) {
+      return { label: "Credit", color: "bg-green-100 text-green-700", sign: "+" }
+    }
+    return { label: "Debit", color: "bg-red-100 text-red-700", sign: "-" }
+  }
+
   const columns = [
-    { header: "Transaction ID", accessor: "id", cell: (r: any) => <span className="text-[13px] font-semibold text-[#111827]">{r.id}</span> },
-    { header: "Deal ID", accessor: "dealId", cell: (r: any) => <span className="text-[13px] font-medium text-[#64748B]">{r.dealId}</span> },
-    { header: "Type", accessor: "paymentType", cell: (r: any) => <span className="text-[13px] font-medium text-[#475569]">{r.paymentType}</span> },
-    { header: "Amount", cell: (r: any) => <span className="text-[14px] font-bold text-[#111827]">${typeof r.amount === 'number' ? r.amount.toLocaleString(undefined, {minimumFractionDigits: 2}) : r.amount}</span> },
-    { header: "Platform Fee", cell: (r: any) => <span className="text-[13px] font-medium text-[#475569]">${r.fee || "0.00"}</span> },
-    { header: "Created", accessor: "date", cell: (r: any) => <span className="text-[13px] font-medium text-[#475569]">{r.date}</span> },
-    { header: "Status", cell: (r: any) => <StatusBadge status={r.status} /> },
+    { 
+      header: "Date", 
+      accessor: "date", 
+      cell: (row: any) => <span className="text-[13px] font-medium text-[#475569]">{row.date}</span> 
+    },
+    { 
+      header: "Deal", 
+      cell: (row: any) => {
+        const deal = mockDeals.find(d => d.id === row.dealId)
+        const product = deal?.product || row.product
+        const thumbnail = deal?.productThumbnail
+        return (
+          <div 
+            className="flex items-center gap-3 cursor-pointer group py-1"
+            onClick={() => navigate(`/deals/${row.dealId}`)}
+          >
+            {thumbnail ? (
+              <div className="h-12 w-12 rounded-[12px] bg-[#F8FAFC] border border-[#EEF2F7] flex items-center justify-center shrink-0 overflow-hidden">
+                <img src={thumbnail} alt={product} className="h-full w-full object-cover" />
+              </div>
+            ) : (
+              <div className="h-12 w-12 rounded-[12px] bg-[#F8FAFC] border border-[#EEF2F7] flex items-center justify-center shrink-0">
+                <span className="text-[#94A3B8] font-medium text-[13px]">{product ? product.substring(0, 2).toUpperCase() : 'DL'}</span>
+              </div>
+            )}
+            <div className="flex flex-col">
+              <span className="text-[14px] font-semibold text-[#111827] group-hover:text-primary transition-colors">{product}</span>
+              <span className="text-[13px] text-[#64748B]">{row.dealId}</span>
+            </div>
+          </div>
+        )
+      }
+    },
+    { 
+      header: "Type", 
+      cell: (row: any) => {
+        const move = getFinancialMovement(row)
+        return <span className={`inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium ${move.color}`}>{move.label}</span>
+      }
+    },
+    { 
+      header: "Amount", 
+      cell: (row: any) => {
+        const move = getFinancialMovement(row)
+        const isPositive = move.sign === "+"
+        return (
+          <span className={`text-[14px] font-bold ${isPositive ? 'text-[#16A34A]' : 'text-[#DC2626]'}`}>
+            {move.sign}${typeof row.amount === 'number' ? row.amount.toLocaleString(undefined, {minimumFractionDigits: 2}) : row.amount}
+          </span>
+        )
+      }
+    },
+    { 
+      header: "Method", 
+      accessor: "paymentType", 
+      cell: (row: any) => {
+        const isCard = row.paymentType?.toLowerCase().includes("card")
+        return (
+          <div className="flex items-center gap-2">
+            {isCard ? <CreditCard className="h-4 w-4 text-[#64748B]" /> : <Bank className="h-4 w-4 text-[#64748B]" />}
+            <span className="text-[13px] font-medium text-[#475569]">{row.paymentType}</span>
+          </div>
+        )
+      }
+    },
+    { 
+      header: "Status", 
+      cell: (row: any) => <StatusBadge status={row.status} /> 
+    },
+    { 
+      header: "Created At", 
+      cell: (row: any) => (
+        <div className="flex flex-col">
+          <span className="text-[13px] font-medium text-[#111827]">{row.date}</span>
+          <span className="text-[12px] text-[#64748B]">10:32 AM</span>
+        </div>
+      )
+    },
     {
       header: "",
       accessor: "actions",
-      cell: () => (
+      cell: (row: any) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-[8px] text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9] data-[state=open]:bg-[#F1F5F9]" onClick={(e) => e.stopPropagation()}>
@@ -473,8 +518,11 @@ function TransactionsTab() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[180px] rounded-[12px] p-1.5 shadow-xl border-[#EEF2F7]">
-            <DropdownMenuItem className="rounded-[8px] text-[13px] font-medium cursor-pointer py-2">
-              View Receipt
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/transactions/${row.id}`) }} className="rounded-[8px] text-[13px] font-medium cursor-pointer py-2">
+              View Transaction
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/deals/${row.dealId}`) }} className="rounded-[8px] text-[13px] font-medium cursor-pointer py-2">
+              View Deal
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -489,6 +537,7 @@ function TransactionsTab() {
         rowClassName="h-[56px] hover:bg-[#F8FAFC] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer" 
         columns={columns}
         data={mockTransactions}
+        onRowClick={(row) => navigate(`/transactions/${row.id}`)}
       />
     </div>
   )
@@ -530,15 +579,6 @@ function ReviewsTab({ user }: { user: UserData }) {
           data={mockReviews}
         />
       </div>
-    </div>
-  )
-}
-
-function ActivityTab() {
-  return (
-    <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-sm flex flex-col">
-      <h3 className="text-[14px] font-bold text-foreground mb-8">Account Activity</h3>
-      <Timeline items={mockActivity as any} className="ml-2" />
     </div>
   )
 }
