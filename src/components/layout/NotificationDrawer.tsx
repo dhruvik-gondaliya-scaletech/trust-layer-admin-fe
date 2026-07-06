@@ -1,4 +1,4 @@
-import { CreditCard, WarningCircle, CheckCircle, Truck, ShieldCheck, Checks, Check } from "@phosphor-icons/react"
+import { CreditCard, WarningCircle, CheckCircle, Truck, ShieldCheck, Check } from "@phosphor-icons/react"
 import { useAppStore } from "@/lib/store"
 import {
   Sheet,

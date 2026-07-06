@@ -1,7 +1,7 @@
 import * as React from "react"
 import { EmptyState } from "@/components/ui/empty-state"
 import { PageHeader } from "@/components/ui/page-header"
-import { Briefcase, ChartLineUp, WarningCircle, Gear } from "@phosphor-icons/react"
+import { Gear } from "@phosphor-icons/react"
 import { PageTabs } from "@/components/ui/page-tabs"
 
 export { Dashboard } from "./Dashboard"

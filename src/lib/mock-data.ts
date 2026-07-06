@@ -205,6 +205,7 @@ export const mockTransactions: TransactionData[] = [
     platformFee: 650.00,
     paymentType: "Wire Transfer", 
     status: "Completed",
+    type: "Buy",
     protectedStatus: "Protected",
     date: "Oct 24, 2026", 
     reference: "WIR-882910" 
@@ -219,6 +220,7 @@ export const mockTransactions: TransactionData[] = [
     platformFee: 168.00,
     paymentType: "ACH", 
     status: "Pending", 
+    type: "Sell",
     protectedStatus: "Disputed",
     date: "Oct 24, 2026", 
     reference: "ACH-441928" 
@@ -233,6 +235,7 @@ export const mockTransactions: TransactionData[] = [
     platformFee: 3000.00,
     paymentType: "Wire Transfer", 
     status: "Failed", 
+    type: "Buy",
     protectedStatus: "Failed",
     date: "Oct 23, 2026", 
     reference: "WIR-882909" 
@@ -247,6 +250,7 @@ export const mockTransactions: TransactionData[] = [
     platformFee: 3000.00,
     paymentType: "ACH", 
     status: "Completed", 
+    type: "Buy",
     protectedStatus: "Released",
     date: "Oct 22, 2026", 
     reference: "ACH-441927" 
@@ -261,6 +265,7 @@ export const mockTransactions: TransactionData[] = [
     platformFee: 480.00,
     paymentType: "Credit Card", 
     status: "Refunded", 
+    type: "Sell",
     protectedStatus: "Refunded",
     date: "Oct 21, 2026", 
     reference: "CC-110293" 
@@ -274,6 +279,7 @@ export interface DealData {
   buyer: string
   seller: string
   category: string
+  type?: "Buy" | "Sell"
   amount: number
   platformFee: number
   status: "Draft" | "Open" | "Funded" | "Shipped" | "Delivered" | "Completed" | "Disputed" | "Cancelled"

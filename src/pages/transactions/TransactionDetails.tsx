@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, Briefcase, LockKey, User, Package, Handshake, Money, Receipt, Bank, CheckCircle, WarningCircle, Image as ImageIcon } from "@phosphor-icons/react"
+import { CaretLeft, CaretDown, Export, Briefcase, LockKey, User, ArrowUUpLeft, Handshake, Money, Receipt, Bank, CheckCircle, WarningCircle, Image as ImageIcon } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { Timeline } from "@/components/ui/timeline"
@@ -362,7 +362,7 @@ function TimelineTab({ transaction }: { transaction: TransactionData }) {
     { id: 3, title: "Funds Protected", description: `$${(transaction.amount - transaction.platformFee).toLocaleString()} securely held in vault`, date: transaction.date, type: "success" },
   ]
   
-  if (transaction.protectedStatus === "Released" || transaction.protectedStatus === "Completed") {
+  if (transaction.protectedStatus === "Released") {
     tTimeline.push({ id: 4, title: "Seller Shipped", description: "Item tracking added", date: "Oct 25, 2026", type: "info" })
     tTimeline.push({ id: 5, title: "Buyer Confirmed", description: "Delivery verified", date: "Oct 27, 2026", type: "info" })
     tTimeline.push({ id: 6, title: "Funds Released", description: "Payment sent to seller", date: "Oct 27, 2026", type: "success" })

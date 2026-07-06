@@ -2,12 +2,10 @@ import { PageHeader } from "@/components/ui/page-header"
 import { StatCard } from "@/components/ui/stat-card"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { EmptyState } from "@/components/ui/empty-state"
 import {
-  Users, ShieldCheck, Briefcase, CheckCircle, Bank, CurrencyCircleDollar,
-  ChartLineUp, WarningCircle, ArrowRight,
-  User, Check
+  Users, Briefcase, CheckCircle, Bank, CurrencyCircleDollar,
+  ChartLineUp, WarningCircle, ArrowRight
 } from "@phosphor-icons/react"
 
 const recentDisputes = [
@@ -15,11 +13,6 @@ const recentDisputes = [
   { id: "DSP-2040", item: "Custom Software UI", buyer: "Tech Startup", seller: "Dev Studio", status: "escalated", updated: "2 hours ago" },
 ]
 
-const adminActions = [
-  { id: "DL-9082", action: "New dispute escalated by buyer", item: "Vintage Fender Stratocaster", status: "Review Pending", updated: "10 mins ago" },
-  { id: "DL-9065", action: "Refund approval pending", item: "MacBook Pro M3 Max", status: "Refund Pending", updated: "2 hours ago" },
-  { id: "DL-9033", action: "Return package delivered, review required", item: "Sony A7IV Camera", status: "Return Approved", updated: "4 hours ago" },
-]
 
 const recentDeals = [
   { id: "DL-9042", item: "Web Application Dev", buyer: "Acme Corp", seller: "Dev Pro", amount: "$15,000", status: "active" },
@@ -99,7 +92,7 @@ export function Dashboard() {
   return (
     <div className="flex-1 space-y-6 p-8">
       <PageHeader
-        title={<span className="text-[24px]">Dashboard</span>}
+        title="Dashboard"
         description="Real-time overview of platform operations."
       />
 

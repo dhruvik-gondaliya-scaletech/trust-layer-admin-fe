@@ -7,7 +7,6 @@ import {
   Briefcase,
   ChartLineUp,
   WarningCircle,
-  Gear,
   CaretLeft,
   CaretRight,
   SignOut,
@@ -132,9 +131,6 @@ export function Sidebar() {
       </div>
 
       <div className="border-t border-border/50 p-6 space-y-6 bg-muted/20 shrink-0">
-        <TooltipProvider delayDuration={0}>
-        </TooltipProvider>
-
         {!isSidebarCollapsed && (
           <div className="flex items-center gap-2 px-2 text-xs font-medium text-muted-foreground">
             <div className="flex items-center gap-1.5 px-2 py-1 bg-success/10 text-success rounded-full">

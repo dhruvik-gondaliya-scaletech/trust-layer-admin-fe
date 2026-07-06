@@ -35,35 +35,13 @@ function StatusBadgeSemantic({ status }: { status: UserData["status"] | string }
     </span>
   )
 }
-
-function TrustScoreBadge({ score }: { score: number }) {
-  const getScoreData = () => {
-    if (score >= 90) return { label: "Excellent", className: "text-[#059669]" } // Green
-    if (score >= 70) return { label: "Good", className: "text-[#2563EB]" } // Blue
-    if (score >= 50) return { label: "Fair", className: "text-[#EA580C]" } // Orange
-    return { label: "Poor", className: "text-[#DC2626]" } // Red
-  }
-  const { label, className } = getScoreData()
-  return (
-    <div className="flex flex-col">
-      <span className="text-[13px] font-semibold text-[#111827]">{score}</span>
-      <span className={cn("text-[12px] font-medium", className)}>
-        {label}
-      </span>
-    </div>
-  )
-}
-
 export function UsersList() {
   const [search, setSearch] = React.useState("")
-    const [trustScoreFilter, setTrustScoreFilter] = React.useState("all")
     const [countryFilter, setCountryFilter] = React.useState("all")
   const [timeFilter, setTimeFilter] = React.useState("all")
   const [dateFilter, setDateFilter] = React.useState("all")
   
   // New Filters
-  const [openDealsFilter, setOpenDealsFilter] = React.useState("all")
-  const [completedDealsFilter, setCompletedDealsFilter] = React.useState("all")
   const [disputesFilter, setDisputesFilter] = React.useState("all")
   const [lastActiveFilter, setLastActiveFilter] = React.useState("all")
   

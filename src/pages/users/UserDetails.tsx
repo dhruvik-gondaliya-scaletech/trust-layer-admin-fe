@@ -465,7 +465,7 @@ function TransactionsTab() {
     {
       header: "",
       accessor: "actions",
-      cell: (row: any) => (
+      cell: () => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-[8px] text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9] data-[state=open]:bg-[#F1F5F9]" onClick={(e) => e.stopPropagation()}>

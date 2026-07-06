@@ -1,21 +1,13 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, Prohibit, SealCheck, Trash, LockKey, MapPin, Clock, Star, Handshake, Money, ArrowUpRight, CheckCircle, Image as ImageIcon, Briefcase, WarningCircle, ChatCircle, Bank, Package, Scales, User, MagnifyingGlass, Funnel } from "@phosphor-icons/react"
+import { CaretLeft, Export, Star, Image as ImageIcon, Briefcase, Package, Scales, User } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { DataTable } from "@/components/ui/data-table"
 import { Timeline } from "@/components/ui/timeline"
-import { StatCard } from "@/components/ui/stat-card"
-import { mockDeals, mockTransactions, mockReviews, mockActivity } from "@/lib/mock-data"
+import { mockDeals, mockTransactions, mockReviews } from "@/lib/mock-data"
 import type { DealData } from "@/lib/mock-data"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 
 function StatusBadgeSemantic({ status }: { status: DealData["status"] | string }) {
@@ -158,8 +150,8 @@ export function DealDetails() {
         {/* Main Content Area */}
         <div className="xl:col-span-3 space-y-6">
           {activeTab === "overview" && <OverviewTab deal={deal} />}
-          {activeTab === "transaction" && <TransactionTab deal={deal} />}
-          {activeTab === "reviews" && <ReviewsTab deal={deal} />}
+          {activeTab === "transaction" && <TransactionTab />}
+          {activeTab === "reviews" && <ReviewsTab />}
           {activeTab === "dispute" && <DisputeTab deal={deal} />}
         </div>
 
@@ -275,7 +267,7 @@ function OverviewTab({ deal }: { deal: DealData }) {
   )
 }
 
-function TransactionTab({ deal }: { deal: DealData }) {
+function TransactionTab() {
   const transactions = mockTransactions.slice(0, 2) // mock related transactions
   return (
     <div className="space-y-6">
@@ -297,7 +289,7 @@ function TransactionTab({ deal }: { deal: DealData }) {
   )
 }
 
-function ReviewsTab({ deal }: { deal: DealData }) {
+function ReviewsTab() {
   // Use mockReviews but simulate them being for this deal
   const reviews = mockReviews.slice(0, 2)
   return (

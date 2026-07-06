@@ -1,12 +1,11 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, Briefcase, LockKey, User, Package, Handshake, ShieldCheck, Bank, CheckCircle, WarningCircle, Image as ImageIcon, MagnifyingGlassPlus, Scales, ChatCircleText, NotePencil, Question, ShieldWarning, ChartLineUp } from "@phosphor-icons/react"
+import { CaretLeft, CaretDown, Export, Briefcase, User, Bank, Image as ImageIcon, Scales, NotePencil, Question, ShieldWarning } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { Timeline } from "@/components/ui/timeline"
-import { StatCard } from "@/components/ui/stat-card"
-import { mockDisputes, mockDeals, mockTransactions } from "@/lib/mock-data"
-import type { DisputeData, DealData, TransactionData } from "@/lib/mock-data"
+import { mockDisputes, mockTransactions } from "@/lib/mock-data"
+import type { DisputeData } from "@/lib/mock-data"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,7 +61,6 @@ export function DisputeDetails() {
   const [activeTab, setActiveTab] = React.useState(tabFromUrl)
 
   const dispute = mockDisputes.find(d => d.id === id) || mockDisputes[0]
-  const relatedDeal = mockDeals.find(d => d.id === dispute.dealId)
   const relatedTransaction = mockTransactions.find(t => t.dealId === dispute.dealId)
 
   const updateUrlTab = (tabId: string) => {

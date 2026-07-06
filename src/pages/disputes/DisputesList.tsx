@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
 import { DataTable } from "@/components/ui/data-table"
-import { PageTabs } from "@/components/ui/page-tabs"
+
 import { Input } from "@/components/ui/input"
 import { mockDisputes } from "@/lib/mock-data"
 import type { DisputeData } from "@/lib/mock-data"
