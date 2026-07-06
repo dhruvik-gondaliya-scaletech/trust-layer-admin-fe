@@ -19,7 +19,7 @@ export interface UserData {
   disputedDeals: number
   memberSince: string
   lastActive: string
-  status: "Active" | "Suspended" | "Deleted"
+  status: "Active" | "Deleted"
   buyerRating: number
   sellerRating: number
   avatar?: string
@@ -97,7 +97,7 @@ export const mockUsers: UserData[] = [
     disputedDeals: 1,
     memberSince: "Oct 18, 2025",
     lastActive: "1 day ago",
-    status: "Suspended",
+    status: "Deleted",
     buyerRating: 3.2,
     sellerRating: 0,
   },

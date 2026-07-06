@@ -56,10 +56,9 @@ function TrustScoreBadge({ score }: { score: number }) {
 
 export function UsersList() {
   const [search, setSearch] = React.useState("")
-  const [statusFilter, setStatusFilter] = React.useState("all")
-  const [trustScoreFilter, setTrustScoreFilter] = React.useState("all")
-  const [walletFilter, setWalletFilter] = React.useState("all")
-  const [countryFilter, setCountryFilter] = React.useState("all")
+    const [trustScoreFilter, setTrustScoreFilter] = React.useState("all")
+    const [countryFilter, setCountryFilter] = React.useState("all")
+  const [timeFilter, setTimeFilter] = React.useState("all")
   const [dateFilter, setDateFilter] = React.useState("all")
   
   // New Filters
@@ -72,21 +71,16 @@ export function UsersList() {
 
   const handleResetFilters = () => {
     setSearch("")
-    setStatusFilter("all")
-    setTrustScoreFilter("all")
-    setWalletFilter("all")
-    setCountryFilter("all")
+            setCountryFilter("all")
     setDateFilter("all")
-    setOpenDealsFilter("all")
-    setCompletedDealsFilter("all")
+    setTimeFilter("all")
     setDisputesFilter("all")
     setLastActiveFilter("all")
   }
 
   // Filter Data
   const filteredUsers = mockUsers.filter(user => {
-    if (statusFilter !== "all" && user.status.toLowerCase() !== statusFilter.toLowerCase()) return false
-    if (countryFilter !== "all" && user.country !== countryFilter) return false
+        if (countryFilter !== "all" && user.country !== countryFilter) return false
     
     // Search
     if (search) {
@@ -125,12 +119,7 @@ export function UsersList() {
       accessor: "email",
       cell: (row: UserData) => <span className="text-[13px] font-medium text-[#475569]">{row.email}</span>
     },
-    {
-      header: "Trust Score",
-      accessor: "trustScore",
-      sortable: true,
-      cell: (row: UserData) => <TrustScoreBadge score={row.trustScore} />
-    },
+    
     {
       header: "Status",
       accessor: "status",
@@ -146,28 +135,9 @@ export function UsersList() {
         </span>
       )
     },
-    {
-      header: "Open Deals",
-      accessor: "openDeals",
-      sortable: true,
-      cell: (row: UserData) => <span className="text-[13px] font-bold text-[#111827]">{row.openDeals}</span>
-    },
-    {
-      header: "Completed",
-      accessor: "completedDeals",
-      sortable: true,
-      cell: (row: UserData) => <span className="text-[13px] font-medium text-[#475569]">{row.completedDeals}</span>
-    },
-    {
-      header: "Disputes",
-      accessor: "disputedDeals",
-      sortable: true,
-      cell: (row: UserData) => (
-        <span className={cn("text-[13px] font-bold", row.disputedDeals > 0 ? "text-[#DC2626]" : "text-[#475569]")}>
-          {row.disputedDeals}
-        </span>
-      )
-    },
+    
+    
+    
     {
       header: "Joined",
       accessor: "memberSince",
@@ -234,67 +204,27 @@ export function UsersList() {
             </div>
 
             {/* Dropdown Filters */}
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 data-[state=open]:border-primary shadow-sm">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">All Statuses</SelectItem>
-                <SelectItem value="active" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Active</SelectItem>
-                <SelectItem value="suspended" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Suspended</SelectItem>
-              </SelectContent>
-            </Select>
+            
 
-            <Select value={trustScoreFilter} onValueChange={setTrustScoreFilter}>
-              <SelectTrigger className="h-[38px] w-[130px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 data-[state=open]:border-primary shadow-sm">
-                <SelectValue placeholder="Trust Score" />
-              </SelectTrigger>
-              <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Any Score</SelectItem>
-                <SelectItem value="excellent" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Excellent</SelectItem>
-                <SelectItem value="good" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Good</SelectItem>
-                <SelectItem value="fair" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Fair</SelectItem>
-                <SelectItem value="poor" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Poor</SelectItem>
-              </SelectContent>
-            </Select>
+            
 
-            <Select value={walletFilter} onValueChange={setWalletFilter}>
+            <Select value={timeFilter} onValueChange={setTimeFilter}>
               <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 data-[state=open]:border-primary shadow-sm">
-                <SelectValue placeholder="Wallet Balance" />
+                <SelectValue placeholder="Any Time" />
               </SelectTrigger>
               <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Any Balance</SelectItem>
-                <SelectItem value="0" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">$0</SelectItem>
-                <SelectItem value=">0" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">&gt;$0</SelectItem>
-                <SelectItem value=">10k" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">&gt;$10k</SelectItem>
+                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Any Time</SelectItem>
+                <SelectItem value="today" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Today</SelectItem>
+                <SelectItem value="7days" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Last 7 days</SelectItem>
+                <SelectItem value="30days" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Last 30 days</SelectItem>
               </SelectContent>
             </Select>
             
-            <Select value={openDealsFilter} onValueChange={setOpenDealsFilter}>
-              <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 data-[state=open]:border-primary shadow-sm">
-                <SelectValue placeholder="Open Deals" />
-              </SelectTrigger>
-              <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Any Open Deals</SelectItem>
-                <SelectItem value="0" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">0 Deals</SelectItem>
-                <SelectItem value="1+" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">1+ Deals</SelectItem>
-                <SelectItem value="5+" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">5+ Deals</SelectItem>
-              </SelectContent>
-            </Select>
             
-            <Select value={completedDealsFilter} onValueChange={setCompletedDealsFilter}>
-              <SelectTrigger className="h-[38px] w-[160px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 data-[state=open]:border-primary shadow-sm">
-                <SelectValue placeholder="Completed Deals" />
-              </SelectTrigger>
-              <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Any Completed</SelectItem>
-                <SelectItem value="0" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">0 Deals</SelectItem>
-                <SelectItem value="1+" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">1+ Deals</SelectItem>
-                <SelectItem value="10+" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">10+ Deals</SelectItem>
-              </SelectContent>
-            </Select>
+            
+            
 
-            {(statusFilter !== "all" || trustScoreFilter !== "all" || walletFilter !== "all" || countryFilter !== "all" || dateFilter !== "all" || openDealsFilter !== "all" || completedDealsFilter !== "all" || disputesFilter !== "all" || lastActiveFilter !== "all" || search !== "") && (
+            {(countryFilter !== "all" || dateFilter !== "all" || timeFilter !== "all" || disputesFilter !== "all" || lastActiveFilter !== "all" || search !== "") && (
               <Button 
                 variant="ghost" 
                 onClick={handleResetFilters}

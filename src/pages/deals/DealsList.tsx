@@ -40,6 +40,7 @@ function StatusBadgeSemantic({ status }: { status: DealData["status"] | string }
 export function DealsList() {
   const [search, setSearch] = React.useState("")
   const [statusFilter, setStatusFilter] = React.useState("all")
+  const [typeFilter, setTypeFilter] = React.useState("all")
   const [categoryFilter, setCategoryFilter] = React.useState("all")
   const [dateFilter, setDateFilter] = React.useState("all")
   
@@ -48,6 +49,7 @@ export function DealsList() {
   const handleResetFilters = () => {
     setSearch("")
     setStatusFilter("all")
+    setTypeFilter("all")
     setCategoryFilter("all")
     setDateFilter("all")
   }
@@ -55,6 +57,7 @@ export function DealsList() {
   // Filter Data
   const filteredDeals = mockDeals.filter(deal => {
     if (statusFilter !== "all" && deal.status.toLowerCase() !== statusFilter) return false
+    if (typeFilter !== "all" && deal.type?.toLowerCase() !== typeFilter) return false
     if (categoryFilter !== "all" && deal.category.toLowerCase() !== categoryFilter) return false
 
     if (search) {
@@ -236,8 +239,19 @@ export function DealsList() {
               </SelectContent>
             </Select>
 
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="h-[42px] w-[130px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
+                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">Any Type</SelectItem>
+                <SelectItem value="buy" className="rounded-lg text-[14px] font-semibold">Buy</SelectItem>
+                <SelectItem value="sell" className="rounded-lg text-[14px] font-semibold">Sell</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="h-[42px] w-[150px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
@@ -260,7 +274,7 @@ export function DealsList() {
               </SelectContent>
             </Select>
 
-            {(statusFilter !== "all" || categoryFilter !== "all" || dateFilter !== "all" || search !== "") && (
+            {(statusFilter !== "all" || typeFilter !== "all" || categoryFilter !== "all" || dateFilter !== "all" || search !== "") && (
               <Button 
                 variant="ghost" 
                 onClick={handleResetFilters}
