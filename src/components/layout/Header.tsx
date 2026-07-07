@@ -14,7 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export function Header() {
+interface HeaderProps {
+  onLogoutClick?: () => void
+}
+
+export function Header({ onLogoutClick }: HeaderProps) {
   const navigate = useNavigate()
   const { toggleNotificationDrawer } = useAppStore()
 
@@ -89,7 +93,10 @@ export function Header() {
             </DropdownMenuItem>
             <DropdownMenuItem className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px]">Settings</DropdownMenuItem>
             <DropdownMenuSeparator className="my-1.5" />
-            <DropdownMenuItem className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px] text-destructive focus:bg-destructive/10 focus:text-destructive">
+            <DropdownMenuItem 
+              className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px] text-destructive focus:bg-destructive/10 focus:text-destructive"
+              onClick={onLogoutClick}
+            >
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

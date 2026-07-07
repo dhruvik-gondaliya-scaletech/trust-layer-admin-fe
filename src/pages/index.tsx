@@ -20,6 +20,7 @@ export { DisputeDetails } from "./disputes/DisputeDetails"
 
 export { ProfileDetails } from "./profile/ProfileDetails"
 export { AdminUsersPage } from "./admin-users/AdminUsersPage"
+export { LoginPage } from "./auth/LoginPage"
 
 export function Settings() {
   const [activeTab, setActiveTab] = React.useState("general")

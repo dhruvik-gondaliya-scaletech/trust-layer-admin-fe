@@ -35,7 +35,11 @@ const navGroups = [
   }
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  onLogoutClick?: () => void
+}
+
+export function Sidebar({ onLogoutClick }: SidebarProps) {
   const { isSidebarCollapsed, toggleSidebar } = useAppStore()
   const location = useLocation()
 
@@ -157,7 +161,12 @@ export function Sidebar() {
             </div>
           )}
           {!isSidebarCollapsed && (
-            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full shrink-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-9 w-9 rounded-full shrink-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              onClick={onLogoutClick}
+            >
               <SignOut weight="bold" className="h-[18px] w-[18px]" />
             </Button>
           )}
