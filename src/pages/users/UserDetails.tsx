@@ -202,7 +202,8 @@ function WalletTab({ user }: { user: UserData }) {
         <div className="p-6 border-b border-[#EEF2F7]">
           <h3 className="font-bold text-foreground">Wallet History</h3>
         </div>
-        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFC] border-b border-[#EEF2F7] transition-all duration-150" 
+        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFC] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer" 
+          onRowClick={(row) => navigate(`/transactions/${row.id}`)}
           columns={[
             { header: "Date", accessor: "date", cell: (row: any) => <span className="text-[13px] font-medium text-[#475569]">{row.date}</span> },
             { header: "Type", cell: (row: any) => {
@@ -210,19 +211,13 @@ function WalletTab({ user }: { user: UserData }) {
                 return <span className={`inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium ${move.color}`}>{move.label}</span>
             }},
             { header: "Deal", cell: (row: any) => (
-                <div 
-                  className="flex flex-col cursor-pointer group py-1" 
-                  onClick={() => navigate(`/deals/${row.dealId}`)}
-                >
-                  <span className="text-[13px] font-medium text-[#111827] group-hover:text-primary transition-colors">{row.product}</span>
+                <div className="flex flex-col py-1">
+                  <span className="text-[13px] font-medium text-[#111827]">{row.product}</span>
                   <span className="text-[12px] text-[#64748B]">{row.dealId}</span>
                 </div>
             )},
             { header: "Txn ID", cell: (row: any) => (
-                <span 
-                  className="text-[13px] font-medium font-mono text-[#475569] cursor-pointer hover:text-primary transition-colors"
-                  onClick={() => navigate(`/transactions/${row.id}`)}
-                >
+                <span className="text-[13px] font-medium font-mono text-[#475569]">
                   {row.id}
                 </span>
             )},
@@ -344,7 +339,7 @@ function DealsTab() {
     <div className="bg-white border border-[#EEF2F7] rounded-[20px] shadow-sm overflow-hidden">
       {/* Filters Toolbar */}
       <div className="p-4 border-b border-[#EEF2F7] bg-white">
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-4">
           {/* Search Box */}
           <div className="relative flex-1 min-w-[280px]">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -360,38 +355,38 @@ function DealsTab() {
           </div>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 shadow-sm">
+            <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-              <SelectItem value="all" className="rounded-md text-[13px] font-semibold">All Statuses</SelectItem>
-              <SelectItem value="active" className="rounded-md text-[13px] font-semibold">Active</SelectItem>
-              <SelectItem value="completed" className="rounded-md text-[13px] font-semibold">Completed</SelectItem>
-              <SelectItem value="disputed" className="rounded-md text-[13px] font-semibold">Disputed</SelectItem>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="disputed">Disputed</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="h-[38px] w-[120px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 shadow-sm">
+            <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-              <SelectItem value="all" className="rounded-md text-[13px] font-semibold">All Types</SelectItem>
-              <SelectItem value="buy" className="rounded-md text-[13px] font-semibold">Buy</SelectItem>
-              <SelectItem value="sell" className="rounded-md text-[13px] font-semibold">Sell</SelectItem>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="buy">Buy</SelectItem>
+              <SelectItem value="sell">Sell</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 shadow-sm">
+            <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
-            <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-              <SelectItem value="all" className="rounded-md text-[13px] font-semibold">All Categories</SelectItem>
-              <SelectItem value="watches" className="rounded-md text-[13px] font-semibold">Watches</SelectItem>
-              <SelectItem value="vehicles" className="rounded-md text-[13px] font-semibold">Vehicles</SelectItem>
-              <SelectItem value="luxury" className="rounded-md text-[13px] font-semibold">Luxury</SelectItem>
-              <SelectItem value="digital" className="rounded-md text-[13px] font-semibold">Digital Assets</SelectItem>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="watches">Watches</SelectItem>
+              <SelectItem value="vehicles">Vehicles</SelectItem>
+              <SelectItem value="luxury">Luxury</SelectItem>
+              <SelectItem value="digital">Digital Assets</SelectItem>
             </SelectContent>
           </Select>
 
@@ -441,10 +436,7 @@ function TransactionsTab() {
         const product = deal?.product || row.product
         const thumbnail = deal?.productThumbnail
         return (
-          <div 
-            className="flex items-center gap-3 cursor-pointer group py-1"
-            onClick={() => navigate(`/deals/${row.dealId}`)}
-          >
+          <div className="flex items-center gap-3 py-1">
             {thumbnail ? (
               <div className="h-12 w-12 rounded-[12px] bg-[#F8FAFC] border border-[#EEF2F7] flex items-center justify-center shrink-0 overflow-hidden">
                 <img src={thumbnail} alt={product} className="h-full w-full object-cover" />
@@ -455,7 +447,7 @@ function TransactionsTab() {
               </div>
             )}
             <div className="flex flex-col">
-              <span className="text-[14px] font-semibold text-[#111827] group-hover:text-primary transition-colors">{product}</span>
+              <span className="text-[14px] font-semibold text-[#111827]">{product}</span>
               <span className="text-[13px] text-[#64748B]">{row.dealId}</span>
             </div>
           </div>

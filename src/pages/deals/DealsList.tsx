@@ -79,7 +79,7 @@ export function DealsList() {
     {
       header: "Deal",
       accessor: "product",
-      className: "w-[280px]",
+      className: "w-[360px]",
       cell: (row: DealData) => (
         <div className="flex items-center gap-3 py-1">
           <div className="h-[42px] w-[42px] rounded-[10px] bg-[#F7F9FC] border border-[#EEF2F7] flex items-center justify-center text-muted-foreground/50 overflow-hidden shrink-0">
@@ -90,7 +90,7 @@ export function DealsList() {
             )}
           </div>
           <div className="flex flex-col">
-            <span className="text-[13px] font-semibold text-[#111827] truncate max-w-[200px]" title={row.product}>{row.product}</span>
+            <span className="text-[13px] font-semibold text-[#111827] truncate max-w-[300px]" title={row.product}>{row.product}</span>
             <span className="text-[12px] font-normal text-[#64748B]">{row.id}</span>
           </div>
         </div>
@@ -212,7 +212,7 @@ export function DealsList() {
 
         {/* FILTER TOOLBAR */}
         <div className="px-6 mb-6">
-          <div className="flex flex-wrap items-center gap-3 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
+          <div className="flex flex-wrap items-center gap-4 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
             
             {/* Search */}
             <div className="relative w-full sm:w-[260px]">
@@ -227,50 +227,50 @@ export function DealsList() {
             </div>
 
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="h-[42px] w-[130px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
+              <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">All Statuses</SelectItem>
-                <SelectItem value="open" className="rounded-lg text-[14px] font-semibold">Open</SelectItem>
-                <SelectItem value="funded" className="rounded-lg text-[14px] font-semibold">Funded</SelectItem>
-                <SelectItem value="completed" className="rounded-lg text-[14px] font-semibold">Completed</SelectItem>
-                <SelectItem value="disputed" className="rounded-lg text-[14px] font-semibold">Disputed</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="funded">Funded</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="disputed">Disputed</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="h-[42px] w-[130px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
+              <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">Any Type</SelectItem>
-                <SelectItem value="buy" className="rounded-lg text-[14px] font-semibold">Buy</SelectItem>
-                <SelectItem value="sell" className="rounded-lg text-[14px] font-semibold">Sell</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">Any Type</SelectItem>
+                <SelectItem value="buy">Buy</SelectItem>
+                <SelectItem value="sell">Sell</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="h-[42px] w-[150px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
+              <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">All Categories</SelectItem>
-                <SelectItem value="watches" className="rounded-lg text-[14px] font-semibold">Watches</SelectItem>
-                <SelectItem value="vehicles" className="rounded-lg text-[14px] font-semibold">Vehicles</SelectItem>
-                <SelectItem value="luxury" className="rounded-lg text-[14px] font-semibold">Luxury</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="watches">Watches</SelectItem>
+                <SelectItem value="vehicles">Vehicles</SelectItem>
+                <SelectItem value="luxury">Luxury</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={dateFilter} onValueChange={setDateFilter}>
-              <SelectTrigger className="h-[42px] w-[150px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
+              <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Date" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">Any Time</SelectItem>
-                <SelectItem value="today" className="rounded-lg text-[14px] font-semibold">Today</SelectItem>
-                <SelectItem value="7days" className="rounded-lg text-[14px] font-semibold">Last 7 Days</SelectItem>
-                <SelectItem value="30days" className="rounded-lg text-[14px] font-semibold">Last 30 Days</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">Any Time</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="7days">Last 7 Days</SelectItem>
+                <SelectItem value="30days">Last 30 Days</SelectItem>
               </SelectContent>
             </Select>
 

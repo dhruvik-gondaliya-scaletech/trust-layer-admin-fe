@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { AppLayout } from "@/components/layout/AppLayout"
-import { Dashboard, UsersList, UserDetails, DealsList, DealDetails, TransactionsList, TransactionDetails, DisputesList, DisputeDetails, Settings } from "@/pages"
+import { Dashboard, UsersList, UserDetails, DealsList, DealDetails, TransactionsList, TransactionDetails, DisputesList, DisputeDetails, Settings, ProfileDetails, AdminUsersPage } from "@/pages"
 import { DesignSystem } from "@/pages/DesignSystem"
 
 function App() {
@@ -19,6 +19,9 @@ function App() {
           <Route path="disputes" element={<DisputesList />} />
           <Route path="disputes/:id" element={<DisputeDetails />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="profile" element={<ProfileDetails />} />
+          
+          <Route path="admin-users" element={<AdminUsersPage />} />
         </Route>
       </Routes>
     </Router>

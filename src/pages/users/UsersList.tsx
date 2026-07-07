@@ -149,33 +149,33 @@ export function UsersList() {
   ]
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-[24px] font-bold tracking-tight text-[#0F172A]">Users</h1>
-          <p className="text-[14px] text-[#64748B] mt-1 font-medium">
-            Manage all platform users and operations.
-          </p>
+    <div className="h-full w-full">
+      <div className="bg-white border border-[#EEF2F7] rounded-[20px] pt-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col">
+        {/* PAGE HEADER */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-6 mb-6">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-[24px] font-bold tracking-tight text-[#0F172A]">Users</h1>
+            <p className="text-[14px] font-medium text-muted-foreground">Manage all platform users and operations.</p>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <Button variant="outline" className="gap-2 h-[42px] font-semibold bg-white border-[#EEF2F7] shadow-sm rounded-[10px] px-5 transition-all active:scale-98">
+              <Export weight="bold" className="h-[18px] w-[18px]" />
+              Export CSV
+            </Button>
+          </div>
         </div>
-        <Button className="h-[40px] px-4 rounded-[10px] bg-white border border-[#E5E7EB] text-[#0F172A] hover:bg-[#F8FAFC] shadow-sm font-semibold text-[14px]">
-          <Export weight="bold" className="mr-2 h-4 w-4 text-[#64748B]" />
-          Export CSV
-        </Button>
-      </div>
 
-      <div className="bg-white rounded-[20px] shadow-sm border border-[#EEF2F7] overflow-hidden">
         {/* Filters Toolbar */}
-        <div className="p-4 border-b border-[#EEF2F7] bg-white">
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="px-6 mb-6">
+          <div className="flex flex-wrap items-center gap-4 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
             {/* Search Box */}
-            <div className="relative flex-1 min-w-[280px]">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <MagnifyingGlass weight="bold" className="h-4 w-4 text-[#94A3B8]" />
-              </div>
+            <div className="relative w-full sm:w-[320px]">
+              <MagnifyingGlass weight="bold" className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[16px] w-[16px] text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search users..."
-                className="h-[38px] w-full pl-9 bg-[#F8FAFC] border-transparent hover:border-[#E2E8F0] focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/10 rounded-[10px] text-[14px] font-medium transition-all shadow-none"
+                className="pl-[38px] h-[42px] w-full rounded-[10px] bg-white border border-[#EEF2F7] shadow-sm text-[14px] font-medium transition-all focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary placeholder:text-[14px] placeholder:font-normal placeholder:text-muted-foreground/70"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -187,40 +187,42 @@ export function UsersList() {
             
 
             <Select value={timeFilter} onValueChange={setTimeFilter}>
-              <SelectTrigger className="h-[38px] w-[140px] bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] rounded-[10px] text-[13px] font-semibold focus:ring-0 focus:ring-offset-0 data-[state=open]:border-primary shadow-sm">
+              <SelectTrigger className="w-[140px]">
                 <SelectValue placeholder="Any Time" />
               </SelectTrigger>
-              <SelectContent className="rounded-[12px] p-1 border-[#E2E8F0] shadow-lg">
-                <SelectItem value="all" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Any Time</SelectItem>
-                <SelectItem value="today" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Today</SelectItem>
-                <SelectItem value="7days" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Last 7 days</SelectItem>
-                <SelectItem value="30days" className="rounded-md text-[13px] font-semibold focus:bg-[#F1F5F9]">Last 30 days</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">Any Time</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="7days">Last 7 days</SelectItem>
+                <SelectItem value="30days">Last 30 days</SelectItem>
               </SelectContent>
             </Select>
-            
-            
-            
-            
 
-            {(countryFilter !== "all" || dateFilter !== "all" || timeFilter !== "all" || disputesFilter !== "all" || lastActiveFilter !== "all" || search !== "") && (
-              <Button 
-                variant="ghost" 
-                onClick={handleResetFilters}
-                className="h-[38px] px-3 text-[13px] font-semibold text-muted-foreground hover:text-foreground rounded-[10px]"
-              >
-                Reset
-              </Button>
-            )}
+            <div className="flex gap-2 ml-1">
+              {(countryFilter !== "all" || dateFilter !== "all" || timeFilter !== "all" || disputesFilter !== "all" || lastActiveFilter !== "all" || search !== "") && (
+                <Button 
+                  variant="ghost" 
+                  onClick={handleResetFilters}
+                  className="h-[42px] text-[14px] font-bold text-[#0F62FE] hover:bg-[#0F62FE]/10 rounded-[10px] px-4 transition-colors"
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Data Table */}
-        <DataTable 
-          columns={columns} 
-          data={filteredUsers} 
-          onRowClick={(row) => navigate(`/users/${row.id}`)}
-          rowClassName="h-[56px] cursor-pointer hover:bg-[#F8FAFC] transition-colors border-b border-[#EEF2F7]"
-        />
+        <div className="flex-1 border-t border-[#EEF2F7]">
+          <DataTable 
+            columns={columns} 
+            data={filteredUsers} 
+            onRowClick={(row) => navigate(`/users/${row.id}`)}
+            className="border-0 shadow-none bg-transparent rounded-none"
+            rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer"
+            pagination={true}
+          />
+        </div>
       </div>
     </div>
   )

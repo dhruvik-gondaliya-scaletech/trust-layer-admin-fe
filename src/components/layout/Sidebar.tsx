@@ -10,6 +10,7 @@ import {
   CaretLeft,
   CaretRight,
   SignOut,
+  IdentificationCard,
 } from "@phosphor-icons/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -29,6 +30,7 @@ const navGroups = [
     items: [
       { name: "Users", href: "/users", icon: Users },
       { name: "Disputes", href: "/disputes", icon: WarningCircle },
+      { name: "Admin Users", href: "/admin-users", icon: IdentificationCard },
     ]
   }
 ]

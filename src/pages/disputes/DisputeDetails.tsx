@@ -1,11 +1,12 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, Briefcase, User, Bank, Image as ImageIcon, Scales, NotePencil, Question, ShieldWarning } from "@phosphor-icons/react"
+import { CaretLeft, CaretDown, Export, User, Image as ImageIcon, Scales, NotePencil, Question, ShieldWarning } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { Timeline } from "@/components/ui/timeline"
-import { mockDisputes, mockTransactions } from "@/lib/mock-data"
+import { mockDisputes, mockUsers } from "@/lib/mock-data"
 import type { DisputeData } from "@/lib/mock-data"
+import { UserInformationCard } from "@/components/UserInformationCard"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -61,7 +62,6 @@ export function DisputeDetails() {
   const [activeTab, setActiveTab] = React.useState(tabFromUrl)
 
   const dispute = mockDisputes.find(d => d.id === id) || mockDisputes[0]
-  const relatedTransaction = mockTransactions.find(t => t.dealId === dispute.dealId)
 
   const updateUrlTab = (tabId: string) => {
     setActiveTab(tabId)
@@ -187,84 +187,25 @@ export function DisputeDetails() {
         ]} 
       />
 
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="w-full">
         {/* Main Content Area */}
-        <div className="xl:col-span-3 space-y-6">
+        <div className="space-y-6">
           {activeTab === "overview" && <OverviewTab dispute={dispute} />}
           {activeTab === "evidence" && <EvidenceTab dispute={dispute} />}
           {activeTab === "timeline" && <TimelineTab dispute={dispute} />}
           {activeTab === "decision" && <DecisionTab dispute={dispute} />}
-        </div>
-
-        {/* Right Sticky Sidebar */}
-        <div className="xl:col-span-1 space-y-6">
-          
-          <div className="sticky top-[140px] space-y-6">
-            <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
-              <h3 className="text-[14px] font-bold text-foreground mb-4">Related Information</h3>
-              
-              <div className="space-y-4">
-                <div className="p-4 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer" onClick={() => navigate(`/deals/${dispute.dealId}`)}>
-                  <div className="flex items-center gap-3 mb-2">
-                    <Briefcase weight="fill" className="h-5 w-5 text-primary" />
-                    <span className="font-bold text-[13px]">Deal Summary</span>
-                  </div>
-                  <p className="text-[12px] text-muted-foreground mb-2">View the original deal terms, product details, and shipping info.</p>
-                  <span className="text-[12px] font-bold text-primary">View Deal →</span>
-                </div>
-
-                <div className="p-4 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer" onClick={() => relatedTransaction ? navigate(`/transactions/${relatedTransaction.id}`) : navigate(`/transactions`)}>
-                  <div className="flex items-center gap-3 mb-2">
-                    <Bank weight="fill" className="h-5 w-5 text-primary" />
-                    <span className="font-bold text-[13px]">Transaction Summary</span>
-                  </div>
-                  <p className="text-[12px] text-muted-foreground mb-2">Review payment methods, platform fees, and wallet logs.</p>
-                  <span className="text-[12px] font-bold text-primary">View Transaction →</span>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer text-center">
-                    <User weight="fill" className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-                    <span className="font-bold text-[12px] block mb-1">Buyer Profile</span>
-                    <span className="text-[10px] font-bold text-primary">View User →</span>
-                  </div>
-                  <div className="p-3 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer text-center">
-                    <User weight="fill" className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-                    <span className="font-bold text-[12px] block mb-1">Seller Profile</span>
-                    <span className="text-[10px] font-bold text-primary">View User →</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
-              <h3 className="text-[14px] font-bold text-foreground mb-4">Activity Log</h3>
-              <div className="space-y-4">
-                <div className="relative pl-4 border-l-2 border-border/50 pb-4">
-                  <div className="absolute w-2 h-2 bg-primary rounded-full -left-[5px] top-1"></div>
-                  <p className="text-[12px] font-bold text-foreground">Admin Assigned Case</p>
-                  <p className="text-[12px] text-muted-foreground mt-1">Super Admin • Today, 10:15 AM</p>
-                </div>
-                <div className="relative pl-4 border-l-2 border-border/50 pb-4">
-                  <div className="absolute w-2 h-2 bg-border rounded-full -left-[5px] top-1"></div>
-                  <p className="text-[12px] font-bold text-foreground">Dispute Escalated</p>
-                  <p className="text-[12px] text-muted-foreground mt-1">System • Yesterday, 4:45 PM</p>
-                </div>
-                <div className="relative pl-4 border-l-2 border-border/50">
-                  <div className="absolute w-2 h-2 bg-border rounded-full -left-[5px] top-1"></div>
-                  <p className="text-[12px] font-bold text-foreground">Dispute Opened</p>
-                  <p className="text-[12px] text-muted-foreground mt-1">{dispute.buyer} • Oct 22, 2026</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   )
 }
 
+
+
 function OverviewTab({ dispute }: { dispute: DisputeData }) {
+  const buyerUser = mockUsers.find(u => u.name === dispute.buyer) || { id: "USR-101", name: dispute.buyer, email: `${dispute.buyer.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 019-2834", verified: true, role: "Buyer" } as any;
+  const sellerUser = mockUsers.find(u => u.name === dispute.seller) || { id: "USR-102", name: dispute.seller, email: `${dispute.seller.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 443-9982", verified: true, role: "Seller" } as any;
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 md:col-span-2">
@@ -287,45 +228,17 @@ function OverviewTab({ dispute }: { dispute: DisputeData }) {
         </div>
       </div>
       
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-          <User className="h-5 w-5 text-muted-foreground" /> Buyer Information
-        </h3>
-        <div className="space-y-4">
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Name</div>
-             <div className="font-medium text-primary hover:underline cursor-pointer">{dispute.buyer}</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Trust Score</div>
-             <div className="font-medium">{dispute.buyerTrustScore}</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Previous Disputes</div>
-             <div className="font-medium">0 Open, 1 Resolved</div>
-          </div>
-        </div>
-      </div>
+      <UserInformationCard 
+        title="Buyer Information"
+        user={buyerUser}
+        profileLabel="Buyer Profile"
+      />
 
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-          <User className="h-5 w-5 text-muted-foreground" /> Seller Information
-        </h3>
-        <div className="space-y-4">
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Name</div>
-             <div className="font-medium text-primary hover:underline cursor-pointer">{dispute.seller}</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Trust Score</div>
-             <div className="font-medium">{dispute.sellerTrustScore}</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Previous Disputes</div>
-             <div className="font-medium">1 Open, 4 Resolved</div>
-          </div>
-        </div>
-      </div>
+      <UserInformationCard 
+        title="Seller Information"
+        user={sellerUser}
+        profileLabel="Seller Profile"
+      />
     </div>
   )
 }

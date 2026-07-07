@@ -18,6 +18,9 @@ export { TransactionDetails } from "./transactions/TransactionDetails"
 export { DisputesList } from "./disputes/DisputesList"
 export { DisputeDetails } from "./disputes/DisputeDetails"
 
+export { ProfileDetails } from "./profile/ProfileDetails"
+export { AdminUsersPage } from "./admin-users/AdminUsersPage"
+
 export function Settings() {
   const [activeTab, setActiveTab] = React.useState("general")
 

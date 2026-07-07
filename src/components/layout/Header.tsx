@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Bell } from "@phosphor-icons/react"
 import { useAppStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function Header() {
+  const navigate = useNavigate()
   const { toggleNotificationDrawer } = useAppStore()
 
   const [now, setNow] = useState(new Date())
@@ -82,7 +84,9 @@ export function Header() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="my-1.5" />
-            <DropdownMenuItem className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px]">Profile</DropdownMenuItem>
+            <DropdownMenuItem className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px]" onClick={() => navigate('/profile')}>
+              Profile
+            </DropdownMenuItem>
             <DropdownMenuItem className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px]">Settings</DropdownMenuItem>
             <DropdownMenuSeparator className="my-1.5" />
             <DropdownMenuItem className="rounded-lg cursor-pointer font-medium px-3 py-2 text-[14px] text-destructive focus:bg-destructive/10 focus:text-destructive">

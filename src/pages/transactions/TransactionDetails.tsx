@@ -1,20 +1,14 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, Briefcase, LockKey, User, ArrowUUpLeft, Handshake, Money, Receipt, Bank, CheckCircle, WarningCircle, Image as ImageIcon } from "@phosphor-icons/react"
+import { CaretLeft, Briefcase, LockKey, User, ArrowUUpLeft, Handshake, Money, Receipt, Bank, WarningCircle, Image as ImageIcon } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { Timeline } from "@/components/ui/timeline"
 import { StatCard } from "@/components/ui/stat-card"
-import { mockTransactions, mockDeals } from "@/lib/mock-data"
+import { mockTransactions, mockDeals, mockUsers } from "@/lib/mock-data"
 import type { TransactionData, DealData } from "@/lib/mock-data"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
+import { UserInformationCard } from "@/components/UserInformationCard"
 
 function StatusBadgeSemantic({ status }: { status: TransactionData["status"] | string }) {
   const getBadgeStyle = () => {
@@ -88,44 +82,7 @@ export function TransactionDetails() {
           </div>
           <h1 className="text-[24px] font-bold tracking-tight text-foreground">Transaction Details</h1>
         </div>
-        <div className="ml-auto flex items-center gap-3">
-          <Button variant="outline" className="gap-2 h-10 font-semibold bg-background shadow-sm border-border/50 rounded-xl hover:bg-muted">
-            <Export weight="bold" className="h-4 w-4" />
-            Export Data
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="gap-2 h-10 font-semibold shadow-sm rounded-xl">
-                Admin Actions
-                <CaretDown weight="bold" className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-lg border-border/50">
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Release Protected Funds
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Approve Refund
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2 text-destructive focus:text-destructive focus:bg-destructive/10">
-                Reject Refund
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="my-1.5" />
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Request More Information
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                View Dispute
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Open Buyer Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Open Seller Profile
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+
       </div>
 
       {/* Summary Card Header */}
@@ -219,18 +176,7 @@ export function TransactionDetails() {
                 <span className="text-[14px] font-bold text-foreground">{transaction.date}</span>
               </div>
             </div>
-            
-            <div className="pt-4 border-t border-border/50">
-              <div className="flex items-center gap-3 mb-3 cursor-pointer hover:opacity-80 transition-opacity">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Bank weight="fill" className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[12px] font-bold text-foreground uppercase tracking-wider">Protected Funds Vault</span>
-                  <span className="text-[12px] font-medium text-primary">View Wallet Details →</span>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
@@ -239,6 +185,11 @@ export function TransactionDetails() {
 }
 
 function OverviewTab({ transaction }: { transaction: TransactionData }) {
+  const navigate = useNavigate()
+  
+  const buyerUser = mockUsers.find(u => u.name === transaction.buyer) || { id: "USR-101", name: transaction.buyer, email: `${transaction.buyer.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 019-2834" }
+  const sellerUser = mockUsers.find(u => u.name === transaction.seller) || { id: "USR-102", name: transaction.seller, email: `${transaction.seller.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 018-2241" }
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6 md:col-span-2">
@@ -252,7 +203,7 @@ function OverviewTab({ transaction }: { transaction: TransactionData }) {
           </div>
           <div>
             <div className="text-[12px] font-medium text-muted-foreground mb-1">Deal ID</div>
-            <div className="font-medium text-primary hover:underline cursor-pointer">{transaction.dealId}</div>
+            <div className="font-medium text-primary hover:underline cursor-pointer" onClick={() => navigate(`/deals/${transaction.dealId}`)}>{transaction.dealId}</div>
           </div>
           <div>
             <div className="text-[12px] font-medium text-muted-foreground mb-1">Current Status</div>
@@ -260,46 +211,17 @@ function OverviewTab({ transaction }: { transaction: TransactionData }) {
           </div>
         </div>
       </div>
-      
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-          <User className="h-5 w-5 text-muted-foreground" /> Buyer Information
-        </h3>
-        <div className="space-y-4">
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Name</div>
-             <div className="font-medium text-primary hover:underline cursor-pointer">{transaction.buyer}</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Trust Score</div>
-             <div className="font-medium">94 (Excellent)</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Verified Payment Method</div>
-             <div className="font-medium flex items-center gap-2"><CheckCircle className="text-success h-4 w-4" /> Yes</div>
-          </div>
-        </div>
-      </div>
+      <UserInformationCard 
+        title="Buyer Information"
+        user={buyerUser}
+        profileLabel="Buyer Profile"
+      />
 
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-          <User className="h-5 w-5 text-muted-foreground" /> Seller Information
-        </h3>
-        <div className="space-y-4">
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Name</div>
-             <div className="font-medium text-primary hover:underline cursor-pointer">{transaction.seller}</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Trust Score</div>
-             <div className="font-medium">88 (Good)</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">KYB Verified</div>
-             <div className="font-medium flex items-center gap-2"><CheckCircle className="text-success h-4 w-4" /> Yes</div>
-          </div>
-        </div>
-      </div>
+      <UserInformationCard 
+        title="Seller Information"
+        user={sellerUser}
+        profileLabel="Seller Profile"
+      />
     </div>
   )
 }

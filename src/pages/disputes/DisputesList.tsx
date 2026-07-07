@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { mockDisputes } from "@/lib/mock-data"
 import type { DisputeData } from "@/lib/mock-data"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MagnifyingGlass, DotsThree, Export, WarningCircle, Clock, Scales, MagnifyingGlassPlus, Checks, ShieldCheck, Image as ImageIcon } from "@phosphor-icons/react"
+import { MagnifyingGlass, DotsThree, Export, Image as ImageIcon } from "@phosphor-icons/react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { StatCard } from "@/components/ui/stat-card"
+
 import { cn } from "@/lib/utils"
 
 function DisputeStatusBadge({ status }: { status: DisputeData["status"] | string }) {
@@ -39,55 +39,33 @@ function DisputeStatusBadge({ status }: { status: DisputeData["status"] | string
   )
 }
 
-function PriorityBadge({ priority }: { priority: DisputeData["priority"] | string }) {
-  const getBadgeStyle = () => {
-    switch (priority.toLowerCase()) {
-      case "high": return "bg-[#FEF2F2] text-[#DC2626]" // Red
-      case "medium": return "bg-[#FFF7ED] text-[#EA580C]" // Orange
-      case "low": return "bg-[#EFF6FF] text-[#2563EB]" // Blue
-      default: return "bg-[#F1F5F9] text-[#64748B]"
-    }
-  }
-  return (
-    <span className={cn("inline-flex items-center justify-center rounded-md px-2 py-0.5 text-[12px] font-bold uppercase", getBadgeStyle())}>
-      {priority}
-    </span>
-  )
-}
+
 
 export function DisputesList() {
-  const [activeTab, setActiveTab] = React.useState("all")
   const [search, setSearch] = React.useState("")
   const [statusFilter, setStatusFilter] = React.useState("all")
-  const [priorityFilter, setPriorityFilter] = React.useState("all")
-  const [buyerFilter, setBuyerFilter] = React.useState("all")
-  const [sellerFilter, setSellerFilter] = React.useState("all")
+  const [amountFilter, setAmountFilter] = React.useState("all")
+  const [dateFilter, setDateFilter] = React.useState("all")
   
   const navigate = useNavigate()
 
   const handleResetFilters = () => {
     setSearch("")
     setStatusFilter("all")
-    setPriorityFilter("all")
-    setBuyerFilter("all")
-    setSellerFilter("all")
+    setAmountFilter("all")
+    setDateFilter("all")
   }
 
   // Filter Data
   const filteredDisputes = mockDisputes.filter(dsp => {
-    if (activeTab !== "all" && dsp.status.toLowerCase() !== activeTab) return false;
-    
     if (statusFilter !== "all" && dsp.status.toLowerCase() !== statusFilter) return false
-    if (priorityFilter !== "all" && dsp.priority.toLowerCase() !== priorityFilter) return false
 
     if (search) {
       const q = search.toLowerCase()
       if (
-        !dsp.id.toLowerCase().includes(q) &&
         !dsp.dealId.toLowerCase().includes(q) &&
-        !dsp.buyer.toLowerCase().includes(q) &&
-        !dsp.seller.toLowerCase().includes(q) &&
-        !dsp.product.toLowerCase().includes(q)
+        !dsp.product.toLowerCase().includes(q) &&
+        !(dsp.reason && dsp.reason.toLowerCase().includes(q))
       ) {
         return false
       }
@@ -98,12 +76,12 @@ export function DisputesList() {
 
   const columns = [
     {
-      header: "Dispute ID",
-      accessor: "id",
-      className: "w-[120px]",
+      header: "Deal",
+      accessor: "dealId",
+      className: "w-[360px]",
       cell: (row: DisputeData) => (
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-lg bg-muted border border-border flex items-center justify-center overflow-hidden shrink-0">
+          <div className="h-10 w-10 rounded-lg bg-muted border border-[#EEF2F7] flex items-center justify-center overflow-hidden shrink-0">
             {row.productThumbnail ? (
               <img src={row.productThumbnail} alt={row.product} className="w-full h-full object-cover" />
             ) : (
@@ -111,28 +89,11 @@ export function DisputesList() {
             )}
           </div>
           <div className="flex flex-col">
-            <span className="text-[13px] font-bold text-[#111827]">{row.id}</span>
-            <span className="text-[12px] text-muted-foreground truncate max-w-[120px]">{row.product}</span>
+            <span className="text-[14px] font-bold text-foreground transition-colors truncate max-w-[300px]" title={row.product}>{row.product}</span>
+            <span className="text-[13px] font-medium text-muted-foreground">{row.dealId}</span>
           </div>
         </div>
       )
-    },
-    {
-      header: "Deal",
-      accessor: "dealId",
-      cell: (row: DisputeData) => (
-        <span className="text-[14px] font-medium text-[#2553FF] hover:underline cursor-pointer" onClick={(e) => { e.stopPropagation(); navigate(`/deals/${row.dealId}`); }}>{row.dealId}</span>
-      )
-    },
-    {
-      header: "Buyer",
-      accessor: "buyer",
-      cell: (row: DisputeData) => <span className="text-[13px] font-medium text-[#111827]">{row.buyer}</span>
-    },
-    {
-      header: "Seller",
-      accessor: "seller",
-      cell: (row: DisputeData) => <span className="text-[13px] font-medium text-[#111827]">{row.seller}</span>
     },
     {
       header: "Reason",
@@ -144,7 +105,7 @@ export function DisputesList() {
       accessor: "amount",
       sortable: true,
       cell: (row: DisputeData) => (
-        <span className="text-[15px] font-bold text-[#111827]">
+        <span className="text-[14px] font-bold text-foreground">
           ${row.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </span>
       )
@@ -155,15 +116,10 @@ export function DisputesList() {
       cell: (row: DisputeData) => <DisputeStatusBadge status={row.status} />
     },
     {
-      header: "Priority",
-      accessor: "priority",
-      cell: (row: DisputeData) => <PriorityBadge priority={row.priority} />
-    },
-    {
-      header: "Created",
+      header: "Created At",
       accessor: "created",
       sortable: true,
-      cell: (row: DisputeData) => <span className="text-[13px] font-normal text-[#475569] whitespace-nowrap">{row.created}</span>
+      cell: (row: DisputeData) => <span className="text-[13px] font-medium text-muted-foreground whitespace-nowrap">{row.created}</span>
     },
     {
       header: "",
@@ -203,31 +159,8 @@ export function DisputesList() {
     }
   ]
 
-  const tabs = [
-    { id: "all", label: "All" },
-    { id: "open", label: "Open" },
-    { id: "waiting for seller", label: "Waiting for Seller" },
-    { id: "seller responded", label: "Seller Responded" },
-    { id: "escalated to admin", label: "Escalated to Admin" },
-    { id: "under review", label: "Under Review" },
-    { id: "resolved", label: "Resolved" },
-    { id: "refunded", label: "Refunded" },
-    { id: "rejected", label: "Rejected" },
-  ]
-
   return (
-    <div className="h-full w-full space-y-6">
-      
-      {/* SUMMARY CARDS */}
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4">
-        <StatCard title="Open Cases" value="2" icon={<WarningCircle weight="fill" />} iconContainerClassName="bg-[#EFF6FF] text-[#2563EB]" className="bg-white" />
-        <StatCard title="Waiting for Seller" value="1" icon={<Clock weight="fill" />} iconContainerClassName="bg-[#FFF7ED] text-[#EA580C]" className="bg-white" />
-        <StatCard title="Escalated to Admin" value="1" icon={<Scales weight="fill" />} iconContainerClassName="bg-[#FEF2F2] text-[#DC2626]" className="bg-white" />
-        <StatCard title="Under Review" value="1" icon={<MagnifyingGlassPlus weight="fill" />} iconContainerClassName="bg-[#EEF2FF] text-[#4F46E5]" className="bg-white" />
-        <StatCard title="Resolved Today" value="0" icon={<Checks weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#059669]" className="bg-white" />
-        <StatCard title="Avg Resolution Time" value="2.4d" icon={<ShieldCheck weight="fill" />} iconContainerClassName="bg-[#F3F4F6] text-[#6B7280]" className="bg-white" />
-      </div>
-
+    <div className="h-full w-full">
       {/* ONE UNIFIED CONTAINER */}
       <div className="bg-white border border-[#EEF2F7] rounded-[20px] pt-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col">
         
@@ -245,38 +178,17 @@ export function DisputesList() {
             </Button>
           </div>
         </div>
-        
-        {/* TABS */}
-        <div className="flex items-center gap-2 border-b border-[#EEF2F7] px-6 pb-4 mb-6 overflow-x-auto scrollbar-hide">
-          {tabs.map(tab => {
-            const isActive = activeTab === tab.id
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "flex items-center justify-center h-[42px] px-[18px] text-[14px] font-semibold rounded-[12px] transition-all duration-200 outline-none whitespace-nowrap",
-                  isActive
-                    ? "bg-[#2553FF] text-white shadow-sm"
-                    : "bg-transparent text-[#475569] hover:bg-[#EEF4FF]"
-                )}
-              >
-                {tab.label}
-              </button>
-            )
-          })}
-        </div>
 
         {/* FILTER TOOLBAR */}
         <div className="px-6 mb-6">
-          <div className="flex flex-wrap items-center gap-3 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
+          <div className="flex flex-wrap items-center gap-4 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
             
             {/* Search */}
-            <div className="relative w-full sm:w-[320px]">
+            <div className="relative w-full sm:w-[360px]">
               <MagnifyingGlass weight="bold" className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[16px] w-[16px] text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search dispute ID, deal ID, buyer, seller..."
+                placeholder="Search deal ID, product name or dispute reason..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-[38px] h-[42px] w-full rounded-[10px] bg-white border border-[#EEF2F7] shadow-sm text-[14px] font-medium transition-all focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary placeholder:text-[14px] placeholder:font-normal placeholder:text-muted-foreground/70"
@@ -284,55 +196,43 @@ export function DisputesList() {
             </div>
 
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="h-[42px] w-[160px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
+              <SelectTrigger className="w-[160px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">All Statuses</SelectItem>
-                <SelectItem value="open" className="rounded-lg text-[14px] font-semibold">Open</SelectItem>
-                <SelectItem value="waiting for seller" className="rounded-lg text-[14px] font-semibold">Waiting for Seller</SelectItem>
-                <SelectItem value="escalated to admin" className="rounded-lg text-[14px] font-semibold">Escalated to Admin</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="waiting for seller">Waiting for Seller</SelectItem>
+                <SelectItem value="escalated to admin">Escalated to Admin</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-              <SelectTrigger className="h-[42px] w-[140px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
-                <SelectValue placeholder="Priority" />
+            <Select value={amountFilter} onValueChange={setAmountFilter}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Amount" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">All Priorities</SelectItem>
-                <SelectItem value="high" className="rounded-lg text-[14px] font-semibold">High</SelectItem>
-                <SelectItem value="medium" className="rounded-lg text-[14px] font-semibold">Medium</SelectItem>
-                <SelectItem value="low" className="rounded-lg text-[14px] font-semibold">Low</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">All Amounts</SelectItem>
+                <SelectItem value="<1000">Under $1,000</SelectItem>
+                <SelectItem value="1000-5000">$1,000 - $5,000</SelectItem>
+                <SelectItem value=">5000">Over $5,000</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={buyerFilter} onValueChange={setBuyerFilter}>
-              <SelectTrigger className="h-[42px] w-[130px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
-                <SelectValue placeholder="Buyer" />
+            <Select value={dateFilter} onValueChange={setDateFilter}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Date" />
               </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">All Buyers</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={sellerFilter} onValueChange={setSellerFilter}>
-              <SelectTrigger className="h-[42px] w-[130px] rounded-[10px] border-[#EEF2F7] bg-white shadow-sm font-semibold text-[14px] focus:ring-0">
-                <SelectValue placeholder="Seller" />
-              </SelectTrigger>
-              <SelectContent className="rounded-[10px] border-[#EEF2F7] shadow-lg">
-                <SelectItem value="all" className="rounded-lg text-[14px] font-semibold">All Sellers</SelectItem>
+              <SelectContent>
+                <SelectItem value="all">All Time</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="7days">Last 7 Days</SelectItem>
+                <SelectItem value="30days">Last 30 Days</SelectItem>
               </SelectContent>
             </Select>
 
             <div className="flex gap-2 ml-1">
-              <Button 
-                onClick={() => {}}
-                className="h-[40px] text-[13px] font-bold bg-[#0F172A] hover:bg-[#1E293B] text-white rounded-[10px] px-4 transition-colors"
-              >
-                Apply Filters
-              </Button>
-              {(statusFilter !== "all" || priorityFilter !== "all" || buyerFilter !== "all" || sellerFilter !== "all" || search !== "") && (
+              {(statusFilter !== "all" || amountFilter !== "all" || dateFilter !== "all" || search !== "") && (
                 <Button 
                   variant="ghost" 
                   onClick={handleResetFilters}

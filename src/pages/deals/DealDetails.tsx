@@ -6,8 +6,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { DataTable } from "@/components/ui/data-table"
 import { Timeline } from "@/components/ui/timeline"
-import { mockDeals, mockTransactions, mockReviews } from "@/lib/mock-data"
+import { mockDeals, mockTransactions, mockReviews, mockUsers } from "@/lib/mock-data"
 import type { DealData } from "@/lib/mock-data"
+import { UserInformationCard } from "@/components/UserInformationCard"
 import { cn } from "@/lib/utils"
 
 function StatusBadgeSemantic({ status }: { status: DealData["status"] | string }) {
@@ -146,47 +147,13 @@ export function DealDetails() {
         ]} 
       />
 
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="w-full space-y-6">
         {/* Main Content Area */}
-        <div className="xl:col-span-3 space-y-6">
+        <div className="space-y-6">
           {activeTab === "overview" && <OverviewTab deal={deal} />}
           {activeTab === "transaction" && <TransactionTab />}
           {activeTab === "reviews" && <ReviewsTab />}
           {activeTab === "dispute" && <DisputeTab deal={deal} />}
-        </div>
-
-        {/* Right Sticky Sidebar */}
-        <div className="xl:col-span-1">
-          <div className="sticky top-[140px] bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-            <h3 className="text-[14px] font-bold text-foreground mb-4">Summary</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Status</span>
-                <span className="text-[14px] font-bold text-foreground">{deal.status}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Protected Amount</span>
-                <span className="text-[14px] font-bold text-foreground">${deal.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Platform Fee</span>
-                <span className="text-[14px] font-bold text-foreground">${deal.platformFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-              </div>
-              <div className="w-full h-px bg-border/50 my-2" />
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Buyer</span>
-                <span className="text-[14px] font-bold text-foreground">{deal.buyer}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Seller</span>
-                <span className="text-[14px] font-bold text-foreground">{deal.seller}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Last Updated</span>
-                <span className="text-[14px] font-bold text-foreground">{deal.updated}</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -194,6 +161,9 @@ export function DealDetails() {
 }
 
 function OverviewTab({ deal }: { deal: DealData }) {
+  const buyerUser = mockUsers.find(u => u.name === deal.buyer) || { id: "USR-101", name: deal.buyer, email: `${deal.buyer.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 019-2834" }
+  const sellerUser = mockUsers.find(u => u.name === deal.seller) || { id: "USR-102", name: deal.seller, email: `${deal.seller.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 018-2241" }
+
   const dealTimeline = [
     { id: 1, title: "Deal Created", date: deal.created, type: "default" },
     { id: 2, title: "Terms Accepted", date: deal.created, type: "info" },
@@ -205,76 +175,94 @@ function OverviewTab({ deal }: { deal: DealData }) {
   ]
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-muted-foreground" /> Product Details
-        </h3>
-        <div className="grid gap-4">
-          <div>
-            <div className="text-[12px] font-medium text-muted-foreground mb-1">Item Name</div>
-            <div className="font-medium">{deal.product}</div>
-          </div>
-          <div>
-            <div className="text-[12px] font-medium text-muted-foreground mb-1">Category</div>
-            <div className="font-medium">{deal.category}</div>
-          </div>
-          <div className="flex gap-8">
+    <div className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
+          <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-muted-foreground" /> Product Details
+          </h3>
+          <div className="grid gap-4">
             <div>
-              <div className="text-[12px] font-medium text-muted-foreground mb-1">Condition</div>
-              <div className="font-medium flex items-center gap-1">New</div>
+              <div className="text-[12px] font-medium text-muted-foreground mb-1">Item Name</div>
+              <div className="font-medium">{deal.product}</div>
             </div>
-          </div>
-          <div>
-            <div className="text-[12px] font-medium text-muted-foreground mb-1">Media Gallery</div>
-            <div className="flex gap-2 mt-2">
-              <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
-                <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
+            <div>
+              <div className="text-[12px] font-medium text-muted-foreground mb-1">Category</div>
+              <div className="font-medium">{deal.category}</div>
+            </div>
+            <div className="flex gap-8">
+              <div>
+                <div className="text-[12px] font-medium text-muted-foreground mb-1">Condition</div>
+                <div className="font-medium flex items-center gap-1">New</div>
               </div>
-              <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
-                <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
+            </div>
+            <div>
+              <div className="text-[12px] font-medium text-muted-foreground mb-1">Media Gallery</div>
+              <div className="flex gap-2 mt-2">
+                <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
+                  <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
+                </div>
+                <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
+                  <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-          <Package className="h-5 w-5 text-muted-foreground" /> Shipping Information
-        </h3>
-        <div className="space-y-4">
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Shipping Method</div>
-             <div className="font-medium">FedEx Overnight</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Tracking Number</div>
-             <div className="font-medium text-primary">1Z9999999999999999</div>
-          </div>
-          <div>
-             <div className="text-[12px] font-medium text-muted-foreground mb-1">Destination Address</div>
-             <div className="font-medium">123 Main St, San Francisco, CA 94105</div>
+        
+        <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
+          <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
+            <Package className="h-5 w-5 text-muted-foreground" /> Shipping Information
+          </h3>
+          <div className="space-y-4">
+            <div>
+               <div className="text-[12px] font-medium text-muted-foreground mb-1">Shipping Method</div>
+               <div className="font-medium">FedEx Overnight</div>
+            </div>
+            <div>
+               <div className="text-[12px] font-medium text-muted-foreground mb-1">Tracking Number</div>
+               <div className="font-medium text-primary">1Z9999999999999999</div>
+            </div>
+            <div>
+               <div className="text-[12px] font-medium text-muted-foreground mb-1">Destination Address</div>
+               <div className="font-medium">123 Main St, San Francisco, CA 94105</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col md:col-span-2">
-        <h3 className="font-bold text-foreground mb-8">Deal Timeline</h3>
-        <Timeline items={dealTimeline as any} className="ml-2" />
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col">
+          <h3 className="font-bold text-foreground mb-8">Deal Timeline</h3>
+          <Timeline items={dealTimeline as any} className="ml-2" />
+        </div>
+
+        <UserInformationCard 
+          title="Buyer Information"
+          user={buyerUser}
+          profileLabel="Buyer Profile"
+        />
+
+        <UserInformationCard 
+          title="Seller Information"
+          user={sellerUser}
+          profileLabel="Seller Profile"
+        />
       </div>
     </div>
   )
 }
 
 function TransactionTab() {
+  const navigate = useNavigate()
   const transactions = mockTransactions.slice(0, 2) // mock related transactions
   return (
     <div className="space-y-6">
 
       <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-4">
         <h3 className="font-bold text-foreground">Transaction History</h3>
-        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150" 
+        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer" 
+          onRowClick={(row) => navigate(`/transactions/${row.id}`)}
           columns={[
             { header: "Date", accessor: "date", className: "w-[120px]" },
             { header: "Type", accessor: "paymentType" },
