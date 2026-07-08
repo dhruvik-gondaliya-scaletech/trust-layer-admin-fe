@@ -65,7 +65,7 @@ export function NotificationDrawer() {
                 {group.items.map((notif) => (
                   <div
                     key={notif.id}
-                    className="flex gap-4 p-4 bg-white border border-[#EEF2F7] rounded-[14px] shadow-[0_2px_10px_rgba(15,23,42,0.04)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.08)] hover:-translate-y-[1px] transition-all duration-[180ms] ease-in-out cursor-pointer group"
+                    className="flex gap-4 p-4 bg-white border border-[#EEF2F7] rounded-[14px] shadow-[0_2px_10px_rgba(15,23,42,0.04)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.08)] hover:-translate-y-[1px] transition-all duration-200 ease-in-out cursor-pointer group"
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F8FAFC] border border-[#EEF2F7]">
                       {notif.icon}

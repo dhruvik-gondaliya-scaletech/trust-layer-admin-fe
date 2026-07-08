@@ -41,20 +41,26 @@ function DisputeStatusBadge({ status }: { status: DisputeData["status"] | string
 
 
 
+// Admins land on their action queue: only disputes escalated to them.
+const DEFAULT_STATUS = "escalated to admin"
+
 export function DisputesList() {
   const [search, setSearch] = React.useState("")
-  const [statusFilter, setStatusFilter] = React.useState("all")
+  const [statusFilter, setStatusFilter] = React.useState(DEFAULT_STATUS)
   const [amountFilter, setAmountFilter] = React.useState("all")
   const [dateFilter, setDateFilter] = React.useState("all")
-  
+
   const navigate = useNavigate()
 
   const handleResetFilters = () => {
     setSearch("")
-    setStatusFilter("all")
+    setStatusFilter(DEFAULT_STATUS)
     setAmountFilter("all")
     setDateFilter("all")
   }
+
+  const filtersDirty =
+    statusFilter !== DEFAULT_STATUS || amountFilter !== "all" || dateFilter !== "all" || search !== ""
 
   // Filter Data
   const filteredDisputes = mockDisputes.filter(dsp => {
@@ -196,14 +202,19 @@ export function DisputesList() {
             </div>
 
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-[190px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="escalated to admin">Escalated to Admin</SelectItem>
                 <SelectItem value="open">Open</SelectItem>
                 <SelectItem value="waiting for seller">Waiting for Seller</SelectItem>
-                <SelectItem value="escalated to admin">Escalated to Admin</SelectItem>
+                <SelectItem value="seller responded">Seller Responded</SelectItem>
+                <SelectItem value="under review">Under Review</SelectItem>
+                <SelectItem value="resolved">Resolved</SelectItem>
+                <SelectItem value="refunded">Refunded</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
               </SelectContent>
             </Select>
 
@@ -232,9 +243,9 @@ export function DisputesList() {
             </Select>
 
             <div className="flex gap-2 ml-1">
-              {(statusFilter !== "all" || amountFilter !== "all" || dateFilter !== "all" || search !== "") && (
-                <Button 
-                  variant="ghost" 
+              {filtersDirty && (
+                <Button
+                  variant="ghost"
                   onClick={handleResetFilters}
                   className="h-[42px] text-[14px] font-bold text-[#0F62FE] hover:bg-[#0F62FE]/10 rounded-[10px] px-4 transition-colors"
                 >
@@ -247,14 +258,29 @@ export function DisputesList() {
 
         {/* TABLE WRAPPER */}
         <div className="flex-1 border-t border-[#EEF2F7]">
-          <DataTable entityName="Disputes" 
-            columns={columns} 
-            data={filteredDisputes}
-            onRowClick={(row) => navigate(`/disputes/${row.id}`)}
-            className="border-0 shadow-none bg-transparent rounded-none"
-            rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer"
-            pagination={true}
-          />
+          {statusFilter === DEFAULT_STATUS && filteredDisputes.length === 0 ? (
+            <div className="flex flex-col items-center justify-center text-center gap-3 py-20 px-6">
+              <h3 className="text-[18px] font-bold text-[#0F172A]">🎉 No disputes require your attention.</h3>
+              <p className="text-[14px] font-medium text-muted-foreground max-w-sm">
+                There are currently no disputes escalated to the admin team.
+              </p>
+              <Button
+                onClick={() => setStatusFilter("all")}
+                className="mt-2 h-[42px] font-semibold rounded-[10px] px-5 shadow-sm"
+              >
+                View All Disputes
+              </Button>
+            </div>
+          ) : (
+            <DataTable entityName="Disputes"
+              columns={columns}
+              data={filteredDisputes}
+              onRowClick={(row) => navigate(`/disputes/${row.id}`)}
+              className="border-0 shadow-none bg-transparent rounded-none"
+              rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer"
+              pagination={true}
+            />
+          )}
         </div>
 
       </div>

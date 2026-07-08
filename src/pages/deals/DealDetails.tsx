@@ -1,13 +1,19 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, Export, Star, Image as ImageIcon, Briefcase, Package, Scales, User } from "@phosphor-icons/react"
+import { CaretLeft, Export, Star, Image as ImageIcon, Briefcase, Package, Scales, User, CreditCard, Bank, DotsThree, Receipt, ArrowRight } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { DataTable } from "@/components/ui/data-table"
 import { Timeline } from "@/components/ui/timeline"
-import { mockDeals, mockTransactions, mockReviews, mockUsers } from "@/lib/mock-data"
-import type { DealData } from "@/lib/mock-data"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { mockDeals, mockTransactions, mockReviews, mockUsers, mockDisputes } from "@/lib/mock-data"
+import type { DealData, TransactionData } from "@/lib/mock-data"
 import { UserInformationCard } from "@/components/UserInformationCard"
 import { cn } from "@/lib/utils"
 
@@ -35,15 +41,17 @@ function StatusBadgeSemantic({ status }: { status: DealData["status"] | string }
 function StatusBadgeTransaction({ status }: { status: string }) {
   const getBadgeStyle = () => {
     switch (status.toLowerCase()) {
+      case "pending": return "bg-[#F1F5F9] text-[#64748B]" // Gray
       case "completed": return "bg-[#ECFDF5] text-[#059669]" // Green
-      case "pending": return "bg-[#FEFCE8] text-[#CA8A04]" // Yellow
       case "failed": return "bg-[#FEF2F2] text-[#DC2626]" // Red
-      case "refunded": return "bg-[#E2E8F0] text-[#1E293B]" // Dark Gray
+      case "refunded": return "bg-[#FFF7ED] text-[#EA580C]" // Orange
+      case "released": return "bg-[#F0FDFA] text-[#0D9488]" // Teal
+      case "processing": return "bg-[#EFF6FF] text-[#2563EB]" // Blue
       default: return "bg-[#F1F5F9] text-[#64748B]"
     }
   }
   return (
-    <span className={cn("inline-flex items-center justify-center rounded-full px-2 py-0.5 text-[12px] font-semibold", getBadgeStyle())}>
+    <span className={cn("inline-flex items-center justify-center rounded-full px-3 py-1 text-[13px] font-semibold", getBadgeStyle())}>
       {status}
     </span>
   )
@@ -59,6 +67,7 @@ export function DealDetails() {
   const [activeTab, setActiveTab] = React.useState(tabFromUrl)
 
   const deal = mockDeals.find(d => d.id === id) || mockDeals[0]
+  const relatedDispute = mockDisputes.find(d => d.dealId === deal.id)
 
   const updateUrlTab = (tabId: string) => {
     setActiveTab(tabId)
@@ -86,6 +95,15 @@ export function DealDetails() {
           <h1 className="text-[24px] font-bold tracking-tight text-foreground">Deal Details</h1>
         </div>
         <div className="ml-auto flex items-center gap-3">
+          {relatedDispute && (
+            <Button
+              onClick={() => navigate(`/disputes/${relatedDispute.id}`)}
+              className="gap-2 h-10 font-semibold shadow-sm rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 border-0"
+            >
+              <Scales weight="bold" className="h-4 w-4" />
+              Go to Dispute
+            </Button>
+          )}
           <Button variant="outline" className="gap-2 h-10 font-semibold bg-background shadow-sm border-border/50 rounded-xl hover:bg-muted">
             <Export weight="bold" className="h-4 w-4" />
             Export Data
@@ -143,17 +161,15 @@ export function DealDetails() {
           { id: "overview", label: "Overview" },
           { id: "transaction", label: "Transaction" },
           { id: "reviews", label: "Reviews", count: 2 },
-          { id: "dispute", label: "Dispute" },
-        ]} 
+        ]}
       />
 
       <div className="w-full space-y-6">
         {/* Main Content Area */}
         <div className="space-y-6">
           {activeTab === "overview" && <OverviewTab deal={deal} />}
-          {activeTab === "transaction" && <TransactionTab />}
+          {activeTab === "transaction" && <TransactionTab dealId={deal.id} />}
           {activeTab === "reviews" && <ReviewsTab />}
-          {activeTab === "dispute" && <DisputeTab deal={deal} />}
         </div>
       </div>
     </div>
@@ -253,25 +269,138 @@ function OverviewTab({ deal }: { deal: DealData }) {
   )
 }
 
-function TransactionTab() {
+const getFinancialMovement = (row: TransactionData) => {
+  if (row.type === "Sell" || (row.type === "Buy" && row.status === "Refunded")) {
+    return { label: "Credit", color: "bg-[#ECFDF3] text-[#16A34A]", sign: "+" }
+  }
+  return { label: "Debit", color: "bg-[#FEF2F2] text-[#DC2626]", sign: "-" }
+}
+
+const ROW_LIMIT = 2
+
+function TransactionTab({ dealId }: { dealId: string }) {
   const navigate = useNavigate()
-  const transactions = mockTransactions.slice(0, 2) // mock related transactions
+  const [showAll, setShowAll] = React.useState(false)
+
+  const dealTransactions = mockTransactions.filter(trx => trx.dealId === dealId)
+  const visibleTransactions = showAll ? dealTransactions : dealTransactions.slice(0, ROW_LIMIT)
+  const hasMore = dealTransactions.length > ROW_LIMIT
+
+  const columns = [
+    {
+      header: "Date",
+      accessor: "date",
+      cell: (row: TransactionData) => <span className="text-[13px] font-medium text-[#475569]">{row.date}</span>
+    },
+    {
+      header: "Type",
+      cell: (row: TransactionData) => {
+        const move = getFinancialMovement(row)
+        return <span className={`inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium ${move.color}`}>{move.label}</span>
+      }
+    },
+    {
+      header: "Amount",
+      cell: (row: TransactionData) => {
+        const move = getFinancialMovement(row)
+        const isPositive = move.sign === "+"
+        return (
+          <span className={`text-[14px] font-bold ${isPositive ? 'text-[#16A34A]' : 'text-[#DC2626]'}`}>
+            {move.sign}${typeof row.amount === 'number' ? row.amount.toLocaleString(undefined, {minimumFractionDigits: 2}) : row.amount}
+          </span>
+        )
+      }
+    },
+    {
+      header: "Method",
+      accessor: "paymentType",
+      cell: (row: TransactionData) => {
+        const isCard = row.paymentType?.toLowerCase().includes("card")
+        return (
+          <div className="flex items-center gap-2">
+            {isCard ? <CreditCard className="h-4 w-4 text-[#64748B]" /> : <Bank className="h-4 w-4 text-[#64748B]" />}
+            <span className="text-[13px] font-medium text-[#475569]">{row.paymentType}</span>
+          </div>
+        )
+      }
+    },
+    {
+      header: "Status",
+      cell: (row: TransactionData) => <StatusBadgeTransaction status={row.status} />
+    },
+    {
+      header: "Created At",
+      cell: (row: TransactionData) => (
+        <div className="flex flex-col">
+          <span className="text-[13px] font-medium text-[#111827]">{row.date}</span>
+          <span className="text-[12px] text-[#64748B]">10:32 AM</span>
+        </div>
+      )
+    },
+    {
+      header: "",
+      className: "w-[40px]",
+      cell: (row: TransactionData) => (
+        <div onClick={(e) => e.stopPropagation()}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted text-muted-foreground rounded-md transition-all active:scale-95">
+                <DotsThree weight="bold" className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 rounded-xl shadow-[0_12px_40px_rgba(15,23,42,0.1)] border-border/50 animate-in fade-in zoom-in-95 duration-100">
+              <DropdownMenuItem onClick={() => navigate(`/transactions/${row.id}`)} className="font-medium cursor-pointer rounded-lg py-2.5 text-[13px]">
+                View Transaction
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate(`/deals/${row.dealId}`)} className="font-medium cursor-pointer rounded-lg py-2.5 text-[13px]">
+                View Deal
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )
+    }
+  ]
+
   return (
     <div className="space-y-6">
+      <div className="bg-white border border-[#EEF2F7] rounded-[20px] pt-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col">
+        <div className="px-6 mb-4">
+          <h3 className="font-bold text-foreground text-[16px]">Transaction History</h3>
+        </div>
 
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-4">
-        <h3 className="font-bold text-foreground">Transaction History</h3>
-        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer" 
-          onRowClick={(row) => navigate(`/transactions/${row.id}`)}
-          columns={[
-            { header: "Date", accessor: "date", className: "w-[120px]" },
-            { header: "Type", accessor: "paymentType" },
-            { header: "Amount", cell: (row) => <span className="text-[14px] font-bold text-[#111827]">{row.amount}</span> },
-            { header: "Reference", cell: (row) => <span className="text-[12px] font-mono text-[#64748B]">{row.reference}</span> },
-            { header: "Status", cell: (row) => <StatusBadgeTransaction status={row.status} /> }
-          ]}
-          data={transactions}
-        />
+        {dealTransactions.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-16 border-t border-[#EEF2F7]">
+            <div className="h-12 w-12 rounded-full bg-[#F8FAFC] border border-[#EEF2F7] flex items-center justify-center">
+              <Receipt className="h-6 w-6 text-[#94A3B8]" />
+            </div>
+            <p className="text-[14px] font-medium text-muted-foreground">No transactions found for this deal.</p>
+          </div>
+        ) : (
+          <>
+            <div className="flex-1 border-t border-[#EEF2F7]">
+              <DataTable entityName="Transactions"
+                columns={columns}
+                data={visibleTransactions}
+                onRowClick={(row) => navigate(`/transactions/${row.id}`)}
+                className="border-0 shadow-none bg-transparent rounded-none"
+                rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer"
+                pagination={false}
+              />
+            </div>
+            {hasMore && (
+              <div className="px-6 py-4 border-t border-[#EEF2F7] flex justify-center">
+                <button
+                  onClick={() => setShowAll(prev => !prev)}
+                  className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0F62FE] hover:underline"
+                >
+                  {showAll ? "Show Less" : `View All Transactions (${dealTransactions.length})`}
+                  <ArrowRight weight="bold" className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
@@ -311,70 +440,3 @@ function ReviewsTab() {
   )
 }
 
-function DisputeTab({ deal }: { deal: DealData }) {
-  return (
-    <div className="space-y-6">
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-        <div className="flex items-center justify-between border-b border-border/50 pb-4">
-          <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
-            <Scales className="h-5 w-5 text-destructive" /> Dispute Information
-          </h3>
-          <StatusBadgeSemantic status="Disputed" />
-        </div>
-        
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-4">
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Issue Summary</div>
-                <div className="font-medium text-[13px] border p-4 rounded-lg bg-muted/20">
-                  Buyer claims the item arrived damaged. Scratches on the side of the watch.
-                </div>
-             </div>
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Buyer Evidence</div>
-                <div className="flex gap-2 mt-2">
-                  <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
-                    <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
-                  </div>
-                  <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
-                    <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
-                  </div>
-                </div>
-             </div>
-          </div>
-
-          <div className="space-y-4">
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Seller Response</div>
-                <div className="font-medium text-[13px] border p-4 rounded-lg bg-muted/20">
-                  Item was packed securely. Damage must have happened during shipping. I have pre-shipment photos.
-                </div>
-             </div>
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Seller Evidence</div>
-                <div className="flex gap-2 mt-2">
-                  <div className="h-16 w-16 bg-muted rounded-lg border border-border flex items-center justify-center">
-                    <ImageIcon className="text-muted-foreground/50 h-6 w-6" />
-                  </div>
-                </div>
-             </div>
-          </div>
-        </div>
-
-        <div className="border-t border-border/50 pt-6">
-           <h4 className="font-bold mb-4">Admin Review Timeline</h4>
-           <Timeline items={[
-             { id: 1, title: "Dispute Opened", date: deal.updated, type: "error" },
-             { id: 2, title: "Admin Review Started", description: "Assigned to Support Team", date: "Just now", type: "info" }
-           ] as any} className="ml-2" />
-        </div>
-
-        <div className="flex gap-3 pt-4 border-t border-border/50">
-           <Button className="bg-primary text-primary-foreground font-semibold">Request More Evidence</Button>
-           <Button variant="outline" className="font-semibold text-destructive border-destructive hover:bg-destructive/10 hover:text-destructive">Approve Refund</Button>
-           <Button variant="outline" className="font-semibold text-success border-success hover:bg-success/10 hover:text-success">Release to Seller</Button>
-        </div>
-      </div>
-    </div>
-  )
-}

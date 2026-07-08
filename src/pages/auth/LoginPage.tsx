@@ -39,7 +39,7 @@ export function LoginPage() {
           {/* Main Card */}
           <div className="bg-white rounded-[24px] border border-[#E8EDF7] shadow-[0_12px_32px_-12px_rgba(15,23,42,0.08)] p-8 sm:p-10">
             {/* Header */}
-            <div className="flex flex-col items-center mb-10 text-center animate-in fade-in slide-in-from-bottom-2 duration-700 delay-[50ms] fill-mode-both">
+            <div className="flex flex-col items-center mb-10 text-center animate-in fade-in slide-in-from-bottom-2 duration-700 delay-75 fill-mode-both">
               <div className="mb-6 bg-gradient-to-br from-[#2F5BFF] to-[#1E3A8A] w-12 h-12 rounded-[14px] flex items-center justify-center shadow-md">
                 {/* Simplified Logo mark */}
                 <ShieldCheck weight="fill" className="text-white w-6 h-6" />
@@ -56,7 +56,7 @@ export function LoginPage() {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSignIn} className="space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-[100ms] fill-mode-both">
+            <form onSubmit={handleSignIn} className="space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-100 fill-mode-both">
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-[13px] font-semibold text-[#0F172A]">Email Address</Label>
                 <div className="relative">
@@ -131,7 +131,7 @@ export function LoginPage() {
           </div>
 
           {/* Bottom Links */}
-          <div className="flex items-center justify-center gap-4 mt-8 text-[13px] text-muted-foreground animate-in fade-in slide-in-from-bottom-2 duration-700 delay-[150ms] fill-mode-both">
+          <div className="flex items-center justify-center gap-4 mt-8 text-[13px] text-muted-foreground animate-in fade-in slide-in-from-bottom-2 duration-700 delay-150 fill-mode-both">
             <a href="#" className="hover:text-foreground transition-colors font-medium">Need help?</a>
             <span className="w-1 h-1 rounded-full bg-border"></span>
             <a href="#" className="hover:text-foreground transition-colors font-medium">Contact Support</a>

@@ -1,19 +1,19 @@
 import * as React from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { CaretLeft, CaretDown, Export, User, Image as ImageIcon, Scales, NotePencil, Question, ShieldWarning } from "@phosphor-icons/react"
+import {
+  CaretLeft, Export, User, Image as ImageIcon, Scales, NotePencil,
+  Question, ShieldWarning, CheckCircle, WarningCircle, Handshake,
+  ShieldCheck, ArrowUUpLeft, ArrowSquareOut, Bell, UploadSimple, Check
+} from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { Timeline } from "@/components/ui/timeline"
 import { mockDisputes, mockUsers } from "@/lib/mock-data"
 import type { DisputeData } from "@/lib/mock-data"
 import { UserInformationCard } from "@/components/UserInformationCard"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 
 function DisputeStatusBadge({ status }: { status: DisputeData["status"] | string }) {
@@ -56,7 +56,7 @@ function PriorityBadge({ priority }: { priority: DisputeData["priority"] | strin
 export function DisputeDetails() {
   const { id } = useParams()
   const navigate = useNavigate()
-  
+
   const urlParams = new URLSearchParams(window.location.search)
   const tabFromUrl = urlParams.get('tab') || "overview"
   const [activeTab, setActiveTab] = React.useState(tabFromUrl)
@@ -72,8 +72,8 @@ export function DisputeDetails() {
     <div className="flex flex-col space-y-6">
       {/* Header Navigation */}
       <div className="flex items-center gap-4">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size="icon"
           onClick={() => navigate("/disputes")}
           className="h-10 w-10 rounded-full bg-background border border-border/50 shadow-sm hover:bg-muted"
@@ -89,50 +89,18 @@ export function DisputeDetails() {
           <h1 className="text-[24px] font-bold tracking-tight text-foreground">Dispute Details</h1>
         </div>
         <div className="ml-auto flex items-center gap-3">
+          <Button
+            variant="outline"
+            onClick={() => navigate(`/deals/${dispute.dealId}`)}
+            className="gap-2 h-10 font-semibold bg-background shadow-sm border-border/50 rounded-xl hover:bg-muted"
+          >
+            <ArrowSquareOut weight="bold" className="h-4 w-4" />
+            Go to Deal
+          </Button>
           <Button variant="outline" className="gap-2 h-10 font-semibold bg-background shadow-sm border-border/50 rounded-xl hover:bg-muted">
             <Export weight="bold" className="h-4 w-4" />
             Export Data
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="gap-2 h-10 font-semibold shadow-sm rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 border-0">
-                Admin Actions
-                <CaretDown weight="bold" className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-[0_12px_40px_rgba(15,23,42,0.1)] border-border/50">
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Mark Under Review
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Assign to Admin
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Request Additional Evidence
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="my-1.5" />
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Message Buyer
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Message Seller
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="my-1.5" />
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2 text-success focus:text-success focus:bg-success/10">
-                Approve Refund
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2 text-warning focus:text-warning focus:bg-warning/10">
-                Partial Refund
-              </DropdownMenuItem>
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2 text-destructive focus:text-destructive focus:bg-destructive/10">
-                Reject Refund
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="my-1.5" />
-              <DropdownMenuItem className="font-medium cursor-pointer rounded-lg py-2">
-                Close Case
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
 
@@ -175,8 +143,8 @@ export function DisputeDetails() {
         </div>
       </div>
 
-      <PageTabs 
-        activeTab={activeTab} 
+      <PageTabs
+        activeTab={activeTab}
         onTabChange={updateUrlTab}
         className="top-[72px]"
         tabs={[
@@ -184,7 +152,7 @@ export function DisputeDetails() {
           { id: "evidence", label: "Evidence" },
           { id: "timeline", label: "Timeline" },
           { id: "decision", label: "Decision" },
-        ]} 
+        ]}
       />
 
       <div className="w-full">
@@ -227,14 +195,14 @@ function OverviewTab({ dispute }: { dispute: DisputeData }) {
           </div>
         </div>
       </div>
-      
-      <UserInformationCard 
+
+      <UserInformationCard
         title="Buyer Information"
         user={buyerUser}
         profileLabel="Buyer Profile"
       />
 
-      <UserInformationCard 
+      <UserInformationCard
         title="Seller Information"
         user={sellerUser}
         profileLabel="Seller Profile"
@@ -246,7 +214,7 @@ function OverviewTab({ dispute }: { dispute: DisputeData }) {
 function EvidenceTab({ dispute }: { dispute: DisputeData }) {
   return (
     <div className="space-y-6">
-      
+
       <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
         <div className="flex items-center gap-3 mb-4">
            <AvatarIcon name={dispute.buyer} isBuyer />
@@ -326,7 +294,7 @@ function TimelineTab({ dispute }: { dispute: DisputeData }) {
     { id: 4, title: "Buyer Escalated", description: "Buyer requested admin intervention", date: "Oct 24, 2026", type: "warning" },
     { id: 5, title: "Admin Reviewing", description: "Case assigned to Super Admin", date: "Today, 10:15 AM", type: "info" },
   ]
-  
+
   return (
     <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
       <h3 className="font-bold text-foreground mb-8">Dispute Timeline</h3>
@@ -335,57 +303,337 @@ function TimelineTab({ dispute }: { dispute: DisputeData }) {
   )
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Decision Tab — Final resolution workflow                                  */
+/* -------------------------------------------------------------------------- */
+
+const PLATFORM_FEE = 168
+
+type ActionId = "release_seller" | "refund_buyer" | "partial"
+
 function DecisionTab({ dispute }: { dispute: DisputeData }) {
+  const protectedAmount = dispute.amount
+  const maxRefund = protectedAmount - PLATFORM_FEE
+
+  const [activeAction, setActiveAction] = React.useState<ActionId | null>(null)
+
+  const selectAction = (id: ActionId) => {
+    setActiveAction(prev => (prev === id ? null : id))
+  }
+
   return (
     <div className="space-y-6">
-      
+
+      {/* Section 1 — Internal Investigation Notes */}
       <div className="rounded-[20px] border border-warning/30 bg-warning/5 p-6 shadow-sm space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <NotePencil weight="fill" className="text-warning h-5 w-5" />
-          <h3 className="font-bold text-foreground text-[13px]">Admin Notes (Internal Only)</h3>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <NotePencil weight="fill" className="text-warning h-5 w-5" />
+            <h3 className="font-bold text-foreground text-[13px]">Admin Notes (Internal Only)</h3>
+          </div>
+          <span className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1 bg-white/70 border border-warning/20 px-2 py-0.5 rounded-full">
+            <Check weight="bold" className="h-3 w-3" /> Auto-saved
+          </span>
         </div>
-        <textarea 
-          className="w-full h-32 p-4 rounded-xl border border-warning/30 bg-white shadow-inner text-[13px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warning"
+        <textarea
+          className="w-full h-32 p-4 rounded-xl border border-warning/30 bg-white shadow-inner text-[13px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warning resize-y"
           placeholder="Add internal notes about the investigation here..."
           defaultValue="The buyer's photos clearly show damage not present in the seller's original listing photos. However, the seller's pre-shipment photos are inconclusive for that specific side of the casing. Recommending partial refund to cover repair costs, or full refund upon return."
         />
-        <div className="flex justify-end">
-          <Button className="bg-warning text-warning-foreground hover:bg-warning/90 font-bold">Save Notes</Button>
+      </div>
+
+      {/* Section 2 — Financial Summary (settlement style) */}
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
+        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 mb-5">
+          <Scales weight="fill" className="h-5 w-5 text-primary" /> Financial Summary
+        </h3>
+        <div className="max-w-md space-y-3 text-[14px]">
+          <SummaryRow label="Protected Amount" value={`$${protectedAmount.toLocaleString()}`} />
+          <SummaryRow label="Platform Fee" value={`−$${PLATFORM_FEE.toLocaleString()}`} muted />
+          <div className="border-t border-dashed border-border/70" />
+          <SummaryRow label="Maximum Refund" value={`$${maxRefund.toLocaleString()}`} strong />
+          <SummaryRow label="Seller Release" value={`$${maxRefund.toLocaleString()}`} strong />
+          <div className="border-t border-dashed border-border/70" />
+          <div className="flex items-center justify-between pt-1">
+            <span className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wider">Escrow Status</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ECFDF5] px-3 py-1 text-[13px] font-bold text-[#059669]">
+              <CheckCircle weight="fill" className="h-4 w-4" /> Protected
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 border-b border-border/50 pb-4">
-          <Scales weight="fill" className="h-5 w-5 text-primary" /> Final Decision Panel
+      {/* Section 3 — Final Resolution */}
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
+        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 mb-1">
+          <ShieldCheck weight="fill" className="h-5 w-5 text-primary" /> Final Resolution
         </h3>
-        
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-4">
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Protected Funds Status</div>
-                <div className="font-medium"><DisputeStatusBadge status="Under Review" /></div>
-             </div>
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Protected Amount</div>
-                <div className="font-medium font-mono">${dispute.amount.toLocaleString()}</div>
-             </div>
+        <p className="text-[13px] text-muted-foreground mb-5">
+          Choose how the protected funds should be resolved. Only one action can be active at a time.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <ActionPill
+            active={activeAction === "release_seller"}
+            onClick={() => selectAction("release_seller")}
+            icon={<Handshake weight="fill" className="h-5 w-5" />}
+            label="Release Funds to Seller"
+            theme="green"
+          />
+          <ActionPill
+            active={activeAction === "refund_buyer"}
+            onClick={() => selectAction("refund_buyer")}
+            icon={<ArrowUUpLeft weight="bold" className="h-5 w-5" />}
+            label="Refund Buyer"
+            theme="blue"
+          />
+          <ActionPill
+            active={activeAction === "partial"}
+            onClick={() => selectAction("partial")}
+            icon={<Scales weight="fill" className="h-5 w-5" />}
+            label="Partial Settlement"
+            theme="orange"
+          />
+        </div>
+
+        {/* Expanded workflow */}
+        {activeAction && (
+          <div className="mt-6 pt-6 border-t border-border/60 animate-in fade-in slide-in-from-top-2 duration-200">
+            {activeAction === "release_seller" && <ReleaseSellerPanel amount={maxRefund} />}
+            {activeAction === "refund_buyer" && <RefundBuyerPanel protectedAmount={protectedAmount} />}
+            {activeAction === "partial" && <PartialSettlementPanel protectedAmount={protectedAmount} />}
           </div>
-          <div className="space-y-4">
-             <div>
-                <div className="text-[12px] font-medium text-muted-foreground mb-1">Platform Fee</div>
-                <div className="font-medium font-mono text-muted-foreground">$168.00 (Standard Policy applies)</div>
-             </div>
+        )}
+      </div>
+
+    </div>
+  )
+}
+
+function SummaryRow({ label, value, muted, strong }: { label: string, value: string, muted?: boolean, strong?: boolean }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className={cn("text-[13px]", strong ? "font-bold text-foreground" : "font-medium text-muted-foreground")}>{label}</span>
+      <span className={cn("font-mono tabular-nums", strong ? "text-[15px] font-bold text-foreground" : muted ? "text-[14px] font-semibold text-muted-foreground" : "text-[14px] font-semibold text-foreground")}>{value}</span>
+    </div>
+  )
+}
+
+/* --- Action pill --------------------------------------------------------- */
+
+const PILL_THEMES = {
+  green: { idle: "border-green-200 bg-green-50 text-green-700 hover:bg-green-100", active: "border-green-600 bg-green-600 text-white shadow-md shadow-green-600/20" },
+  blue: { idle: "border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100", active: "border-blue-600 bg-blue-600 text-white shadow-md shadow-blue-600/20" },
+  orange: { idle: "border-orange-200 bg-orange-50 text-orange-700 hover:bg-orange-100", active: "border-orange-500 bg-orange-500 text-white shadow-md shadow-orange-500/20" },
+  purple: { idle: "border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100", active: "border-purple-600 bg-purple-600 text-white shadow-md shadow-purple-600/20" },
+} as const
+
+function ActionPill({ active, onClick, icon, label, theme }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string, theme: keyof typeof PILL_THEMES }) {
+  const t = PILL_THEMES[theme]
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-2.5 rounded-2xl border px-4 py-3.5 text-[14px] font-bold text-left transition-all duration-200",
+        active ? t.active : t.idle
+      )}
+    >
+      <span className="shrink-0">{icon}</span>
+      <span className="leading-tight">{label}</span>
+    </button>
+  )
+}
+
+/* --- Shared bits --------------------------------------------------------- */
+
+function ReasonField({ value, onChange, label = "Resolution Reason", placeholder = "Explain the rationale for this decision..." }: { value: string, onChange: (v: string) => void, label?: string, placeholder?: string }) {
+  return (
+    <div>
+      <Label className="text-[13px] font-bold text-foreground mb-1.5 block">{label}</Label>
+      <textarea
+        className="w-full h-24 p-3 rounded-[10px] border border-border/70 bg-white text-[14px] shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary resize-y"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  )
+}
+
+function MoneyInput({ value, onChange }: { value: string, onChange: (v: string) => void }) {
+  return (
+    <div className="relative">
+      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
+      <Input type="number" min={0} className="pl-7 font-mono" value={value} onChange={(e) => onChange(e.target.value)} />
+    </div>
+  )
+}
+
+/* --- Action 1: Release Funds to Seller ----------------------------------- */
+
+function ReleaseSellerPanel({ amount }: { amount: number }) {
+  const [reason, setReason] = React.useState("")
+  return (
+    <div className="space-y-5">
+      <ReasonField value={reason} onChange={setReason} />
+      <div className="flex items-start gap-3 rounded-xl border border-green-200 bg-green-50 p-4">
+        <WarningCircle weight="fill" className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
+        <p className="text-[13px] font-medium text-green-800">
+          Protected funds of <span className="font-bold">${amount.toLocaleString()}</span> will be released to the seller wallet. This closes the case and cannot be undone.
+        </p>
+      </div>
+      <div className="flex justify-end">
+        <Button disabled={!reason.trim()} className="bg-green-600 hover:bg-green-700 text-white font-bold h-10 px-8">
+          Confirm Release
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+/* --- Action 2: Refund Buyer ---------------------------------------------- */
+
+function RefundBuyerPanel({ protectedAmount }: { protectedAmount: number }) {
+  const [method, setMethod] = React.useState<"return" | "keep">("return")
+  const [reason, setReason] = React.useState("")
+  const [buyerRefund, setBuyerRefund] = React.useState(Math.round(protectedAmount / 2).toString())
+
+  const parsed = parseFloat(buyerRefund) || 0
+  const overLimit = parsed > protectedAmount || parsed < 0
+  const clamped = Math.min(Math.max(parsed, 0), protectedAmount)
+  const sellerRelease = protectedAmount - clamped
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <Label className="text-[13px] font-bold text-foreground mb-2 block">Refund Method</Label>
+        <RadioGroup value={method} onValueChange={(v) => setMethod(v as "return" | "keep")} className="grid sm:grid-cols-2 gap-3">
+          <MethodOption id="return" value="return" selected={method === "return"} title="Return Required" desc="Buyer must ship the item back before the refund is released." />
+          <MethodOption id="keep" value="keep" selected={method === "keep"} title="Keep Item" desc="Buyer keeps the item; funds are split between both parties." />
+        </RadioGroup>
+      </div>
+
+      {method === "return" && (
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 space-y-3 animate-in fade-in duration-200">
+          <p className="text-[12px] font-bold text-blue-800 uppercase tracking-wider">Return Instructions</p>
+          <ol className="space-y-2">
+            <ReturnStep icon={<Bell weight="fill" className="h-4 w-4" />} text="Buyer receives a return notification" />
+            <ReturnStep icon={<UploadSimple weight="bold" className="h-4 w-4" />} text="Buyer uploads return tracking" />
+            <ReturnStep icon={<CheckCircle weight="fill" className="h-4 w-4" />} text="Seller confirms receipt of the item" />
+            <ReturnStep icon={<Handshake weight="fill" className="h-4 w-4" />} text="Refund released automatically" />
+          </ol>
+        </div>
+      )}
+
+      {method === "keep" && (
+        <div className="space-y-4 animate-in fade-in duration-200">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-[13px] font-bold text-foreground mb-1.5 block">Buyer Refund</Label>
+              <MoneyInput value={buyerRefund} onChange={setBuyerRefund} />
+            </div>
+            <div>
+              <Label className="text-[13px] font-bold text-foreground mb-1.5 block">Seller Release <span className="font-normal text-muted-foreground">(auto)</span></Label>
+              <div className="h-10 flex items-center rounded-md border border-border/70 bg-muted/40 px-3 font-mono font-semibold text-foreground">
+                ${sellerRelease.toLocaleString()}
+              </div>
+            </div>
+          </div>
+          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 flex items-center justify-between font-mono text-[13px]">
+            <span className="font-medium text-blue-800">Protected Amount</span>
+            <span className="font-bold text-blue-900">${protectedAmount.toLocaleString()}</span>
+          </div>
+          {overLimit && (
+            <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/30 p-3 text-[13px] font-medium text-destructive">
+              <WarningCircle weight="fill" className="h-4 w-4 shrink-0" />
+              Buyer refund cannot exceed the protected amount of ${protectedAmount.toLocaleString()}.
+            </div>
+          )}
+        </div>
+      )}
+
+      <ReasonField value={reason} onChange={setReason} />
+
+      <div className="flex justify-end">
+        <Button disabled={!reason.trim() || (method === "keep" && overLimit)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-8">
+          {method === "return" ? "Confirm Refund" : "Confirm Settlement"}
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function MethodOption({ id, value, selected, title, desc }: { id: string, value: string, selected: boolean, title: string, desc: string }) {
+  return (
+    <Label
+      htmlFor={id}
+      className={cn(
+        "flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-all",
+        selected ? "border-blue-500 bg-blue-50 ring-1 ring-blue-500" : "border-border/70 bg-white hover:bg-muted/30"
+      )}
+    >
+      <RadioGroupItem value={value} id={id} className="mt-0.5" />
+      <span className="space-y-0.5">
+        <span className="block text-[13px] font-bold text-foreground">{title}</span>
+        <span className="block text-[12px] font-medium text-muted-foreground">{desc}</span>
+      </span>
+    </Label>
+  )
+}
+
+function ReturnStep({ icon, text }: { icon: React.ReactNode, text: string }) {
+  return (
+    <li className="flex items-center gap-2.5 text-[13px] font-medium text-blue-900">
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-blue-600 shrink-0">{icon}</span>
+      {text}
+    </li>
+  )
+}
+
+/* --- Action 3: Partial Settlement ---------------------------------------- */
+
+function PartialSettlementPanel({ protectedAmount }: { protectedAmount: number }) {
+  const [buyerRefund, setBuyerRefund] = React.useState(Math.round(protectedAmount / 2).toString())
+  const [reason, setReason] = React.useState("")
+
+  const parsed = parseFloat(buyerRefund) || 0
+  const overLimit = parsed > protectedAmount || parsed < 0
+  const clamped = Math.min(Math.max(parsed, 0), protectedAmount)
+  const sellerRelease = protectedAmount - clamped
+
+  return (
+    <div className="space-y-5">
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <Label className="text-[13px] font-bold text-foreground mb-1.5 block">Buyer Refund</Label>
+          <MoneyInput value={buyerRefund} onChange={setBuyerRefund} />
+        </div>
+        <div>
+          <Label className="text-[13px] font-bold text-foreground mb-1.5 block">Seller Release <span className="font-normal text-muted-foreground">(auto)</span></Label>
+          <div className="h-10 flex items-center rounded-md border border-border/70 bg-muted/40 px-3 font-mono font-semibold text-foreground">
+            ${sellerRelease.toLocaleString()}
           </div>
         </div>
-        
-        <div className="bg-muted/30 p-4 rounded-xl border border-border/50">
-          <p className="text-[13px] font-medium text-muted-foreground mb-4">You are about to issue a final decision. This action will disburse the protected funds according to your selection and close the case.</p>
-          <div className="flex flex-wrap gap-3">
-             <Button className="bg-success hover:bg-success/90 text-white font-bold">Release to Seller</Button>
-             <Button variant="outline" className="border-warning text-warning hover:bg-warning/10 font-bold">Partial Refund</Button>
-             <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive/10 font-bold">Full Refund to Buyer</Button>
-          </div>
+      </div>
+
+      <div className="rounded-xl border border-orange-200 bg-orange-50 p-4 flex items-center justify-between font-mono text-[13px]">
+        <span className="font-medium text-orange-800">Protected Amount</span>
+        <span className="font-bold text-orange-900">${protectedAmount.toLocaleString()}</span>
+      </div>
+
+      {overLimit && (
+        <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/30 p-3 text-[13px] font-medium text-destructive">
+          <WarningCircle weight="fill" className="h-4 w-4 shrink-0" />
+          Buyer refund cannot exceed the protected amount of ${protectedAmount.toLocaleString()}.
         </div>
+      )}
+
+      <ReasonField value={reason} onChange={setReason} />
+
+      <div className="flex justify-end">
+        <Button disabled={overLimit || !reason.trim()} className="bg-orange-500 hover:bg-orange-600 text-white font-bold h-10 px-8">
+          Confirm Settlement
+        </Button>
       </div>
     </div>
   )

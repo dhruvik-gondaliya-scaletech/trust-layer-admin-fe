@@ -181,9 +181,15 @@ function OverviewTab({ user }: { user: UserData }) {
 }
 
 function WalletTab({ user }: { user: UserData }) {
-  const navigate = useNavigate()
-
   const getFinancialMovement = (row: any) => {
+    if (row.category) {
+      const isPositive = row.direction !== "out"
+      return {
+        label: row.category,
+        color: isPositive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700",
+        sign: isPositive ? "+" : "-",
+      }
+    }
     if (row.status === "Refunded") return { label: "Refund", color: "bg-orange-100 text-orange-700", sign: "+" }
     if (row.type === "Sell") return { label: "Credit", color: "bg-green-100 text-green-700", sign: "+" }
     if (row.type === "Buy") return { label: "Debit", color: "bg-red-100 text-red-700", sign: "-" }
@@ -202,8 +208,7 @@ function WalletTab({ user }: { user: UserData }) {
         <div className="p-6 border-b border-[#EEF2F7]">
           <h3 className="font-bold text-foreground">Wallet History</h3>
         </div>
-        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFC] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer" 
-          onRowClick={(row) => navigate(`/transactions/${row.id}`)}
+        <DataTable className="border-0 shadow-none bg-transparent rounded-none" rowClassName="h-[56px] hover:bg-[#F8FAFC] border-b border-[#EEF2F7] transition-all duration-150"
           columns={[
             { header: "Date", accessor: "date", cell: (row: any) => <span className="text-[13px] font-medium text-[#475569]">{row.date}</span> },
             { header: "Type", cell: (row: any) => {

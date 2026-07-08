@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { PageTabs } from "@/components/ui/page-tabs"
 import { 
-  MagnifyingGlass, DotsThree, Plus, ShieldCheck, UserCircle, GridFour,
+  MagnifyingGlass, DotsThree, Plus, ShieldCheck,
   SquaresFour, Briefcase, ChartLineUp, WarningCircle, Users, 
   IdentificationCard, ChartBar, Gear, Bell
 } from "@phosphor-icons/react"
@@ -109,20 +109,6 @@ function RoleStatusBadge({ status }: { status: RoleData["status"] }) {
   )
 }
 
-function StatCard({ title, value, icon: Icon }: { title: string, value: string | number, icon: any }) {
-  return (
-    <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-5 shadow-sm flex items-center justify-between">
-      <div>
-        <p className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">{title}</p>
-        <p className="text-[28px] font-bold text-[#0F172A]">{value}</p>
-      </div>
-      <div className="h-12 w-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#EEF2F7]">
-        <Icon weight="duotone" className="h-6 w-6 text-primary" />
-      </div>
-    </div>
-  )
-}
-
 function ModuleCard({ 
   module, selected, onTogglePerm, onToggleAll
 }: { 
@@ -131,9 +117,9 @@ function ModuleCard({
   const allSelected = selected.length === module.perms.length && module.perms.length > 0;
   return (
     <div className="bg-white border border-[#E8EDF7] rounded-[14px] p-4 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-2">
-        <Checkbox 
-          checked={allSelected} 
+      <div className="flex items-center gap-2 border-b border-[#EEF2F7] pb-3">
+        <Checkbox
+          checked={allSelected}
           onCheckedChange={onToggleAll}
           id={`select-all-${module.id}`}
         />
@@ -141,7 +127,7 @@ function ModuleCard({
           {module.name}
         </Label>
       </div>
-      
+
       <div className="flex flex-wrap gap-x-6 gap-y-3 mt-1">
         {module.perms.map(perm => {
           const isSelected = selected.includes(perm)
@@ -178,7 +164,6 @@ export function AdminUsersPage() {
 
   // Roles Tab Modal State
   const [selectedPerms, setSelectedPerms] = React.useState<Record<string, string[]>>({})
-  const [permSearch, setPermSearch] = React.useState("")
 
   // Derived state
   const filteredUsers = mockAdminUsers.filter(user => {
@@ -427,13 +412,6 @@ export function AdminUsersPage() {
       {/* Roles Tab */}
       {activeTab === "roles" && (
         <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard title="Total Roles" value={6} icon={ShieldCheck} />
-            <StatCard title="Active Roles" value={5} icon={ShieldCheck} />
-            <StatCard title="Admin Users" value={18} icon={UserCircle} />
-            <StatCard title="Permission Modules" value={10} icon={GridFour} />
-          </div>
-
           <div className="bg-white border border-[#EEF2F7] rounded-[20px] shadow-[0_8px_30px_rgba(15,23,42,0.05)] overflow-hidden">
             <DataTable 
               columns={roleColumns} 
@@ -528,32 +506,6 @@ export function AdminUsersPage() {
                   <Label className="text-[13px] font-semibold text-[#475569]">Description</Label>
                   <textarea placeholder="Describe the responsibilities of this role." className="flex min-h-[80px] w-full rounded-[10px] border border-[#EEF2F7] bg-white px-3 py-2 text-[14px] shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none" />
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-[13px] font-semibold text-[#475569]">Clone Existing Role</Label>
-                  <Select>
-                    <SelectTrigger className="w-full h-[42px] rounded-[10px]">
-                      <SelectValue placeholder="Start from scratch" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">Start from scratch</SelectItem>
-                      <SelectItem value="Super Admin">Super Admin</SelectItem>
-                      <SelectItem value="Operations Admin">Operations Admin</SelectItem>
-                      <SelectItem value="Finance Admin">Finance Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[13px] font-semibold text-[#475569]">Status</Label>
-                  <Select defaultValue="Active">
-                    <SelectTrigger className="w-full h-[42px] rounded-[10px]">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="Inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
               </div>
             </div>
 
@@ -562,24 +514,12 @@ export function AdminUsersPage() {
               <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#EEF2F7] pb-3 gap-3">
                 <h3 className="text-[15px] font-bold text-[#0F172A]">Permissions Configuration</h3>
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="relative w-[200px]">
-                    <MagnifyingGlass weight="bold" className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder="Search permissions..."
-                      value={permSearch}
-                      onChange={(e) => setPermSearch(e.target.value)}
-                      className="pl-8 h-8 rounded-[8px] text-[13px] bg-[#FAFBFD] border-[#EEF2F7]"
-                    />
-                  </div>
-                  <div className="w-px h-4 bg-[#EEF2F7] mx-1"></div>
                   <Button variant="ghost" onClick={grantAll} className="h-8 px-2 rounded-[6px] text-[12px] font-semibold text-[#059669] hover:bg-[#ECFDF5]">Grant All</Button>
                   <Button variant="ghost" onClick={revokeAll} className="h-8 px-2 rounded-[6px] text-[12px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2]">Revoke All</Button>
                 </div>
               </div>
               <div className="flex flex-col gap-3">
                 {permissionModules
-                  .filter(m => m.name.toLowerCase().includes(permSearch.toLowerCase()) || m.perms.some(p => p.toLowerCase().includes(permSearch.toLowerCase())))
                   .map(module => (
                   <ModuleCard 
                     key={module.id} 
