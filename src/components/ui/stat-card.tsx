@@ -24,7 +24,7 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card className={cn("overflow-hidden border-border/50 shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 min-h-[114px] flex flex-col justify-center", className)} {...props}>
-      <CardContent className="p-6 flex items-center justify-between">
+      <CardContent className="p-4 lg:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
           <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-muted-foreground mb-2">{title}</p>
           <h3 className="text-[24px] font-bold tracking-tight text-[#111827] leading-none">{value}</h3>

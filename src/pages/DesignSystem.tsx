@@ -56,7 +56,7 @@ export function DesignSystem() {
       <section>
         <SectionHeader title="Typography" description="Font scales and weights." />
         <Card>
-          <CardContent className="p-6 space-y-6">
+          <CardContent className="p-6 space-y-6 2xl:space-y-8">
             <div className="space-y-2">
               <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">H1 / Page Title</span>
               <h1 className="text-[24px] font-bold tracking-tight text-foreground">The quick brown fox jumps over the lazy dog.</h1>
@@ -76,7 +76,7 @@ export function DesignSystem() {
       {/* Buttons & Inputs */}
       <section>
         <SectionHeader title="Buttons & Inputs" description="Interactive elements with 12px border radius." />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 2xl:gap-8">
           <Card>
             <CardHeader><CardTitle className="text-sm uppercase text-muted-foreground">Buttons</CardTitle></CardHeader>
             <CardContent className="space-y-4">
@@ -132,7 +132,7 @@ export function DesignSystem() {
       {/* Cards */}
       <section>
         <SectionHeader title="Cards & Shadows" description="16px radius with soft premium shadows." />
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 2xl:gap-8 md:grid-cols-3">
           <StatCard 
             title="Total Protected Funds" 
             value="$4.2M" 

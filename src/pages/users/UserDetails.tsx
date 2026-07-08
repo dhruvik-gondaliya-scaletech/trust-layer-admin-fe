@@ -27,7 +27,7 @@ export function UserDetails() {
   const user = mockUsers.find(u => u.id === id) || mockUsers[0] // fallback to first user for demo
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col space-y-6 2xl:space-y-8">
       {/* Header Navigation */}
       <div className="flex items-center gap-4">
         <Button 
@@ -106,11 +106,11 @@ export function UserDetails() {
 function OverviewTab({ user }: { user: UserData }) {
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 2xl:gap-8">
         
         {/* Left Column: Personal Information (70%) */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 h-full">
+        <div className="lg:col-span-2 flex flex-col gap-6 2xl:gap-8">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 2xl:gap-8 h-full">
             <h3 className="text-[18px] font-semibold text-foreground m-0">
               Personal Information
             </h3>
@@ -146,8 +146,8 @@ function OverviewTab({ user }: { user: UserData }) {
         </div>
 
         {/* Right Column: Reviews (30%) */}
-        <div className="lg:col-span-1 flex flex-col gap-6">
-          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 h-full">
+        <div className="lg:col-span-1 flex flex-col gap-6 2xl:gap-8">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 2xl:gap-8 h-full">
             <h3 className="text-[18px] font-semibold text-foreground m-0">
               Reviews
             </h3>
@@ -197,8 +197,8 @@ function WalletTab({ user }: { user: UserData }) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="space-y-6 2xl:space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 3xl:gap-8">
         <StatCard title="Available Balance" value={`$${user.walletBalance.toLocaleString()}`} icon={<Money weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
         <StatCard title="Protected Funds" value={`$${user.heldFunds.toLocaleString()}`} icon={<LockKey weight="fill" />} iconContainerClassName="bg-[#EFF6FF] text-[#2563EB]" className="bg-white" />
         <StatCard title="Total Withdrawn" value={`$${user.withdrawn.toLocaleString()}`} icon={<ArrowUpRight weight="fill" />} iconContainerClassName="bg-[#F3F4F6] text-[#6B7280]" className="bg-white" />
@@ -542,8 +542,8 @@ function TransactionsTab() {
 
 function ReviewsTab({ user }: { user: UserData }) {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-6 2xl:space-y-8">
+      <div className="grid grid-cols-2 gap-4 lg:gap-6 3xl:gap-8">
         <StatCard title="Average Buyer Rating" value={user.buyerRating ? `${user.buyerRating} / 5.0` : "N/A"} icon={<Star weight="fill" />} iconContainerClassName="bg-[#FEFCE8] text-[#CA8A04]" className="bg-white" />
         <StatCard title="Average Seller Rating" value={user.sellerRating ? `${user.sellerRating} / 5.0` : "N/A"} icon={<Star weight="fill" />} iconContainerClassName="bg-[#FEFCE8] text-[#CA8A04]" className="bg-white" />
       </div>

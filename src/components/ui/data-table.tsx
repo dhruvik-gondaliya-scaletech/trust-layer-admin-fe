@@ -46,7 +46,7 @@ export function DataTable<TData>({
               {columns.map((col, index) => (
                 <TableHead
                   key={index}
-                  className={cn("h-[48px] px-6 text-[11px] font-medium uppercase tracking-[0.08em] text-[#94A3B8]", col.className)}
+                  className={cn("h-[48px] px-4 lg:px-6 text-[11px] font-medium uppercase tracking-[0.08em] text-[#94A3B8]", col.className)}
                 >
                   <div className="flex items-center gap-2">
                     {col.header}
@@ -76,7 +76,7 @@ export function DataTable<TData>({
                   {columns.map((col, colIndex) => (
                     <TableCell
                       key={colIndex}
-                      className={cn("px-6 align-middle text-[13px] font-medium text-[#111827]", col.className)}
+                      className={cn("px-4 lg:px-6 align-middle text-[13px] font-medium text-[#111827]", col.className)}
                     >
                       {col.cell
                         ? col.cell(row)
@@ -102,7 +102,7 @@ export function DataTable<TData>({
       </div>
       
       {pagination && (
-        <div className="flex items-center justify-between border-t border-[#EEF2F7] px-6 py-4 bg-white">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 border-t border-[#EEF2F7] px-4 lg:px-6 py-3 lg:py-4 bg-white">
           <div className="text-[13px] font-medium text-muted-foreground">
             Showing 1–{data.length} of {data.length} {entityName}
           </div>

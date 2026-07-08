@@ -171,7 +171,7 @@ export function DisputesList() {
       <div className="bg-white border border-[#EEF2F7] rounded-[20px] pt-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col">
         
         {/* PAGE HEADER */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-6 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 px-6 mb-8">
           <div className="flex flex-col gap-1">
             <h1 className="text-[24px] font-bold tracking-tight text-[#0F172A]">Disputes</h1>
             <p className="text-[14px] font-medium text-muted-foreground">Review, investigate and resolve disputes raised across the TrustLayer platform.</p>
@@ -186,8 +186,8 @@ export function DisputesList() {
         </div>
 
         {/* FILTER TOOLBAR */}
-        <div className="px-6 mb-6">
-          <div className="flex flex-wrap items-center gap-4 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
+        <div className="px-6 mb-8">
+          <div className="flex flex-wrap items-center gap-6 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
             
             {/* Search */}
             <div className="relative w-full sm:w-[360px]">

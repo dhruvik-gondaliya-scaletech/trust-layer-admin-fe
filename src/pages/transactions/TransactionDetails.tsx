@@ -63,7 +63,7 @@ export function TransactionDetails() {
   }
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col space-y-6 2xl:space-y-8">
       {/* Header Navigation */}
       <div className="flex items-center gap-4">
         <Button 
@@ -86,8 +86,8 @@ export function TransactionDetails() {
       </div>
 
       {/* Summary Card Header */}
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col flex flex-col md:flex-row gap-6 items-start md:items-center">
-        <div className="h-20 w-20 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col md:flex-row gap-6 2xl:gap-8 items-start md:items-center">
+        <div className="h-20 w-20 rounded-[14px] bg-[#F8FAFC] border-2 border-[#EEF2F7] flex items-center justify-center shrink-0">
           <Receipt weight="fill" className="h-10 w-10 text-primary" />
         </div>
         <div className="flex flex-col gap-2 flex-1">
@@ -135,48 +135,49 @@ export function TransactionDetails() {
         ]} 
       />
 
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-        {/* Main Content Area */}
-        <div className="xl:col-span-3 space-y-6">
-          {activeTab === "overview" && <OverviewTab transaction={transaction} />}
-          {activeTab === "payment" && <PaymentTab transaction={transaction} />}
-          {activeTab === "timeline" && <TimelineTab transaction={transaction} />}
-          {activeTab === "related_deal" && <RelatedDealTab deal={relatedDeal} navigate={navigate} />}
-        </div>
+      <div className="w-full">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 2xl:gap-8">
+          {/* Main Content Area */}
+          <div className="xl:col-span-3 space-y-6 2xl:space-y-8">
+            {activeTab === "overview" && <OverviewTab transaction={transaction} />}
+            {activeTab === "payment" && <PaymentTab transaction={transaction} />}
+            {activeTab === "timeline" && <TimelineTab transaction={transaction} />}
+            {activeTab === "related_deal" && <RelatedDealTab deal={relatedDeal} navigate={navigate} />}
+          </div>
 
-        {/* Right Sticky Sidebar */}
-        <div className="xl:col-span-1">
-          <div className="sticky top-[140px] bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
-            <h3 className="text-[14px] font-bold text-foreground mb-4">Transaction Summary</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Transaction Status</span>
-                <span className="text-[14px] font-bold text-foreground">{transaction.status}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Protected Funds</span>
-                <span className="text-[14px] font-bold text-foreground">{transaction.protectedStatus}</span>
-              </div>
-              <div className="w-full h-px bg-border/50 my-2" />
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Base Amount</span>
-                <span className="text-[14px] font-bold text-foreground">${(transaction.amount - transaction.platformFee).toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Platform Fee</span>
-                <span className="text-[14px] font-bold text-foreground">${transaction.platformFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-bold text-foreground">Total Processed</span>
-                <span className="text-[14px] font-bold text-foreground">${transaction.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-              </div>
-              <div className="w-full h-px bg-border/50 my-2" />
-              <div className="flex justify-between items-center">
-                <span className="text-[13px] font-medium text-muted-foreground">Date</span>
-                <span className="text-[14px] font-bold text-foreground">{transaction.date}</span>
+          {/* Right Sticky Sidebar */}
+          <div className="hidden xl:block xl:col-span-1">
+            <div className="sticky top-[140px] bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6 2xl:space-y-8">
+              <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">Transaction Summary</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-[13px] font-medium text-muted-foreground">Transaction Status</span>
+                  <span className="text-[14px] font-bold text-foreground">{transaction.status}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[13px] font-medium text-muted-foreground">Protected Funds</span>
+                  <span className="text-[14px] font-bold text-foreground">{transaction.protectedStatus}</span>
+                </div>
+                <div className="w-full h-px bg-border/50 my-2" />
+                <div className="flex justify-between items-center">
+                  <span className="text-[13px] font-medium text-muted-foreground">Base Amount</span>
+                  <span className="text-[14px] font-bold text-foreground">${(transaction.amount - transaction.platformFee).toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[13px] font-medium text-muted-foreground">Platform Fee</span>
+                  <span className="text-[14px] font-bold text-foreground">${transaction.platformFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[13px] font-bold text-foreground">Total Processed</span>
+                  <span className="text-[14px] font-bold text-foreground">${transaction.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+                </div>
+                <div className="w-full h-px bg-border/50 my-2" />
+                <div className="flex justify-between items-center">
+                  <span className="text-[13px] font-medium text-muted-foreground">Date</span>
+                  <span className="text-[14px] font-bold text-foreground">{transaction.date}</span>
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -191,8 +192,8 @@ function OverviewTab({ transaction }: { transaction: TransactionData }) {
   const sellerUser = mockUsers.find(u => u.name === transaction.seller) || { id: "USR-102", name: transaction.seller, email: `${transaction.seller.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 018-2241" }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6 md:col-span-2">
+    <div className="grid gap-6 2xl:gap-8 md:grid-cols-2">
+      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6 2xl:space-y-8 md:col-span-2">
         <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
           <Briefcase className="h-5 w-5 text-muted-foreground" /> Deal Summary
         </h3>
@@ -228,7 +229,7 @@ function OverviewTab({ transaction }: { transaction: TransactionData }) {
 
 function PaymentTab({ transaction }: { transaction: TransactionData }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Buyer Paid" value={`$${transaction.amount.toLocaleString(undefined, {minimumFractionDigits:2})}`} icon={<ArrowUUpLeft weight="fill" />} iconContainerClassName="bg-[#F3F0FF] text-[#7C3AED]" className="bg-white" />
         <StatCard title="Platform Fee" value={`$${transaction.platformFee.toLocaleString(undefined, {minimumFractionDigits:2})}`} icon={<Money weight="fill" />} iconContainerClassName="bg-[#F5F3FF] text-[#7C3AED]" className="bg-white" />
@@ -236,12 +237,12 @@ function PaymentTab({ transaction }: { transaction: TransactionData }) {
         <StatCard title="Seller Receives" value={`$${(transaction.amount - transaction.platformFee).toLocaleString(undefined, {minimumFractionDigits:2})}`} icon={<Handshake weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
       </div>
 
-      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6">
+      <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col space-y-6 2xl:space-y-8">
         <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
           <Bank className="h-5 w-5 text-muted-foreground" /> Payment Details
         </h3>
         
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2">
           <div className="space-y-4">
              <div>
                 <div className="text-[12px] font-medium text-muted-foreground mb-1">Payment Method</div>
@@ -319,7 +320,7 @@ function RelatedDealTab({ deal, navigate }: { deal: DealData | undefined, naviga
 
   return (
     <div className="bg-white border border-[#EEF2F7] rounded-[20px] p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col max-w-2xl mx-auto">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <div className="flex items-center gap-4 border-b border-border/50 pb-6">
           <div className="h-20 w-20 rounded-2xl bg-muted border border-border shadow-sm flex items-center justify-center overflow-hidden shrink-0">
             {deal.productThumbnail ? (

@@ -152,7 +152,7 @@ export function UsersList() {
     <div className="h-full w-full">
       <div className="bg-white border border-[#EEF2F7] rounded-[20px] pt-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col">
         {/* PAGE HEADER */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-6 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 px-6 mb-8">
           <div className="flex flex-col gap-1">
             <h1 className="text-[24px] font-bold tracking-tight text-[#0F172A]">Users</h1>
             <p className="text-[14px] font-medium text-muted-foreground">Manage all platform users and operations.</p>
@@ -167,8 +167,8 @@ export function UsersList() {
         </div>
 
         {/* Filters Toolbar */}
-        <div className="px-6 mb-6">
-          <div className="flex flex-wrap items-center gap-4 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
+        <div className="px-6 mb-8">
+          <div className="flex flex-wrap items-center gap-6 bg-[#FAFBFD] rounded-[14px] p-4 border border-[#EEF2F7]">
             {/* Search Box */}
             <div className="relative w-full sm:w-[320px]">
               <MagnifyingGlass weight="bold" className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[16px] w-[16px] text-muted-foreground" />

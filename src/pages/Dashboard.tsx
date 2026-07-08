@@ -90,30 +90,74 @@ function ListCard({
 
 export function Dashboard() {
   return (
-    <div className="flex-1 space-y-6 p-8">
+    <div className="flex-1 space-y-6 2xl:space-y-8 p-4 lg:p-6 2xl:p-8">
       <PageHeader
         title="Dashboard"
         description="Real-time overview of platform operations."
       />
 
       {/* Row 1: KPI Cards */}
-      <div className="flex flex-col gap-5">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard title="Total Registered Users" value="12,548" icon={<Users weight="fill" />} iconContainerClassName="bg-[#EEF4FF] text-[#3B82F6]" className="bg-white" />
-          <StatCard title="Active Deals" value="342" icon={<Briefcase weight="fill" />} iconContainerClassName="bg-[#F3F0FF] text-[#7C3AED]" className="bg-white" />
-          <StatCard title="Completed Deals" value="1,845" icon={<CheckCircle weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
-          <StatCard title="Protected Funds" value="$4.2M" icon={<Bank weight="fill" />} iconContainerClassName="bg-[#EFF6FF] text-[#2563EB]" className="bg-white" />
-        </div>
-        <div className="grid gap-5 md:grid-cols-3">
-          <StatCard title="Funds Released" value="$18.4M" icon={<CurrencyCircleDollar weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
-          <StatCard title="Platform Revenue" value="$128,450" icon={<ChartLineUp weight="fill" />} iconContainerClassName="bg-[#F5F3FF] text-[#7C3AED]" className="bg-white" />
-          <StatCard title="Open Disputes" value="3" icon={<WarningCircle weight="fill" />} iconContainerClassName="bg-[#FEF2F2] text-[#EF4444]" className="bg-white" />
-        </div>
+      <div className="grid gap-4 lg:gap-6 2xl:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <StatCard title="Total Registered Users" value="12,548" icon={<Users weight="fill" />} iconContainerClassName="bg-[#EEF4FF] text-[#3B82F6]" className="bg-white" />
+        <StatCard title="Active Deals" value="342" icon={<Briefcase weight="fill" />} iconContainerClassName="bg-[#F3F0FF] text-[#7C3AED]" className="bg-white" />
+        <StatCard title="Completed Deals" value="1,845" icon={<CheckCircle weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
+        <StatCard title="Protected Funds" value="$4.2M" icon={<Bank weight="fill" />} iconContainerClassName="bg-[#EFF6FF] text-[#2563EB]" className="bg-white" />
+        <StatCard title="Funds Released" value="$18.4M" icon={<CurrencyCircleDollar weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
+        <StatCard title="Platform Revenue" value="$128,450" icon={<ChartLineUp weight="fill" />} iconContainerClassName="bg-[#F5F3FF] text-[#7C3AED]" className="bg-white" />
+        <StatCard title="Open Disputes" value="3" icon={<WarningCircle weight="fill" />} iconContainerClassName="bg-[#FEF2F2] text-[#EF4444]" className="bg-white" />
       </div>
 
-            {/* Row 2: Operations */}
-      <div className="grid gap-8 grid-cols-1 xl:grid-cols-3">
-        <div className="bg-card rounded-[20px] border border-[#EEF2F7] shadow-sm p-6 space-y-4">
+      {/* Row 2: Operations */}
+      <div className="flex flex-col gap-6 2xl:gap-8">
+        
+        {/* Deals & Transactions - 2 Column */}
+        <div className="grid gap-6 2xl:gap-8 grid-cols-1 lg:grid-cols-2">
+          
+          <div className="bg-card rounded-[20px] border border-[#EEF2F7] shadow-sm p-4 lg:p-6 space-y-4">
+            <SectionHeader title="Recent Deals" description="Latest active and completed deals" />
+            {recentDeals.length > 0 ? (
+              <div className="space-y-4">
+                {recentDeals.map(d => (
+                  <ListCard
+                    key={d.id}
+                    avatar={d.item.substring(0, 2)}
+                    title={d.item}
+                    subtitle={d.id}
+                    metadata={<>{d.buyer} <span className="text-muted-foreground mx-1">↔</span> {d.seller} <span className="text-muted-foreground mx-1">•</span> <span className="font-bold">{d.amount}</span></>}
+                    status={<StatusBadge status={d.status as any} />}
+                    time={"Updated recently"}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyState icon={<Briefcase weight="regular" className="h-6 w-6" />} title="No recent deals" description="There are no active deals to display." />
+            )}
+          </div>
+
+          <div className="bg-card rounded-[20px] border border-[#EEF2F7] shadow-sm p-4 lg:p-6 space-y-4">
+            <SectionHeader title="Recent Transactions" description="Latest platform fund movements" />
+            {recentTransactions.length > 0 ? (
+              <div className="space-y-4">
+                {recentTransactions.map(t => (
+                  <ListCard
+                    key={t.id}
+                    avatar={<CurrencyCircleDollar weight="bold" className="h-5 w-5" />}
+                    title={t.amount}
+                    subtitle={t.dealId}
+                    status={<StatusBadge status={t.paymentStatus as any} />}
+                    time={t.date}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyState icon={<Bank weight="regular" className="h-6 w-6" />} title="No recent transactions" description="No funds have been moved recently." />
+            )}
+          </div>
+
+        </div>
+
+        {/* Disputes - Full Width */}
+        <div className="bg-card rounded-[20px] border border-[#EEF2F7] shadow-sm p-4 lg:p-6 space-y-4">
           <SectionHeader title="Recent Disputes" description="Cases requiring review" />
           {recentDisputes.length > 0 ? (
             <div className="space-y-4">
@@ -133,45 +177,7 @@ export function Dashboard() {
             <EmptyState icon={<WarningCircle weight="regular" className="h-6 w-6" />} title="No recent disputes" description="No disputes require attention at this time." />
           )}
         </div>
-        <div className="bg-card rounded-[20px] border border-[#EEF2F7] shadow-sm p-6 space-y-4">
-          <SectionHeader title="Recent Deals" description="Latest active and completed deals" />
-          {recentDeals.length > 0 ? (
-            <div className="space-y-4">
-              {recentDeals.map(d => (
-                <ListCard
-                  key={d.id}
-                  avatar={d.item.substring(0, 2)}
-                  title={d.item}
-                  subtitle={d.id}
-                  metadata={<>{d.buyer} <span className="text-muted-foreground mx-1">↔</span> {d.seller} <span className="text-muted-foreground mx-1">•</span> <span className="font-bold">{d.amount}</span></>}
-                  status={<StatusBadge status={d.status as any} />}
-                  time={"Updated recently"}
-                />
-              ))}
-            </div>
-          ) : (
-            <EmptyState icon={<Briefcase weight="regular" className="h-6 w-6" />} title="No recent deals" description="There are no active deals to display." />
-          )}
-        </div>
-        <div className="bg-card rounded-[20px] border border-[#EEF2F7] shadow-sm p-6 space-y-4">
-          <SectionHeader title="Recent Transactions" description="Latest platform fund movements" />
-          {recentTransactions.length > 0 ? (
-            <div className="space-y-4">
-              {recentTransactions.map(t => (
-                <ListCard
-                  key={t.id}
-                  avatar={<CurrencyCircleDollar weight="bold" className="h-5 w-5" />}
-                  title={t.amount}
-                  subtitle={t.dealId}
-                  status={<StatusBadge status={t.paymentStatus as any} />}
-                  time={t.date}
-                />
-              ))}
-            </div>
-          ) : (
-            <EmptyState icon={<Bank weight="regular" className="h-6 w-6" />} title="No recent transactions" description="No funds have been moved recently." />
-          )}
-        </div>
+
       </div>
     </div>
   )

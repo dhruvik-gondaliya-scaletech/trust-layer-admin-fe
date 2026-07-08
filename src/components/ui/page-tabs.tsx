@@ -15,7 +15,7 @@ interface PageTabsProps {
 
 export function PageTabs({ tabs, activeTab, onTabChange, className }: PageTabsProps) {
   return (
-    <div className={cn("w-full border-b border-[#EEF2F7] pb-4", className)}>
+    <div className={cn("w-full border-b border-[#EEF2F7] pb-3 lg:pb-4", className)}>
       <div className="flex w-full overflow-x-auto no-scrollbar">
         <div className="flex items-center gap-2 w-max min-w-full">
           {tabs.map((tab) => {
@@ -25,7 +25,7 @@ export function PageTabs({ tabs, activeTab, onTabChange, className }: PageTabsPr
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
                 className={cn(
-                  "flex items-center justify-center h-[42px] px-[18px] text-[14px] font-semibold rounded-[12px] transition-all duration-200 outline-none whitespace-nowrap",
+                  "flex items-center justify-center h-[40px] lg:h-[42px] px-[16px] lg:px-[18px] text-[14px] font-semibold rounded-[12px] transition-all duration-200 outline-none whitespace-nowrap",
                   isActive
                     ? "bg-[#2553FF] text-white shadow-sm"
                     : "bg-transparent text-[#475569] hover:bg-[#EEF4FF]"

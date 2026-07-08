@@ -69,7 +69,7 @@ export function DisputeDetails() {
   }
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col space-y-6 2xl:space-y-8">
       {/* Header Navigation */}
       <div className="flex items-center gap-4">
         <Button
@@ -105,7 +105,7 @@ export function DisputeDetails() {
       </div>
 
       {/* Summary Card Header */}
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col md:flex-row gap-6 items-start md:items-center">
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] flex flex-col md:flex-row gap-6 2xl:gap-8 items-start md:items-center">
         <div className="h-24 w-24 rounded-[14px] bg-muted border-2 border-[#EEF2F7] flex items-center justify-center overflow-hidden shrink-0">
           {dispute.productThumbnail ? (
             <img src={dispute.productThumbnail} alt={dispute.product} className="w-full h-full object-cover" />
@@ -157,7 +157,7 @@ export function DisputeDetails() {
 
       <div className="w-full">
         {/* Main Content Area */}
-        <div className="space-y-6">
+        <div className="space-y-6 2xl:space-y-8">
           {activeTab === "overview" && <OverviewTab dispute={dispute} />}
           {activeTab === "evidence" && <EvidenceTab dispute={dispute} />}
           {activeTab === "timeline" && <TimelineTab dispute={dispute} />}
@@ -175,8 +175,8 @@ function OverviewTab({ dispute }: { dispute: DisputeData }) {
   const sellerUser = mockUsers.find(u => u.name === dispute.seller) || { id: "USR-102", name: dispute.seller, email: `${dispute.seller.toLowerCase().replace(" ", ".")}@example.com`, phone: "+1 (555) 443-9982", verified: true, role: "Seller" } as any;
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 md:col-span-2">
+    <div className="grid gap-6 2xl:gap-8 md:grid-cols-2">
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8 md:col-span-2">
         <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2">
           <Question className="h-5 w-5 text-muted-foreground" /> Dispute Context
         </h3>
@@ -213,9 +213,9 @@ function OverviewTab({ dispute }: { dispute: DisputeData }) {
 
 function EvidenceTab({ dispute }: { dispute: DisputeData }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 2xl:space-y-8">
 
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8">
         <div className="flex items-center gap-3 mb-4">
            <AvatarIcon name={dispute.buyer} isBuyer />
            <div>
@@ -239,7 +239,7 @@ function EvidenceTab({ dispute }: { dispute: DisputeData }) {
         </div>
       </div>
 
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6">
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8">
         <div className="flex items-center gap-3 mb-4">
            <AvatarIcon name={dispute.seller} />
            <div>
@@ -260,7 +260,7 @@ function EvidenceTab({ dispute }: { dispute: DisputeData }) {
         </div>
       </div>
 
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 border-l-4 border-l-destructive">
+      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8 border-l-4 border-l-destructive">
         <div className="flex items-center gap-3 mb-4">
            <AvatarIcon name={dispute.buyer} isBuyer />
            <div>
@@ -322,7 +322,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 2xl:space-y-8">
 
       {/* Section 1 — Internal Investigation Notes */}
       <div className="rounded-[20px] border border-warning/30 bg-warning/5 p-6 shadow-sm space-y-4">
@@ -372,7 +372,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
           Choose how the protected funds should be resolved. Only one action can be active at a time.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <ActionPill
             active={activeAction === "release_seller"}
             onClick={() => selectAction("release_seller")}
@@ -387,6 +387,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
             label="Refund Buyer"
             theme="blue"
           />
+          {/* Partial Settlement temporarily hidden
           <ActionPill
             active={activeAction === "partial"}
             onClick={() => selectAction("partial")}
@@ -394,6 +395,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
             label="Partial Settlement"
             theme="orange"
           />
+          */}
         </div>
 
         {/* Expanded workflow */}
@@ -401,7 +403,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
           <div className="mt-6 pt-6 border-t border-border/60 animate-in fade-in slide-in-from-top-2 duration-200">
             {activeAction === "release_seller" && <ReleaseSellerPanel amount={maxRefund} />}
             {activeAction === "refund_buyer" && <RefundBuyerPanel protectedAmount={protectedAmount} />}
-            {activeAction === "partial" && <PartialSettlementPanel protectedAmount={protectedAmount} />}
+            {/* activeAction === "partial" && <PartialSettlementPanel protectedAmount={protectedAmount} /> */}
           </div>
         )}
       </div>
@@ -592,7 +594,7 @@ function ReturnStep({ icon, text }: { icon: React.ReactNode, text: string }) {
 
 /* --- Action 3: Partial Settlement ---------------------------------------- */
 
-function PartialSettlementPanel({ protectedAmount }: { protectedAmount: number }) {
+/* function PartialSettlementPanel({ protectedAmount }: { protectedAmount: number }) {
   const [buyerRefund, setBuyerRefund] = React.useState(Math.round(protectedAmount / 2).toString())
   const [reason, setReason] = React.useState("")
 
@@ -637,4 +639,4 @@ function PartialSettlementPanel({ protectedAmount }: { protectedAmount: number }
       </div>
     </div>
   )
-}
+} */

@@ -19,7 +19,7 @@ export function ProfileDetails() {
   const [activeTab, setActiveTab] = React.useState("overview")
 
   return (
-    <div className="flex flex-col h-full w-full space-y-6">
+    <div className="flex flex-col h-full w-full space-y-6 2xl:space-y-8">
       <div className="flex items-center gap-4">
         <Button 
           variant="ghost" 
@@ -84,11 +84,11 @@ export function ProfileDetails() {
 function OverviewTab() {
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 2xl:gap-8">
         
         {/* Left Column: Personal Information (70%) */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 h-full relative">
+        <div className="lg:col-span-2 flex flex-col gap-6 2xl:gap-8">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 2xl:gap-8 h-full relative">
             <div className="flex items-center justify-between">
               <h3 className="text-[18px] font-semibold text-foreground m-0">
                 Personal Information
@@ -128,8 +128,8 @@ function OverviewTab() {
         </div>
 
         {/* Right Column: Profile Photo & Quick Info (30%) */}
-        <div className="lg:col-span-1 flex flex-col gap-6">
-          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 items-center text-center">
+        <div className="lg:col-span-1 flex flex-col gap-6 2xl:gap-8">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 2xl:gap-8 items-center text-center">
             <h3 className="text-[14px] font-bold text-foreground w-full text-left m-0">Profile Photo</h3>
             <Avatar className="h-24 w-24 rounded-full border border-border shadow-sm">
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-[24px]">EM</AvatarFallback>
@@ -140,7 +140,7 @@ function OverviewTab() {
             </div>
           </div>
 
-          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6">
+          <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 2xl:gap-8">
             <h3 className="text-[16px] font-bold text-foreground m-0">Account Summary</h3>
             <div className="flex flex-col gap-5">
               <div className="flex justify-between items-center">
@@ -177,8 +177,8 @@ function OverviewTab() {
 
 function SecurityTab() {
   return (
-    <div className="w-full space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="w-full space-y-6 2xl:space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 2xl:gap-8">
         <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col justify-between h-full">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -212,7 +212,7 @@ function SecurityTab() {
         </div>
       </div>
 
-      <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6">
+      <div className="bg-white border border-[#EEF2F7] rounded-[16px] p-6 shadow-sm flex flex-col gap-6 2xl:gap-8">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-[16px] font-bold text-foreground m-0">Login Sessions</h3>

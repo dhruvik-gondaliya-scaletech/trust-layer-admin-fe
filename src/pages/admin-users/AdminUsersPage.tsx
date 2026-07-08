@@ -304,8 +304,8 @@ export function AdminUsersPage() {
   ]
 
   return (
-    <div className="h-full w-full space-y-6 flex flex-col">
-      {/* Header & Actions */}
+    <div className="h-full w-full space-y-6 2xl:space-y-8 flex flex-col">
+      {/* Page Header & Actions */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <h1 className="text-[24px] font-bold tracking-tight text-[#0F172A]">Admin Users</h1>
@@ -411,7 +411,7 @@ export function AdminUsersPage() {
 
       {/* Roles Tab */}
       {activeTab === "roles" && (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           <div className="bg-white border border-[#EEF2F7] rounded-[20px] shadow-[0_8px_30px_rgba(15,23,42,0.05)] overflow-hidden">
             <DataTable 
               columns={roleColumns} 
@@ -492,8 +492,8 @@ export function AdminUsersPage() {
             <DialogTitle className="text-[18px] font-bold text-[#0F172A]">Create Role</DialogTitle>
             <p className="text-[13px] text-muted-foreground mt-1 font-medium">Define a new administrator role and configure platform permissions.</p>
           </DialogHeader>
-          
-          <div className="overflow-y-auto flex-1 p-6 space-y-8 bg-white">
+          <div className="flex-1 overflow-hidden flex flex-col bg-[#F8FAFC]">
+          <div className="overflow-y-auto flex-1 p-6 space-y-6 2xl:space-y-8 bg-white">
             {/* Section 1: Basic Information */}
             <div className="space-y-4">
               <h3 className="text-[15px] font-bold text-[#0F172A] border-b border-[#EEF2F7] pb-2">Basic Information</h3>
@@ -545,6 +545,7 @@ export function AdminUsersPage() {
                 Create Role
               </Button>
             </div>
+          </div>
           </div>
         </DialogContent>
       </Dialog>
