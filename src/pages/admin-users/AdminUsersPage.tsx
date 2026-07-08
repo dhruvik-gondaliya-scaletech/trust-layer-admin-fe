@@ -428,13 +428,13 @@ export function AdminUsersPage() {
       
       {/* Add Admin User Modal */}
       <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
-        <DialogContent className="max-w-[500px] p-0 overflow-hidden rounded-[20px] border-[#EEF2F7] shadow-xl">
-          <DialogHeader className="px-6 py-5 border-b border-[#EEF2F7] bg-[#F8FAFC]">
+        <DialogContent className="max-w-[500px] p-0 rounded-[20px] border-[#EEF2F7] shadow-xl overflow-hidden flex flex-col max-h-[85vh]">
+          <DialogHeader className="px-6 py-5 border-b border-[#EEF2F7] bg-[#F8FAFC] shrink-0">
             <DialogTitle className="text-[18px] font-bold text-[#0F172A]">Add Admin User</DialogTitle>
             <p className="text-[13px] text-muted-foreground mt-1 font-medium">Create a new administrator account and assign roles.</p>
           </DialogHeader>
-          
-          <div className="p-6 space-y-5">
+
+          <div className="overflow-y-auto flex-1 p-6 space-y-5 bg-white">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-[13px] font-semibold text-[#475569]">First Name</Label>
@@ -474,7 +474,7 @@ export function AdminUsersPage() {
             </div>
           </div>
 
-          <div className="px-6 py-4 bg-[#F8FAFC] border-t border-[#EEF2F7] flex items-center justify-end gap-3 rounded-b-[20px]">
+          <div className="px-6 py-4 bg-[#F8FAFC] border-t border-[#EEF2F7] flex items-center justify-end gap-3 shrink-0 rounded-b-[20px]">
             <Button variant="outline" onClick={() => setIsAddUserOpen(false)} className="h-[42px] rounded-[10px] font-semibold bg-white shadow-sm hover:bg-[#F1F5F9]">
               Cancel
             </Button>
