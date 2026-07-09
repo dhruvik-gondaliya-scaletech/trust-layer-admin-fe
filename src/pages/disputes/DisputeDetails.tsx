@@ -324,8 +324,8 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
   }
 
   const parsedRefund = parseFloat(buyerRefundStr) || 0
-  const clampedRefund = Math.min(Math.max(parsedRefund, 0), protectedAmount)
-  const computedSellerRelease = protectedAmount - clampedRefund
+  const clampedRefund = Math.min(Math.max(parsedRefund, 0), maxRefund)
+  const computedSellerRelease = maxRefund - clampedRefund
 
   let displayBuyerRefund = 0
   let displaySellerRelease = maxRefund
@@ -389,7 +389,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
             {activeAction && (
               <div className="mt-6 pt-6 border-t border-border/60 animate-in fade-in slide-in-from-top-2 duration-200">
                 {activeAction === "release_seller" && <ReleaseSellerPanel amount={maxRefund} />}
-                {activeAction === "refund_buyer" && <RefundBuyerPanel protectedAmount={protectedAmount} buyerRefund={buyerRefundStr} setBuyerRefund={setBuyerRefundStr} method={refundMethod} setMethod={setRefundMethod} />}
+                {activeAction === "refund_buyer" && <RefundBuyerPanel buyerRefund={buyerRefundStr} setBuyerRefund={setBuyerRefundStr} method={refundMethod} setMethod={setRefundMethod} maxRefund={maxRefund} />}
                 {/* activeAction === "partial" && <PartialSettlementPanel protectedAmount={protectedAmount} /> */}
               </div>
             )}
@@ -406,6 +406,7 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
             <div className="max-w-md space-y-3 text-[14px]">
               <SummaryRow label="Protected Amount" value={`$${protectedAmount.toLocaleString()}`} />
               <SummaryRow label="Platform Fee" value={`−$${PLATFORM_FEE.toLocaleString()}`} muted />
+              <SummaryRow label="Net Settlement" value={`$${maxRefund.toLocaleString()}`} strong />
               <div className="border-t border-dashed border-border/70" />
               <SummaryRow label="Buyer Refund" value={`$${displayBuyerRefund.toLocaleString()}`} strong />
               <SummaryRow label="Seller Release" value={`$${displaySellerRelease.toLocaleString()}`} strong />
@@ -521,13 +522,13 @@ function ReleaseSellerPanel({ amount }: { amount: number }) {
 
 /* --- Action 2: Refund Buyer ---------------------------------------------- */
 
-function RefundBuyerPanel({ protectedAmount, buyerRefund, setBuyerRefund, method, setMethod }: { protectedAmount: number, buyerRefund: string, setBuyerRefund: (v: string) => void, method: "return" | "keep", setMethod: (v: "return" | "keep") => void }) {
+function RefundBuyerPanel({ buyerRefund, setBuyerRefund, method, setMethod, maxRefund }: { buyerRefund: string, setBuyerRefund: (v: string) => void, method: "return" | "keep", setMethod: (v: "return" | "keep") => void, maxRefund: number }) {
   const [reason, setReason] = React.useState("")
 
   const parsed = parseFloat(buyerRefund) || 0
-  const overLimit = parsed > protectedAmount || parsed < 0
-  const clamped = Math.min(Math.max(parsed, 0), protectedAmount)
-  const sellerRelease = protectedAmount - clamped
+  const overLimit = parsed > maxRefund || parsed < 0
+  const clamped = Math.min(Math.max(parsed, 0), maxRefund)
+  const sellerRelease = maxRefund - clamped
 
   return (
     <div className="space-y-5">
@@ -566,13 +567,13 @@ function RefundBuyerPanel({ protectedAmount, buyerRefund, setBuyerRefund, method
             </div>
           </div>
           <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 flex items-center justify-between font-mono text-[13px]">
-            <span className="font-medium text-blue-800">Protected Amount</span>
-            <span className="font-bold text-blue-900">${protectedAmount.toLocaleString()}</span>
+            <span className="font-medium text-blue-800">Net Settlement</span>
+            <span className="font-bold text-blue-900">${maxRefund.toLocaleString()}</span>
           </div>
           {overLimit && (
             <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/30 p-3 text-[13px] font-medium text-destructive">
               <WarningCircle weight="fill" className="h-4 w-4 shrink-0" />
-              Buyer refund cannot exceed the protected amount of ${protectedAmount.toLocaleString()}.
+              Buyer refund cannot exceed the net settlement amount of ${maxRefund.toLocaleString()}.
             </div>
           )}
         </div>
