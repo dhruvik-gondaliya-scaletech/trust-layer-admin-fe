@@ -58,7 +58,7 @@ export function DisputeDetails() {
   const navigate = useNavigate()
 
   const urlParams = new URLSearchParams(window.location.search)
-  const tabFromUrl = urlParams.get('tab') || "overview"
+  const tabFromUrl = urlParams.get('tab') || "evidence"
   const [activeTab, setActiveTab] = React.useState(tabFromUrl)
 
   const dispute = mockDisputes.find(d => d.id === id) || mockDisputes[0]
