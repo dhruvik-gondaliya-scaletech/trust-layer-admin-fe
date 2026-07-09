@@ -122,9 +122,9 @@ export function DisputeDetails() {
           <div className="flex items-center gap-4 text-[13px] font-medium text-muted-foreground">
             <span className="hover:text-primary hover:underline cursor-pointer" onClick={() => navigate(`/deals/${dispute.dealId}`)}>Deal {dispute.dealId}</span>
             <span>•</span>
-            <span className="flex items-center gap-1"><User className="h-4 w-4"/> Buyer: {dispute.buyer} (Score: {dispute.buyerTrustScore})</span>
+            <span className="flex items-center gap-1"><User className="h-4 w-4" /> Buyer: {dispute.buyer} (Score: {dispute.buyerTrustScore})</span>
             <span>•</span>
-            <span className="flex items-center gap-1"><User className="h-4 w-4"/> Seller: {dispute.seller} (Score: {dispute.sellerTrustScore})</span>
+            <span className="flex items-center gap-1"><User className="h-4 w-4" /> Seller: {dispute.seller} (Score: {dispute.sellerTrustScore})</span>
           </div>
           <div className="flex items-center gap-2 mt-1">
             <span className="inline-flex items-center rounded-md bg-destructive/10 px-2 py-1 text-[12px] font-bold text-destructive uppercase tracking-wider">
@@ -148,10 +148,10 @@ export function DisputeDetails() {
         onTabChange={updateUrlTab}
         className="top-[72px]"
         tabs={[
-          { id: "overview", label: "Overview" },
           { id: "evidence", label: "Evidence" },
+          { id: "decision", label: "Admin Action" },
+          { id: "overview", label: "Overview" },
           { id: "timeline", label: "Timeline" },
-          { id: "decision", label: "Decision" },
         ]}
       />
 
@@ -217,56 +217,56 @@ function EvidenceTab({ dispute }: { dispute: DisputeData }) {
 
       <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8">
         <div className="flex items-center gap-3 mb-4">
-           <AvatarIcon name={dispute.buyer} isBuyer />
-           <div>
-             <h3 className="font-bold text-foreground text-[13px]">Buyer Description</h3>
-             <p className="text-[12px] text-muted-foreground">{dispute.buyer} • Oct 22, 2026, 4:45 PM</p>
-           </div>
+          <AvatarIcon name={dispute.buyer} isBuyer />
+          <div>
+            <h3 className="font-bold text-foreground text-[13px]">Buyer Description</h3>
+            <p className="text-[12px] text-muted-foreground">{dispute.buyer} • Oct 22, 2026, 4:45 PM</p>
+          </div>
         </div>
         <div className="p-4 rounded-xl border border-border/50 bg-muted/20 text-[13px] font-medium">
           "The item arrived with significant damage to the casing that was not disclosed in the listing. The box was perfectly fine, so it must have been damaged before shipping. I have attached photos of the scratches."
         </div>
         <div className="space-y-2">
-           <div className="text-[12px] font-bold text-foreground uppercase tracking-wider">Attached Evidence</div>
-           <div className="flex gap-3">
-             <div className="h-20 w-20 rounded-xl bg-muted border border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
-               <ImageIcon weight="fill" className="text-muted-foreground/50 h-8 w-8" />
-             </div>
-             <div className="h-20 w-20 rounded-xl bg-muted border border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
-               <ImageIcon weight="fill" className="text-muted-foreground/50 h-8 w-8" />
-             </div>
-           </div>
+          <div className="text-[12px] font-bold text-foreground uppercase tracking-wider">Attached Evidence</div>
+          <div className="flex gap-3">
+            <div className="h-20 w-20 rounded-xl bg-muted border border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <ImageIcon weight="fill" className="text-muted-foreground/50 h-8 w-8" />
+            </div>
+            <div className="h-20 w-20 rounded-xl bg-muted border border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <ImageIcon weight="fill" className="text-muted-foreground/50 h-8 w-8" />
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8">
         <div className="flex items-center gap-3 mb-4">
-           <AvatarIcon name={dispute.seller} />
-           <div>
-             <h3 className="font-bold text-foreground text-[13px]">Seller Response</h3>
-             <p className="text-[12px] text-muted-foreground">{dispute.seller} • Oct 23, 2026, 9:15 AM</p>
-           </div>
+          <AvatarIcon name={dispute.seller} />
+          <div>
+            <h3 className="font-bold text-foreground text-[13px]">Seller Response</h3>
+            <p className="text-[12px] text-muted-foreground">{dispute.seller} • Oct 23, 2026, 9:15 AM</p>
+          </div>
         </div>
         <div className="p-4 rounded-xl border border-border/50 bg-muted/20 text-[13px] font-medium">
           "I packed the item securely in bubble wrap. It was in pristine condition when it left my hands. I have pre-shipment photos attached proving there were no scratches."
         </div>
         <div className="space-y-2">
-           <div className="text-[12px] font-bold text-foreground uppercase tracking-wider">Attached Evidence</div>
-           <div className="flex gap-3">
-             <div className="h-20 w-20 rounded-xl bg-muted border border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
-               <ImageIcon weight="fill" className="text-muted-foreground/50 h-8 w-8" />
-             </div>
-           </div>
+          <div className="text-[12px] font-bold text-foreground uppercase tracking-wider">Attached Evidence</div>
+          <div className="flex gap-3">
+            <div className="h-20 w-20 rounded-xl bg-muted border border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <ImageIcon weight="fill" className="text-muted-foreground/50 h-8 w-8" />
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] space-y-6 2xl:space-y-8 border-l-4 border-l-destructive">
         <div className="flex items-center gap-3 mb-4">
-           <AvatarIcon name={dispute.buyer} isBuyer />
-           <div>
-             <h3 className="font-bold text-foreground text-[13px] text-destructive">Buyer Escalation</h3>
-             <p className="text-[12px] text-muted-foreground">{dispute.buyer} • Oct 24, 2026, 2:30 PM</p>
-           </div>
+          <AvatarIcon name={dispute.buyer} isBuyer />
+          <div>
+            <h3 className="font-bold text-foreground text-[13px] text-destructive">Buyer Escalation</h3>
+            <p className="text-[12px] text-muted-foreground">{dispute.buyer} • Oct 24, 2026, 2:30 PM</p>
+          </div>
         </div>
         <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5 text-[13px] font-medium">
           "The pre-shipment photos provided by the seller don't even show the side of the casing where the scratches are. I refuse to accept this item in its current condition."
@@ -316,14 +316,106 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
   const maxRefund = protectedAmount - PLATFORM_FEE
 
   const [activeAction, setActiveAction] = React.useState<ActionId | null>(null)
+  const [buyerRefundStr, setBuyerRefundStr] = React.useState(Math.round(protectedAmount / 2).toString())
+  const [refundMethod, setRefundMethod] = React.useState<"return" | "keep">("return")
 
   const selectAction = (id: ActionId) => {
     setActiveAction(prev => (prev === id ? null : id))
   }
 
+  const parsedRefund = parseFloat(buyerRefundStr) || 0
+  const clampedRefund = Math.min(Math.max(parsedRefund, 0), protectedAmount)
+  const computedSellerRelease = protectedAmount - clampedRefund
+
+  let displayBuyerRefund = 0
+  let displaySellerRelease = maxRefund
+  if (activeAction === "refund_buyer") {
+    if (refundMethod === "keep") {
+      displayBuyerRefund = clampedRefund
+      displaySellerRelease = computedSellerRelease
+    } else {
+      displayBuyerRefund = maxRefund
+      displaySellerRelease = 0
+    }
+  } else if (activeAction === "release_seller") {
+    displayBuyerRefund = 0
+    displaySellerRelease = maxRefund
+  }
+
   return (
     <div className="space-y-6 2xl:space-y-8">
 
+      {/* Row 1: Two-column layout */}
+      <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6">
+
+        {/* Left Column: Final Resolution (75%) */}
+        <div className="lg:col-span-3">
+          {/* Section 3 — Final Resolution */}
+          <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
+            <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 mb-1">
+              <ShieldCheck weight="fill" className="h-5 w-5 text-primary" /> Final Resolution
+            </h3>
+            <p className="text-[13px] text-muted-foreground mb-5">
+              Choose how the protected funds should be resolved. Only one action can be active at a time.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <ActionPill
+                active={activeAction === "release_seller"}
+                onClick={() => selectAction("release_seller")}
+                icon={<Handshake weight="fill" className="h-5 w-5" />}
+                label="Release Funds to Seller"
+                theme="green"
+              />
+              <ActionPill
+                active={activeAction === "refund_buyer"}
+                onClick={() => selectAction("refund_buyer")}
+                icon={<ArrowUUpLeft weight="bold" className="h-5 w-5" />}
+                label="Refund Buyer"
+                theme="blue"
+              />
+              {/* Partial Settlement temporarily hidden
+              <ActionPill
+                active={activeAction === "partial"}
+                onClick={() => selectAction("partial")}
+                icon={<Scales weight="fill" className="h-5 w-5" />}
+                label="Partial Settlement"
+                theme="orange"
+              />
+              */}
+            </div>
+
+            {/* Expanded workflow */}
+            {activeAction && (
+              <div className="mt-6 pt-6 border-t border-border/60 animate-in fade-in slide-in-from-top-2 duration-200">
+                {activeAction === "release_seller" && <ReleaseSellerPanel amount={maxRefund} />}
+                {activeAction === "refund_buyer" && <RefundBuyerPanel protectedAmount={protectedAmount} buyerRefund={buyerRefundStr} setBuyerRefund={setBuyerRefundStr} method={refundMethod} setMethod={setRefundMethod} />}
+                {/* activeAction === "partial" && <PartialSettlementPanel protectedAmount={protectedAmount} /> */}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column: Financial Summary (25%) */}
+        <div className="lg:col-span-1">
+          {/* Section 2 — Financial Summary (settlement style) */}
+          <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] lg:sticky lg:top-[140px]">
+            <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 mb-5">
+              <Scales weight="fill" className="h-5 w-5 text-primary" /> Financial Summary
+            </h3>
+            <div className="max-w-md space-y-3 text-[14px]">
+              <SummaryRow label="Protected Amount" value={`$${protectedAmount.toLocaleString()}`} />
+              <SummaryRow label="Platform Fee" value={`−$${PLATFORM_FEE.toLocaleString()}`} muted />
+              <div className="border-t border-dashed border-border/70" />
+              <SummaryRow label="Buyer Refund" value={`$${displayBuyerRefund.toLocaleString()}`} strong />
+              <SummaryRow label="Seller Release" value={`$${displaySellerRelease.toLocaleString()}`} strong />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Row 2: Admin Notes */}
       {/* Section 1 — Internal Investigation Notes */}
       <div className="rounded-[20px] border border-warning/30 bg-warning/5 p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
@@ -340,72 +432,6 @@ function DecisionTab({ dispute }: { dispute: DisputeData }) {
           placeholder="Add internal notes about the investigation here..."
           defaultValue="The buyer's photos clearly show damage not present in the seller's original listing photos. However, the seller's pre-shipment photos are inconclusive for that specific side of the casing. Recommending partial refund to cover repair costs, or full refund upon return."
         />
-      </div>
-
-      {/* Section 2 — Financial Summary (settlement style) */}
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 mb-5">
-          <Scales weight="fill" className="h-5 w-5 text-primary" /> Financial Summary
-        </h3>
-        <div className="max-w-md space-y-3 text-[14px]">
-          <SummaryRow label="Protected Amount" value={`$${protectedAmount.toLocaleString()}`} />
-          <SummaryRow label="Platform Fee" value={`−$${PLATFORM_FEE.toLocaleString()}`} muted />
-          <div className="border-t border-dashed border-border/70" />
-          <SummaryRow label="Maximum Refund" value={`$${maxRefund.toLocaleString()}`} strong />
-          <SummaryRow label="Seller Release" value={`$${maxRefund.toLocaleString()}`} strong />
-          <div className="border-t border-dashed border-border/70" />
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wider">Escrow Status</span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ECFDF5] px-3 py-1 text-[13px] font-bold text-[#059669]">
-              <CheckCircle weight="fill" className="h-4 w-4" /> Protected
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Section 3 — Final Resolution */}
-      <div className="rounded-[20px] border border-[#EEF2F7] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
-        <h3 className="text-[14px] font-bold text-foreground flex items-center gap-2 mb-1">
-          <ShieldCheck weight="fill" className="h-5 w-5 text-primary" /> Final Resolution
-        </h3>
-        <p className="text-[13px] text-muted-foreground mb-5">
-          Choose how the protected funds should be resolved. Only one action can be active at a time.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <ActionPill
-            active={activeAction === "release_seller"}
-            onClick={() => selectAction("release_seller")}
-            icon={<Handshake weight="fill" className="h-5 w-5" />}
-            label="Release Funds to Seller"
-            theme="green"
-          />
-          <ActionPill
-            active={activeAction === "refund_buyer"}
-            onClick={() => selectAction("refund_buyer")}
-            icon={<ArrowUUpLeft weight="bold" className="h-5 w-5" />}
-            label="Refund Buyer"
-            theme="blue"
-          />
-          {/* Partial Settlement temporarily hidden
-          <ActionPill
-            active={activeAction === "partial"}
-            onClick={() => selectAction("partial")}
-            icon={<Scales weight="fill" className="h-5 w-5" />}
-            label="Partial Settlement"
-            theme="orange"
-          />
-          */}
-        </div>
-
-        {/* Expanded workflow */}
-        {activeAction && (
-          <div className="mt-6 pt-6 border-t border-border/60 animate-in fade-in slide-in-from-top-2 duration-200">
-            {activeAction === "release_seller" && <ReleaseSellerPanel amount={maxRefund} />}
-            {activeAction === "refund_buyer" && <RefundBuyerPanel protectedAmount={protectedAmount} />}
-            {/* activeAction === "partial" && <PartialSettlementPanel protectedAmount={protectedAmount} /> */}
-          </div>
-        )}
       </div>
 
     </div>
@@ -495,10 +521,8 @@ function ReleaseSellerPanel({ amount }: { amount: number }) {
 
 /* --- Action 2: Refund Buyer ---------------------------------------------- */
 
-function RefundBuyerPanel({ protectedAmount }: { protectedAmount: number }) {
-  const [method, setMethod] = React.useState<"return" | "keep">("return")
+function RefundBuyerPanel({ protectedAmount, buyerRefund, setBuyerRefund, method, setMethod }: { protectedAmount: number, buyerRefund: string, setBuyerRefund: (v: string) => void, method: "return" | "keep", setMethod: (v: "return" | "keep") => void }) {
   const [reason, setReason] = React.useState("")
-  const [buyerRefund, setBuyerRefund] = React.useState(Math.round(protectedAmount / 2).toString())
 
   const parsed = parseFloat(buyerRefund) || 0
   const overLimit = parsed > protectedAmount || parsed < 0
@@ -511,7 +535,7 @@ function RefundBuyerPanel({ protectedAmount }: { protectedAmount: number }) {
         <Label className="text-[13px] font-bold text-foreground mb-2 block">Refund Method</Label>
         <RadioGroup value={method} onValueChange={(v) => setMethod(v as "return" | "keep")} className="grid sm:grid-cols-2 gap-3">
           <MethodOption id="return" value="return" selected={method === "return"} title="Return Required" desc="Buyer must ship the item back before the refund is released." />
-          <MethodOption id="keep" value="keep" selected={method === "keep"} title="Keep Item" desc="Buyer keeps the item; funds are split between both parties." />
+          <MethodOption id="keep" value="keep" selected={method === "keep"} title="Keep Item" desc="Buyer keeps the item. Funds are released based on the dispute resolution." />
         </RadioGroup>
       </div>
 

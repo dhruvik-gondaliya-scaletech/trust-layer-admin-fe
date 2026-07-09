@@ -492,7 +492,6 @@ export function AdminUsersPage() {
             <DialogTitle className="text-[18px] font-bold text-[#0F172A]">Create Role</DialogTitle>
             <p className="text-[13px] text-muted-foreground mt-1 font-medium">Define a new administrator role and configure platform permissions.</p>
           </DialogHeader>
-          <div className="flex-1 overflow-hidden flex flex-col bg-[#F8FAFC]">
           <div className="overflow-y-auto flex-1 p-6 space-y-6 2xl:space-y-8 bg-white">
             {/* Section 1: Basic Information */}
             <div className="space-y-4">
@@ -545,7 +544,6 @@ export function AdminUsersPage() {
                 Create Role
               </Button>
             </div>
-          </div>
           </div>
         </DialogContent>
       </Dialog>
