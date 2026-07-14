@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { EmptyState } from "@/components/ui/empty-state"
 import {
   Users, Briefcase, CheckCircle, Bank, CurrencyCircleDollar,
-  ChartLineUp, WarningCircle, ArrowRight
+  ChartLineUp, WarningCircle, ArrowRight, Wallet
 } from "@phosphor-icons/react"
 
 const recentDisputes = [
@@ -105,6 +105,7 @@ export function Dashboard() {
         <StatCard title="Funds Released" value="$18.4M" icon={<CurrencyCircleDollar weight="fill" />} iconContainerClassName="bg-[#ECFDF3] text-[#16A34A]" className="bg-white" />
         <StatCard title="Platform Revenue" value="$128,450" icon={<ChartLineUp weight="fill" />} iconContainerClassName="bg-[#F5F3FF] text-[#7C3AED]" className="bg-white" />
         <StatCard title="Open Disputes" value="3" icon={<WarningCircle weight="fill" />} iconContainerClassName="bg-[#FEF2F2] text-[#EF4444]" className="bg-white" />
+        <StatCard title="Active Wallet Balance" value="$865,320" icon={<Wallet weight="fill" />} iconContainerClassName="bg-[#E0F2FE] text-[#0284C7]" className="bg-white" />
       </div>
 
       {/* Row 2: Operations */}

@@ -21,14 +21,11 @@ import { cn } from "@/lib/utils"
 function DisputeStatusBadge({ status }: { status: DisputeData["status"] | string }) {
   const getBadgeStyle = () => {
     switch (status.toLowerCase()) {
-      case "open": return "bg-[#EFF6FF] text-[#2563EB]" // Blue
-      case "waiting for seller": return "bg-[#FFF7ED] text-[#EA580C]" // Orange
+      case "submitted to seller": return "bg-[#EFF6FF] text-[#2563EB]" // Blue
       case "seller responded": return "bg-[#F3E8FF] text-[#9333EA]" // Purple
       case "escalated to admin": return "bg-[#FEF2F2] text-[#DC2626]" // Red
-      case "under review": return "bg-[#EEF2FF] text-[#4F46E5]" // Indigo
+      case "admin review": return "bg-[#EEF2FF] text-[#4F46E5]" // Indigo
       case "resolved": return "bg-[#ECFDF5] text-[#059669]" // Green
-      case "refunded": return "bg-[#F0FDFA] text-[#0D9488]" // Teal
-      case "rejected": return "bg-[#F1F5F9] text-[#64748B]" // Gray
       default: return "bg-[#F1F5F9] text-[#64748B]"
     }
   }
@@ -47,7 +44,6 @@ const DEFAULT_STATUS = "escalated to admin"
 export function DisputesList() {
   const [search, setSearch] = React.useState("")
   const [statusFilter, setStatusFilter] = React.useState(DEFAULT_STATUS)
-  const [amountFilter, setAmountFilter] = React.useState("all")
   const [dateFilter, setDateFilter] = React.useState("all")
 
   const navigate = useNavigate()
@@ -55,12 +51,11 @@ export function DisputesList() {
   const handleResetFilters = () => {
     setSearch("")
     setStatusFilter(DEFAULT_STATUS)
-    setAmountFilter("all")
     setDateFilter("all")
   }
 
   const filtersDirty =
-    statusFilter !== DEFAULT_STATUS || amountFilter !== "all" || dateFilter !== "all" || search !== ""
+    statusFilter !== DEFAULT_STATUS || dateFilter !== "all" || search !== ""
 
   // Filter Data
   const filteredDisputes = mockDisputes.filter(dsp => {
@@ -208,25 +203,10 @@ export function DisputesList() {
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="escalated to admin">Escalated to Admin</SelectItem>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="waiting for seller">Waiting for Seller</SelectItem>
+                <SelectItem value="submitted to seller">Submitted to Seller</SelectItem>
                 <SelectItem value="seller responded">Seller Responded</SelectItem>
-                <SelectItem value="under review">Under Review</SelectItem>
+                <SelectItem value="admin review">Admin Review</SelectItem>
                 <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="refunded">Refunded</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={amountFilter} onValueChange={setAmountFilter}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Amount" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Amounts</SelectItem>
-                <SelectItem value="<1000">Under $1,000</SelectItem>
-                <SelectItem value="1000-5000">$1,000 - $5,000</SelectItem>
-                <SelectItem value=">5000">Over $5,000</SelectItem>
               </SelectContent>
             </Select>
 

@@ -224,7 +224,7 @@ function OverviewTab({ deal }: { deal: DealData }) {
               <div className="font-medium">{deal.product}</div>
             </div>
             <div>
-              <div className="text-[12px] font-medium text-muted-foreground mb-1">Category</div>
+              <div className="text-[12px] font-medium text-muted-foreground mb-1">Product Type</div>
               <div className="font-medium">{deal.category}</div>
             </div>
             <div className="flex gap-8">
@@ -369,7 +369,11 @@ function ReviewsTab() {
                   <AvatarFallback className="bg-primary/10 text-primary font-bold">{review.reviewer.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-[14px] font-bold text-foreground">{review.reviewer}</span>
+                  <span className="text-[14px] font-bold text-foreground">
+                    {review.reviewer}
+                    <span className="font-normal text-muted-foreground mx-1.5">•</span>
+                    <span className="font-medium text-muted-foreground">{review.role}</span>
+                  </span>
                   <span className="text-[12px] font-medium text-muted-foreground">{review.date}</span>
                 </div>
               </div>
@@ -379,9 +383,6 @@ function ReviewsTab() {
               </div>
             </div>
             <p className="text-[13px] font-medium text-muted-foreground/90">{review.comment}</p>
-            <div className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-[12px] font-bold text-muted-foreground uppercase">
-              As {i === 0 ? "Buyer" : "Seller"}
-            </div>
           </div>
         ))}
       </div>

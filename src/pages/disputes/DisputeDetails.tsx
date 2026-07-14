@@ -19,14 +19,11 @@ import { cn } from "@/lib/utils"
 function DisputeStatusBadge({ status }: { status: DisputeData["status"] | string }) {
   const getBadgeStyle = () => {
     switch (status.toLowerCase()) {
-      case "open": return "bg-[#EFF6FF] text-[#2563EB]" // Blue
-      case "waiting for seller": return "bg-[#FFF7ED] text-[#EA580C]" // Orange
+      case "submitted to seller": return "bg-[#EFF6FF] text-[#2563EB]" // Blue
       case "seller responded": return "bg-[#F3E8FF] text-[#9333EA]" // Purple
       case "escalated to admin": return "bg-[#FEF2F2] text-[#DC2626]" // Red
-      case "under review": return "bg-[#EEF2FF] text-[#4F46E5]" // Indigo
+      case "admin review": return "bg-[#EEF2FF] text-[#4F46E5]" // Indigo
       case "resolved": return "bg-[#ECFDF5] text-[#059669]" // Green
-      case "refunded": return "bg-[#F0FDFA] text-[#0D9488]" // Teal
-      case "rejected": return "bg-[#F1F5F9] text-[#64748B]" // Gray
       default: return "bg-[#F1F5F9] text-[#64748B]"
     }
   }
@@ -289,10 +286,10 @@ function AvatarIcon({ name, isBuyer = false }: { name: string, isBuyer?: boolean
 function TimelineTab({ dispute }: { dispute: DisputeData }) {
   const dTimeline = [
     { id: 1, title: "Buyer Reported Issue", description: `${dispute.reason}`, date: "Oct 22, 2026", type: "error" },
-    { id: 2, title: "Seller Reviewing", description: "Waiting for seller response", date: "Oct 22, 2026", type: "default" },
+    { id: 2, title: "Submitted to Seller", description: "Waiting for seller response", date: "Oct 22, 2026", type: "default" },
     { id: 3, title: "Seller Responded", description: "Seller provided evidence", date: "Oct 23, 2026", type: "info" },
-    { id: 4, title: "Buyer Escalated", description: "Buyer requested admin intervention", date: "Oct 24, 2026", type: "warning" },
-    { id: 5, title: "Admin Reviewing", description: "Case assigned to Super Admin", date: "Today, 10:15 AM", type: "info" },
+    { id: 4, title: "Escalated to Admin", description: "Buyer requested admin intervention", date: "Oct 24, 2026", type: "warning" },
+    { id: 5, title: "Admin Review", description: "Case assigned to Super Admin", date: "Today, 10:15 AM", type: "info" },
   ]
 
   return (

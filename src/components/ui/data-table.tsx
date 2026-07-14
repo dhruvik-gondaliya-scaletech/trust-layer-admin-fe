@@ -23,6 +23,7 @@ export interface DataTableProps<TData> extends React.HTMLAttributes<HTMLDivEleme
   onRowClick?: (row: TData) => void
   pagination?: boolean
   rowClassName?: string
+  tableClassName?: string
   entityName?: string
 }
 
@@ -33,6 +34,7 @@ export function DataTable<TData>({
   onRowClick,
   pagination = false,
   rowClassName,
+  tableClassName,
   className,
   entityName = "Items",
   ...props
@@ -40,7 +42,7 @@ export function DataTable<TData>({
   return (
     <div className={cn("rounded-md border border-border/50 bg-card overflow-hidden", className)} {...props}>
       <div className="overflow-x-auto">
-        <Table>
+        <Table className={tableClassName}>
           <TableHeader className="bg-[#FAFBFD] border-b border-[#E8EDF5]">
             <TableRow className="hover:bg-transparent border-0">
               {columns.map((col, index) => (

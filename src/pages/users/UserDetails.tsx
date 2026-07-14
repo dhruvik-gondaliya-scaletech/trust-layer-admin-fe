@@ -296,7 +296,7 @@ function DealsTab() {
       }
     },
     {
-      header: "Category",
+      header: "Product Type",
       accessor: "category",
       cell: (row: any) => <span className="text-[13px] font-medium text-[#475569]">{row.category}</span>
     },
@@ -384,10 +384,10 @@ function DealsTab() {
 
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Category" />
+              <SelectValue placeholder="Product Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="all">All Product Types</SelectItem>
               <SelectItem value="watches">Watches</SelectItem>
               <SelectItem value="vehicles">Vehicles</SelectItem>
               <SelectItem value="luxury">Luxury</SelectItem>

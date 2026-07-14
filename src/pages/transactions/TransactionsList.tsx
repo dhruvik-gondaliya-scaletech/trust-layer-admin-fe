@@ -38,8 +38,8 @@ function StatusBadgeSemantic({ status }: { status: TransactionData["status"] | s
 
 // Per-category badge colors for the transaction ledger
 const TYPE_BADGE: Record<string, string> = {
-  "Escrow Payment": "bg-[#EFF6FF] text-[#2563EB]",      // Blue
-  "Escrow Release": "bg-[#ECFDF5] text-[#059669]",      // Green
+  "Funds on Hold": "bg-[#EFF6FF] text-[#2563EB]",      // Blue
+  "Funds Released": "bg-[#ECFDF5] text-[#059669]",      // Green
   "Payout to Seller": "bg-[#ECFDF5] text-[#059669]",    // Green
   "Wallet Deposit": "bg-[#FFF7ED] text-[#EA580C]",      // Orange
   "Wallet Withdrawal": "bg-[#FEF2F2] text-[#DC2626]",   // Red
@@ -57,7 +57,7 @@ const TYPE_BADGE: Record<string, string> = {
 
 // Type filter options (central ledger)
 const FILTER_CATEGORIES = [
-  "Escrow Payment", "Escrow Release", "Buyer Refund", "Wallet Deposit",
+  "Funds on Hold", "Funds Released", "Buyer Refund", "Wallet Deposit",
   "Wallet Withdrawal", "Platform Fee", "Wallet Adjustment",
   "Chargeback",
 ]
@@ -189,7 +189,7 @@ export function TransactionsList() {
   const columns = [
     {
       header: "Source",
-      className: "w-[300px]",
+      className: "w-[18%]",
       cell: (row: TransactionData) => {
         const kind = getSourceKind(row.category)
         const deal = kind === "deal" ? mockDeals.find(d => d.id === row.dealId) : undefined
@@ -208,12 +208,14 @@ export function TransactionsList() {
     {
       header: "Transaction ID",
       accessor: "id",
+      className: "w-[9%]",
       cell: (row: TransactionData) => (
         <span className="text-[13px] font-bold text-[#111827]">{row.id}</span>
       )
     },
     {
       header: "Type",
+      className: "w-[11%]",
       cell: (row: TransactionData) => {
         const color = (row.category && TYPE_BADGE[row.category]) || "bg-[#F1F5F9] text-[#64748B]"
         return (
@@ -230,6 +232,7 @@ export function TransactionsList() {
     },
     {
       header: "Amount",
+      className: "w-[10%]",
       cell: (row: TransactionData) => {
         const isPositive = row.direction !== "out"
         const sign = isPositive ? "+" : "-"
@@ -242,6 +245,7 @@ export function TransactionsList() {
     },
     {
       header: "User",
+      className: "w-[10%]",
       cell: (row: TransactionData) => (
         <div className="flex flex-col">
           <span className="text-[13px] font-semibold text-[#111827]">{row.user || "—"}</span>
@@ -250,8 +254,9 @@ export function TransactionsList() {
       )
     },
     {
-      header: "Method",
+      header: "Payment Method",
       accessor: "paymentType",
+      className: "w-[10%]",
       cell: (row: TransactionData) => (
         <div className="flex items-center gap-2">
           <MethodIcon method={row.paymentType} />
@@ -260,11 +265,25 @@ export function TransactionsList() {
       )
     },
     {
+      header: "Payment Type",
+      className: "w-[9%]",
+      cell: (row: TransactionData) => {
+        let overallType = "Deal Payment"
+        if (row.category === "Wallet Deposit") overallType = "Wallet Deposit"
+        if (row.category === "Wallet Withdrawal") overallType = "Wallet Withdrawal"
+        return (
+          <span className="text-[13px] font-medium text-[#475569]">{overallType}</span>
+        )
+      }
+    },
+    {
       header: "Status",
+      className: "w-[9%]",
       cell: (row: TransactionData) => <StatusBadgeSemantic status={row.status} />
     },
     {
       header: "Created At",
+      className: "w-[10%]",
       cell: (row: TransactionData) => (
         <div className="flex flex-col">
           <span className="text-[13px] font-medium text-[#111827]">{row.date}</span>
@@ -274,7 +293,7 @@ export function TransactionsList() {
     },
     {
       header: "",
-      className: "w-[40px]",
+      className: "w-[4%]",
       cell: (row: TransactionData) => (
         <div onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
@@ -308,7 +327,7 @@ export function TransactionsList() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 px-6 mb-8">
           <div className="flex flex-col gap-1">
             <h1 className="text-[24px] font-bold tracking-tight text-[#0F172A]">Transactions</h1>
-            <p className="text-[14px] font-medium text-muted-foreground">The central ledger for every fund movement across TrustLayer — escrow, refunds, fees, payouts, and wallet activity.</p>
+            <p className="text-[14px] font-medium text-muted-foreground">The central ledger for every fund movement across TrustLayer — funds on hold, refunds, fees, payouts, and wallet activity.</p>
           </div>
         </div>
 
@@ -411,7 +430,9 @@ export function TransactionsList() {
             columns={columns}
             data={filteredTransactions}
             className="border-0 shadow-none bg-transparent rounded-none"
-            rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150"
+            tableClassName="w-full table-fixed"
+            rowClassName="h-[56px] hover:bg-[#F8FAFF] border-b border-[#EEF2F7] transition-all duration-150 cursor-pointer"
+            onRowClick={(row) => navigate(`/transactions/${row.id}`)}
             pagination={true}
           />
         </div>

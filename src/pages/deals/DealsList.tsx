@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { mockDeals } from "@/lib/mock-data"
 import type { DealData } from "@/lib/mock-data"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MagnifyingGlass, DotsThree, Export, Image as ImageIcon } from "@phosphor-icons/react"
+import { MagnifyingGlass, DotsThree, Export, Image as ImageIcon, Info } from "@phosphor-icons/react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 function StatusBadgeSemantic({ status }: { status: DealData["status"] | string }) {
@@ -109,7 +115,7 @@ export function DealsList() {
       )
     },
     {
-      header: "Category",
+      header: "Product Type",
       accessor: "category",
       cell: (row: DealData) => <span className="text-[13px] font-medium text-[#475569]">{row.category}</span>
     },
@@ -124,7 +130,21 @@ export function DealsList() {
       )
     },
     {
-      header: "Platform Fee",
+      header: (
+        <div className="flex items-center gap-2">
+          Platform Fee
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger className="flex items-center justify-center h-6 w-6 rounded-full cursor-help group focus:outline-none">
+                <Info weight="fill" className="h-[18px] w-[18px] text-[#64748B] group-hover:text-[#2563EB] transition-colors" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[250px] text-center" side="top">
+                This amount includes both the TrustLayer Platform Fee and the Payment Processing Fee.
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
       accessor: "platformFee",
       cell: (row: DealData) => (
         <span className="text-[14px] font-medium text-[#475569]">
@@ -252,10 +272,10 @@ export function DealsList() {
 
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder="Product Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">All Product Types</SelectItem>
                 <SelectItem value="watches">Watches</SelectItem>
                 <SelectItem value="vehicles">Vehicles</SelectItem>
                 <SelectItem value="luxury">Luxury</SelectItem>

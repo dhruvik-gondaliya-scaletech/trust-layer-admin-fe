@@ -159,20 +159,36 @@ export function TransactionDetails() {
                   <span className="text-[14px] font-bold text-foreground">{transaction.protectedStatus}</span>
                 </div>
                 <div className="w-full h-px bg-border/50 my-2" />
-                <div className="flex justify-between items-center">
-                  <span className="text-[13px] font-medium text-muted-foreground">Base Amount</span>
-                  <span className="text-[14px] font-bold text-foreground">${(transaction.amount - transaction.platformFee).toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-                </div>
+                
+                {(() => {
+                  const shippingCost = transaction.dealId && transaction.amount > 1000 ? 650 : 0;
+                  const productPrice = transaction.amount - transaction.platformFee - shippingCost;
+                  
+                  return (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[13px] font-medium text-muted-foreground">Product Price</span>
+                        <span className="text-[14px] font-bold text-foreground">${productPrice.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[13px] font-medium text-muted-foreground">Shipping Cost</span>
+                        <span className="text-[14px] font-bold text-foreground">${shippingCost.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+                      </div>
+                    </>
+                  );
+                })()}
+
                 <div className="flex justify-between items-center">
                   <span className="text-[13px] font-medium text-muted-foreground">Platform Fee</span>
                   <span className="text-[14px] font-bold text-foreground">${transaction.platformFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
                 </div>
+                <div className="w-full h-px bg-border/50 my-2" />
                 <div className="flex justify-between items-center">
                   <span className="text-[13px] font-bold text-foreground">Total Processed</span>
                   <span className="text-[14px] font-bold text-foreground">${transaction.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
                 </div>
-                <div className="w-full h-px bg-border/50 my-2" />
-                <div className="flex justify-between items-center">
+                
+                <div className="flex justify-between items-center mt-2">
                   <span className="text-[13px] font-medium text-muted-foreground">Date</span>
                   <span className="text-[14px] font-bold text-foreground">{transaction.date}</span>
                 </div>

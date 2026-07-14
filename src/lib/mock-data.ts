@@ -179,8 +179,8 @@ export const mockUsers: UserData[] = [
 ]
 
 export type TransactionCategory =
-  | "Escrow Payment"
-  | "Escrow Release"
+  | "Funds on Hold"
+  | "Funds Released"
   | "Buyer Refund"
   | "Partial Refund"
   | "Partial Settlement"
@@ -229,7 +229,7 @@ export const mockTransactions: TransactionData[] = [
     paymentType: "Wire Transfer",
     status: "Completed",
     type: "Buy",
-    category: "Escrow Payment",
+    category: "Funds on Hold",
     direction: "in",
     user: "Eleanor Pena",
     userRole: "Buyer",
@@ -249,7 +249,7 @@ export const mockTransactions: TransactionData[] = [
     paymentType: "ACH",
     status: "Pending",
     type: "Sell",
-    category: "Escrow Payment",
+    category: "Funds on Hold",
     direction: "in",
     user: "Jacob Jones",
     userRole: "Buyer",
@@ -289,7 +289,7 @@ export const mockTransactions: TransactionData[] = [
     paymentType: "ACH",
     status: "Released",
     type: "Buy",
-    category: "Escrow Release",
+    category: "Funds Released",
     direction: "in",
     user: "Eleanor Pena",
     userRole: "Seller",
@@ -371,7 +371,7 @@ export const mockTransactions: TransactionData[] = [
     paymentType: "ACH",
     status: "Completed",
     type: "Buy",
-    category: "Escrow Payment",
+    category: "Funds on Hold",
     direction: "in",
     user: "Jacob Jones",
     userRole: "Buyer",
@@ -767,7 +767,7 @@ export interface DisputeData {
   productThumbnail?: string
   reason: string
   amount: number
-  status: "Open" | "Waiting for Seller" | "Seller Responded" | "Escalated to Admin" | "Under Review" | "Resolved" | "Refunded" | "Rejected"
+  status: "Submitted to Seller" | "Seller Responded" | "Escalated to Admin" | "Admin Review" | "Resolved"
   priority: "High" | "Medium" | "Low"
   created: string
   buyerTrustScore: number
@@ -811,7 +811,7 @@ export const mockDisputes: DisputeData[] = [
     product: "Hermes Birkin 30",
     reason: "Suspected Counterfeit",
     amount: 24000.00,
-    status: "Under Review",
+    status: "Admin Review",
     priority: "High",
     created: "Oct 19, 2026",
     buyerTrustScore: 65,
@@ -825,7 +825,7 @@ export const mockDisputes: DisputeData[] = [
     product: "Rolex Submariner",
     reason: "Missing Box & Papers",
     amount: 14200.00,
-    status: "Waiting for Seller",
+    status: "Submitted to Seller",
     priority: "Low",
     created: "Oct 24, 2026",
     buyerTrustScore: 88,
@@ -839,7 +839,7 @@ export const mockDisputes: DisputeData[] = [
     product: "Custom Shopify Theme",
     reason: "Late Delivery",
     amount: 4500.00,
-    status: "Open",
+    status: "Submitted to Seller",
     priority: "Medium",
     created: "Oct 25, 2026",
     buyerTrustScore: 92,
