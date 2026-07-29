@@ -46,7 +46,7 @@ export function Sidebar({ onLogoutClick }: SidebarProps) {
   return (
     <div
       className={cn(
-        "relative z-[100] flex h-screen flex-col border-r border-border/50 bg-card transition-all duration-300",
+        "relative z-40 flex h-screen flex-col border-r border-border/50 bg-card transition-all duration-300",
         isSidebarCollapsed ? "w-[88px]" : "w-[280px]"
       )}
     >
@@ -71,7 +71,7 @@ export function Sidebar({ onLogoutClick }: SidebarProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -right-4 top-[20px] z-[100] h-8 w-8 rounded-full border border-border/50 bg-white shadow-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300 hover:scale-110"
+        className="absolute -right-4 top-[20px] z-40 h-8 w-8 rounded-full border border-border/50 bg-white shadow-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300 hover:scale-110"
         onClick={toggleSidebar}
       >
         {isSidebarCollapsed ? (
