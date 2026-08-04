@@ -1,0 +1,9 @@
+export { authService } from "./auth.service";
+export { adminUsersService } from "./admin-users.service";
+export { adminRolesService } from "./admin-roles.service";
+export { adminPermissionsService } from "./admin-permissions.service";
+export { adminDashboardService } from "./admin-dashboard.service";
+export { adminCustomersService } from "./admin-customers.service";
+export { adminDealsService } from "./admin-deals.service";
+export { adminTransactionsService } from "./admin-transactions.service";
+export { adminDisputesService } from "./admin-disputes.service";

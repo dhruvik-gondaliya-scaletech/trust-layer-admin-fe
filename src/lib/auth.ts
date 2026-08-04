@@ -1,4 +1,4 @@
-const AUTH_KEY = "trustlayer_admin_auth_token"
+export const AUTH_KEY = "trustlayer_admin_auth_token"
 
 export function login(token: string = "mock-token-12345") {
   localStorage.setItem(AUTH_KEY, token)
