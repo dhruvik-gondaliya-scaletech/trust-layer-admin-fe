@@ -61,6 +61,21 @@ export const API_CONFIG = {
         BY_ID: (id: string) => `/admin/disputes/${id}`,
         RESOLVE: (id: string) => `/admin/disputes/${id}/resolve`,
     },
+
+    // ─── Platform Settings Endpoints ─────────────────────────────────────────
+    ADMIN_SETTINGS: {
+        LIST: "/admin/settings",
+        UPSERT: (key: string) => `/admin/settings/${key}`,
+    },
+
+    // ─── Deal Tiers Endpoints ────────────────────────────────────────────────
+    ADMIN_DEAL_TIERS: {
+        CREATE: "/admin/deal-tiers",
+        LIST: "/admin/deal-tiers",
+        BY_ID: (id: string) => `/admin/deal-tiers/${id}`,
+        UPDATE: (id: string) => `/admin/deal-tiers/${id}`,
+        DELETE: (id: string) => `/admin/deal-tiers/${id}`,
+    },
 };
 
 export const FRONTEND_ROUTES = {

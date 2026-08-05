@@ -7,3 +7,6 @@ export { adminCustomersService } from "./admin-customers.service";
 export { adminDealsService } from "./admin-deals.service";
 export { adminTransactionsService } from "./admin-transactions.service";
 export { adminDisputesService } from "./admin-disputes.service";
+export { adminSettingsService } from "./admin-settings.service";
+export { adminDealTiersService } from "./admin-deal-tiers.service";
+

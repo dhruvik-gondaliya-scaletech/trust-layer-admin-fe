@@ -252,3 +252,33 @@ export interface GetRecentActivityResponse {
   recentTransactions: Transaction[];
   recentDisputes: Dispute[];
 }
+
+// ─── Platform Setting DTOs & Models ───────────────────────────────────────────
+export interface PlatformSetting extends BaseEntity {
+  key: string;
+  value: string;
+}
+
+export interface UpsertPlatformSettingDto {
+  value: string;
+}
+
+// ─── Deal Tier DTOs & Models ──────────────────────────────────────────────────
+export interface DealTier extends BaseEntity {
+  name: string;
+  minCompletedDeals: number;
+  maxAmount: number | null;
+}
+
+export interface CreateDealTierDto {
+  name: string;
+  minCompletedDeals: number;
+  maxAmount: number | null;
+}
+
+export interface UpdateDealTierDto {
+  name?: string;
+  minCompletedDeals?: number;
+  maxAmount?: number | null;
+}
+
